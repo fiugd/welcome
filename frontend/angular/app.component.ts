@@ -1,5 +1,4 @@
 import { Component, NgModule, VERSION, OnInit, forwardRef, Inject } from '@angular/core';
-import { FeatureFlagService } from './feature-flags/feature-flags.service.ts';
 
 @Component({
 	selector: "app-root",
@@ -7,12 +6,8 @@ import { FeatureFlagService } from './feature-flags/feature-flags.service.ts';
 	styleUrls: [ './app.component.css' ]
 })
 export class AppComponent implements OnInit {
-	constructor(
-		@Inject(forwardRef(() => FeatureFlagService)) private featureFlagService: FeatureFlagService
-	) { }
+	constructor() {}
 
-	ngOnInit(): void {
-		this.featureFlagService.getDiscount()
-	}
+	ngOnInit(): void {}
 
 }

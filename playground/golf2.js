@@ -1,3 +1,4 @@
+//show-preview
 prism = prism || console.info;
 const deps = [
 	'../shared.styl'

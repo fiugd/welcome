@@ -1,3 +1,4 @@
+//show-preview
 /*
 	https://en.wikipedia.org/wiki/Operational_transformation
 */

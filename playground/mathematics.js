@@ -1,3 +1,4 @@
+//show-preview
 /*
 
 the goal of this thread is to find libraries/modules/functions which make numerical exploration simple

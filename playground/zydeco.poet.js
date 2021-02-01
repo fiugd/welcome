@@ -1,3 +1,4 @@
+//show-preview
 const configUrl = 'zydeco.config.json';
 const deps = [
 	'../shared.styl'

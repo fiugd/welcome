@@ -11,6 +11,6 @@ local function fib(n)
 end
 
 for i = 0,9,1
-do 
+do
    print(fib(i))
 end

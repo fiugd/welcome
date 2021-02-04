@@ -1,3 +1,5 @@
+//show-preview
+
 //https://unpkg.com/synaptic@1.1.1/dist/synaptic.min.js
 
 // https://brain.js.org/ - supposed to be GPU accelerated

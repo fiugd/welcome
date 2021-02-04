@@ -8,6 +8,11 @@ const deps = [
 https://gitlab.com/-/ide/project/crosshj/dropbox-migrate/tree/master/-/CODE/%5B%5D_utk/UTK_backup/cgi-bin/poetry/poem.c/
 */
 
+const range = (from, to) => {
+	if(!to) return new Array(from).fill().map((x,i) => i);
+	return new Array(1+to-from).fill().map((x,i) => i+from)
+};
+
 function parseConfig(configText){
 	const config = {};
 	const lines = configText.split('\n')
@@ -115,9 +120,8 @@ function getPoem(config){
 	await addUrls(deps);
 
 	const config = parseConfig(await(await fetch(configUrl)).text());
-	
-	const poem = getPoem(config);
-	console.info(poem);
+
+	range(3).forEach(x => console.info(getPoem(config)));
 
 	//await prism('json', JSON.stringify(config, null, 2));
 

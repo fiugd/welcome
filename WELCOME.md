@@ -18,9 +18,8 @@
 	}
 	body { margin-top: 1.5em; }
 	.markdown-body p { margin-bottom: 0.25em; }
-	.markdown-body pre code { color: #d9f5f1; }
 </style>
-<p class="background"></p>
+<p class="background"></p> 
 
 ```
 This is fiug; formerly known as bartok.

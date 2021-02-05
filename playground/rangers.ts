@@ -21,14 +21,12 @@ const deps = [
 	'https://www.unpkg.com/localforage@1.9.0/dist/localforage.min.js'
 ]; 
 
-const proxy = 'http://localhost:3333/proxy/';
+const proxy = 'https://api.allorigins.win/raw?url=';
 const lericoAPIRoot = "https://rangers.lerico.net/api/";
 const tometoUrl = 'https://vip.tometo.net/rank_list.php'
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-//get-current-res.js
-//getCurrentRes
 const lericoResources = {
 	pvps: "getPvps",
 	guilds: "getGuilds",
@@ -163,7 +161,7 @@ class Backup {
 ;(async () => {
 	const cachedFetch = ((cache) => async (url) => {
 		const cached = await cache.match(url);
-		const headers = { pragma: 'no-cache', 'cache-control': 'no-cache'};
+		const headers = {};
 		if(!cached) {
 			let response;
 			let tries = 0;

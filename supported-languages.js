@@ -16,7 +16,7 @@ const state = {
 		{ title: 'julia.jl', wasm: true },
 		{ title: 'lisp.lisp' },
 		{ title: 'lua.lua', wasm: true },
-		{ title: 'pascal.pas', wasm: true },
+		{ title: 'pascal.pas', wasm: false },
 		{ title: 'php.php' },
 		{ title: 'prolog.pro' },
 		{ title: 'python.py' },

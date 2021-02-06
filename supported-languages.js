@@ -1,4 +1,10 @@
 //show-preview
+
+/*
+	JVM languages potential solution:
+		https://plasma-umass.org/doppio-demo/
+*/
+
 const deps =[
 	'./shared.styl',
 	'/index.css'
@@ -72,6 +78,10 @@ const others = [
 					height: 100vh;
 					padding-left: 1em;
 					padding-right: 1em;
+					display: flex;
+					flex-direction: column;
+					margin: auto;
+					justify-content: center;
 				}
 				@media (min-width: 1024px) {
 					body {
@@ -87,7 +97,7 @@ const others = [
 					box-sizing: content-box;
 					padding-top: 2em;
 					padding-bottom: 2em;
-					margin-top: -10em;
+					margin-top: 3em;
 				}
 				.list {
 					display: flex;
@@ -190,6 +200,7 @@ const others = [
 					display: grid;
 					margin-top: 1em;
 					grid-template-columns: repeat(4, 1fr);
+margin-bottom: auto;
 				}
 				.other-languages > div div { margin: auto; margin-top: 0.5em; }
 			</style>
@@ -257,4 +268,5 @@ const others = [
 			</div>
 		</div>
 	`))
+
 })();

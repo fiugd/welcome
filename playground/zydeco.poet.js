@@ -1,8 +1,10 @@
 //show-preview
+import { importCSS, prism, consoleHelper, htmlToElement } from '../.tools/misc.mjs';
+import '../shared.styl';
+
+consoleHelper();
+
 const configUrl = 'zydeco.config.json';
-const deps = [
-	'../shared.styl'
-];
 
 /*
 https://gitlab.com/-/ide/project/crosshj/dropbox-migrate/tree/master/-/CODE/%5B%5D_utk/UTK_backup/cgi-bin/poetry/poem.c/
@@ -117,7 +119,6 @@ function getPoem(config){
 		</style>
 	`);
 	document.body.append(fontstyle)
-	await addUrls(deps);
 
 	const config = parseConfig(await(await fetch(configUrl)).text());
 

@@ -10,6 +10,8 @@
 
 */
 
+import { appendUrls, htmlToElement } from '../../../.tools/misc.mjs';
+
 const MAX_COLOR_DIFF = 200; // maximum color diff possible
 
 const centroids = [

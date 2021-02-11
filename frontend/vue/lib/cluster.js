@@ -220,6 +220,7 @@ const MIN_BLOB_BLOCKS = 6;
 (async () => {
 	if(window.Vue) return
 
+	const { appendUrls, htmlToElement } = await import('../../../.tools/misc.mjs');
 
 	const blockSize = 25;
 	const width = 1500;

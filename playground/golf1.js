@@ -1,12 +1,12 @@
 //show-preview
-prism = prism || console.info;
-const deps = [
-	'../shared.styl'
-];
+import { prism, importCSS, consoleHelper } from '../.tools/misc.mjs'
+import { createGraph } from '../.tools/graph.mjs'
+import '../shared.styl';
+
+consoleHelper();
+
 
 (async() => {
-	await appendUrls(deps);
-
 	console.info(`
 	You are given a list of jobs to be done, where each job is represented by a start time and end time. Two jobs are compatible if they don't overlap. Find the largest subset of compatible jobs.
 
@@ -72,14 +72,14 @@ const deps = [
 
 	const exampleGraph = {
 		nodes:[
-			{id: "[0, 6]", name: "[0, 6]",   radius:60, color: "orange"},
-			{id: "[1, 4]", name: "[1, 4]",   radius:30, color: "yellow"},
-			{id: "[3, 5]", name: "[3, 5]",   radius:20, color: "orange"},
-			{id: "[3, 8]", name: "[3, 8]",   radius:50, color: "orange"},
-			{id: "[4, 7]", name: "[4, 7]",   radius:30, color: "yellow"},
-			{id: "[5, 9]", name: "[5, 9]",   radius:40, color: "grey"},
-			{id: "[6, 10]", name: "[6, 10]", radius:40, color: "grey"},
-			{id: "[8, 11]", name: "[8, 11]", radius:30, color: "#bb3"}
+			{id: "[0, 6]", name: "[0, 6]",   color: "orange", fx: 600, fy: 100},
+			{id: "[1, 4]", name: "[1, 4]",   color: "yellow", fx: 250, fy: 400},
+			{id: "[3, 5]", name: "[3, 5]",   color: "orange", fx: 435, fy: 200},
+			{id: "[3, 8]", name: "[3, 8]",   color: "orange", fx: 800},
+			{id: "[4, 7]", name: "[4, 7]",   color: "yellow", fx: 600, fy: 400},
+			{id: "[5, 9]", name: "[5, 9]",   color: "grey", fx: 350, fy: 290},
+			{id: "[6, 10]", name: "[6, 10]", color: "grey", fx: 250, fy: 100 },
+			{id: "[8, 11]", name: "[8, 11]", color: "#bb3", fx: 600}
 		],
 		"links":[
 			{source: "[0, 6]",target:"[6, 10]", weight:2.0, right: true },
@@ -99,6 +99,11 @@ const deps = [
 			{source:"[4, 7]",target:"[8, 11]", weight:1.2, right: true}
 		]
 	};
+	
+	exampleGraph.nodes.forEach(x => {
+		const [from, to] = JSON.parse(x.name);
+		x.radius = (to - from) * 11
+	})
 
 
 	const graph = await createGraph(exampleGraph);

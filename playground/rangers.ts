@@ -16,6 +16,9 @@
 
 */
 
+import { consoleHelper } from '../.tools/misc.mjs';
+consoleHelper();
+
 const deps = [
 	'../shared.styl',
 	'https://www.unpkg.com/localforage@1.9.0/dist/localforage.min.js'
@@ -75,6 +78,51 @@ function getStorage(){
 				description: 'rankings info for line rangers'
 		});
 	return storage;
+};
+
+const groupRangerEvos = (rangers) => {
+	return Object.entries(rangers.reduce((all, one) => {
+		const { unitCode } = one;
+		const match = unitCode.match(/(?<type>[a-z])(?<number>\d*)(?<evo>[a-z])/);
+		if(!match){
+			//console.log(one);
+			return all;
+		}
+		const { type, number, evo } = match.groups;
+
+		if(!(type && number)) return all;
+		all[type+number] = all[type+number] || {};
+		all[type+number][evo] = one;
+		return all;
+	}, {})).map(([unit, body]) => {
+		const evoName = {
+			h: ' [H]',
+			u: ' [U]',
+			e: ''
+		};
+		const generalProperty = body[Object.keys(body)[0]];
+		const { unitElement, unitCategoryType, speedSkill, grade } = generalProperty;
+		const ranger = {
+			unitCode: unit,
+			unitElement, unitCategoryType, speedSkill, grade,
+			unitName: Object.keys(body).map(k=> `${body[k].unitName}${evoName[k]}`).join(', '),
+			...body
+		};
+		if(Object.keys(body).some(k=> body[k].speedSkill)){
+			ranger.skillName = Object.keys(body).map(k=> body[k].speedSkill && `${body[k].speedSkill.name} ${evoName[k]}`).join(', ')
+		}
+		return ranger;
+	});
+};
+
+const hydrateRangers = (lerico) => {
+	const { rangers, translate } = lerico;
+	return rangers.map(r => {
+		return {
+			...r,
+			unitName: lerico.translate['en:UNIT'][r.unitNameCode];
+		}
+	});
 };
 
 class Backup {
@@ -158,9 +206,16 @@ class Backup {
 	}
 }
 
-;(async () => {
-	const cachedFetch = ((cache) => async (url) => {
-		const cached = await cache.match(url);
+class CachedFetch {
+	constructor(cacheName){
+		return new Promise(async (resolve, reject) => {
+			const cache = await caches.open(cacheName'rangersCache');
+			resolve(this.fetch.bind({ cache }));
+		});
+	}
+
+	async fetch(url){
+		const cached = await this.cache.match(url);
 		const headers = {};
 		if(!cached) {
 			let response;
@@ -172,15 +227,101 @@ class Backup {
 				response = await fetch(url, { headers });
 			}
 			if(response && response.status === 200){
-				await cache.put(url, response);
+				await this.cache.put(url, response);
 			} else {
 				return;
 			}
 		}
 		const match = await caches.match(url);
-		window.latestMatch = match
 		return match;
-	})(await caches.open('rangersCache'));
+	}
+}
+
+class MostElements {
+	analysis;
+	constructor(rankings, rangers){
+		this.analysis = this.parse(rankings, rangers);
+		this.html = this.render.bind(this)();
+	}
+	parse(rankings, rangers){
+		const rangersEvoGrouped = groupRangerEvos(rangers);
+		/*
+			the idea here
+			rangers get 201 - teamRank points per usage
+			sort by that rank descending
+		*/
+		const rankedUnits = {};
+		for(var i=0, len=rankings.length; i<len; i++){
+			const { rank, defense } = rankings[i];
+			defense.forEach((unit, j) => {
+				const match = unit.match(/(?<type>[a-z])(?<number>\d*)(?<evo>[a-z])/);
+				if(!match) return;
+				const { type, number, evo } = match.groups;
+				rankedUnits[type+number] = rankedUnits[type+number] || 0;
+				rankedUnits[type+number] += ((201 - rank)/17500)
+			})
+		}
+		const rankedUnitsArray = Object.entries(rankedUnits)
+			.map(([code, rank]) => ({ code, rank }))
+			.sort((a,b) => b.rank - a.rank)
+			.map(x => {
+				const unit = rangersEvoGrouped.find(y => y.unitCode === x.code);
+				return { ...unit, ...x}
+			});
+		/*
+			each element gets points from rangers
+			sort by those points descending
+		*/
+		const rankedElements = {};
+		for(var i=0, len=rankedUnitsArray.length; i<len; i++){
+			const { rank, unitElement } = rankedUnitsArray[i];
+			if(rank<0.01) continue
+			rankedElements[unitElement] = rankedElements[unitElement] || 0;
+			rankedElements[unitElement] += rank;
+		}
+		const rankedElementsArray = Object.entries(rankedElements)
+			.map(([element, points]) => ({ element, points }))
+			.sort((a,b) => b.points - a.points)
+			.map(x => {
+				return x;
+			});
+		
+		//console.log(JSON.stringify(rankedElementsArray, null, 2))
+		//console.log(JSON.stringify(rankedUnitsArray[0], null, 2))
+		//console.log(JSON.stringify(rangersEvoGrouped[221], null, 2))
+		return {
+			units: rankedUnitsArray,
+			elements: rankedElementsArray
+		}
+	}
+	render(){
+		return htmlToElement(`<div>
+			<h5>ELEMENTS</h5>
+			<table>
+			${this.analysis.elements.map(e => `
+				<tr>
+					<td>${e.element}</td>
+					<td>${e.points.toFixed(2)}</td>
+				</tr>
+			`).join('')}
+			</table>
+			<h5>RANGERS</h5>
+			<table>
+			${this.analysis.units.filter(x=>x.rank>=0.01).map(e => `
+				<tr>
+					<td style="padding-right:0.5em;">${e.unitCode}</td>
+					<td style="padding-right:2em;">${e.unitName.split(',')[0]}</td>
+					<td style="min-width:5em;">${e.unitElement}</td>
+					<td>${e.rank.toFixed(2)}</td>
+				</tr>
+			`).join('')}
+			</table>
+		</div>`.replace(/^		/g, ''));
+	}
+}
+
+;(async () => {
+	const cachedFetch = await (new CachedFetch('rangersCache'));
 
 	async function scrapeHtml(url, query){
 		const html = await (await cachedFetch(url)).text();
@@ -236,14 +377,15 @@ class Backup {
 	};
 
 	await appendUrls(deps);
-	await prism('javascript', '', 'prism-preload');
+	//await prism('javascript', '', 'prism-preload');
 	
-	const backup = new Backup();
-	document.body.append(backup.controls);
-
+	//const backup = new Backup();
+	//document.body.append(backup.controls);
+	
 	const query = 'body > table > tbody > tr';
 	const tometo = await scrapeHtml(proxy + tometoUrl, query);
 	const tometoParsed = parseTometo(tometo)
+
 
 	const f = async (url) => (await cachedFetch(proxy + lericoAPIRoot + url)).json();
 	const keys = Object.keys(lericoResources);
@@ -255,6 +397,11 @@ class Backup {
 		lericoResources[keys[i]] = data;
 	}
 
+	const elements = new MostElements(tometoParsed, hydrateRangers(lericoResources));
+	document.body.append(elements.html);
+	return;
+
+	
 	//guilds
 	/*
 	await prism("json", '//top guild\n'+ JSON.stringify(
@@ -312,30 +459,6 @@ class Backup {
 	rangersWithSpeedSkill.forEach(r => {
 		r.speedSkill.name = lerico.translate['en:SKILL'][r.speedSkill.nameCode];
 		r.unitName = lerico.translate['en:UNIT'][r.unitNameCode];
-	});
-
-	const groupRangerEvos = (rangers) => Object.entries(rangers.reduce((all, one) => {
-		const { unitCode } = one;
-		const { type, number, evo } = unitCode.match(/(?<type>[a-z])(?<number>\d*)(?<evo>[a-z])/).groups;
-		if(!(type && number)) return all;
-		all[type+number] = all[type+number] || {};
-		all[type+number][evo] = one;
-		return all;
-	}, {})).map(([unit, body]) => {
-		const evoName = {
-			h: ' [H]',
-			u: ' [U]',
-			e: ''
-		};
-		const generalProperty = body[Object.keys(body)[0]];
-		const { unitElement, unitCategoryType, speedSkill, grade } = generalProperty;
-		return {
-			unitCode: unit,
-			unitElement, unitCategoryType, speedSkill, grade,
-			unitName: Object.keys(body).map(k=> `${body[k].unitName}${evoName[k]}`).join(', '),
-			skillName: Object.keys(body).map(k=> `${body[k].speedSkill.name} ${evoName[k]}`).join(', '),
-			...body
-		}
 	});
 
 	const rangerStyle = htmlToElement(`

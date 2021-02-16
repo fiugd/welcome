@@ -53,11 +53,11 @@ this graph and these notes are supposed to:
 - record ideas about future
 
 ## page
-- request:
+- request (fetch):
 	- page should get the majority of it's substance from network requests to service worker
 	- page should post changes from user to service worker
 
-- message bus:
+- message bus (msg):
 	- page requests code be "ran" in which case messages would pass to/from SW through message bus
 	- workers
 		- sw needs to treat workers as something it owns

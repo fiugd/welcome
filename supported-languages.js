@@ -1,8 +1,17 @@
 //show-preview
 
 /*
+	languages grouped by paradigm: 
+	https://www.info.ucl.ac.be/~pvr/paradigmsDIAGRAMeng108.jpg
+
+	cst/ast from many languages:
+	http://unifiedjs.com/
+
 	JVM languages potential solution:
-		https://plasma-umass.org/doppio-demo/
+	https://plasma-umass.org/doppio-demo/
+		
+	smalltalk:
+	https://amber-lang.net/
 */
 import { importCSS, prism, htmlToElement } from './.tools/misc.mjs';
 import './shared.styl';
@@ -63,7 +72,8 @@ const state = {
 const others = [
 	'basic | vb', 'cobol', 'fortran', 'algol',
 	'assembly', 'smalltalk', 'racket', 'octave',
-	'autohotkey', 'objective c', 'haxe', 'pyret', 'befunge'
+	'autohotkey', 'objective c', 'haxe', 'pyret',
+	'befunge', 'apl', 
 ];
 
 const style = () => { return `

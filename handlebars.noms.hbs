@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Nomination Search</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<style>{{css}}</style>
+	</head>
+
+	<style>
+		body {
+			-webkit-print-color-adjust: exact;
+			/*overflow-x: hidden;*/
+		}
+		table thead tr td { padding: 0; }
+
+		.flex-row-spaced-centered {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+		
+		#page-header, #page-footer {
+			position: fixed;
+			right: calc(2mm + 4px); left: calc(2mm + 4px);
+		}
+		#page-header { top: 0; }
+		#page-footer { bottom: 0; }
+
+		#page-header, .page-header-space {
+			height: 77px;
+		}
+		#page-footer, .page-footer-space {
+			height: 30px;
+		}
+
+		#page-header-top {
+			height: 54px;
+
+			border-bottom: 3px solid #940003;
+			border-left: none;
+			border-right: none;
+		}
+		#page-header-top * { flex: 1; }
+		#page-header-top .logo {
+			height: 100%;
+		}
+
+		#search-criteria {
+			background-color: #eee;
+			border-right: none;
+			font-size: 6px !important;
+			padding: 6px;
+		}
+
+		#page-footer {
+			padding:0; margin:0;
+			font-size: 6px !important;
+			border-top: 4px solid #940003;
+		}
+
+		#summary-row { position: absolute; left:0; right: 0; }
+
+	</style>
+
+	<body>
+		<div id="page-header">
+			<div id="page-header-top" class="flex-row-spaced-centered">
+				<div class="logo">
+					<img src="https://www.transport4.com/T4PublicWeb/images/logo.jpg" />
+				</div>
+				<span style="font-size: 12px; text-align: center">Nomination Search</span>
+				<div class="user-info text-right">
+					<b>{{userCode}}</b>
+					<br>
+					<b>{{email}}</b>
+				</div>
+			</div>
+			<div id="search-criteria">
+				{{#if cleanSearchCriteria}}
+					<span style="display:inline;">Search Criteria</span>
+					{{#each cleanSearchCriteria}}
+						{{#if this}}
+							<span><b>{{@key}}:</b> {{this}}</span>
+						{{/if}}
+					{{/each}}
+				{{/if}}
+
+				{{#if requestedDate}}
+					<b>Requested On:</b> {{requestedDate}}
+				{{/if}}
+
+				{{#if orderBy}}
+					<b>Order By:</b> {{orderBy}}
+				{{/if}}
+			</div>
+		</div>
+
+		<div id="page-footer" class="flex-row-spaced-centered">
+			<div>
+				{{#if createdDate}}
+					<b>Report Created On:</b> {{createdDate}}
+				{{/if}}
+			</div>
+			<div class="text-right">
+				<b>www.transport4.com</b>
+			</div>
+		</div>
+
+		<!-- this table is used for overall page layout -->
+		<table cellspacing="0" style="min-width: 100%; padding: 0; margin: 0 auto;" class="tblWrapper">
+			<thead>
+				<tr>
+					<td>
+						<div class="page-header-space"></div>
+					</td>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<td>
+						<div class="grid-box"></div>
+
+						<div class="upperResultsSummary">
+							<span>{{resultCount}} Search Results</span>
+							{{#if resultCountDisclaimer}}
+								<span class="disclaimer">{{resultCountDisclaimer}}</span>
+							{{/if}}
+							{{#if searchResultsUrl}}
+								<span> - </span>
+								<a href="{{searchResultsUrl}}" target="_blank">
+									<span>view online at transport4.com</span>
+									<svg class="link-icon-svg"
+										xmlns="http://www.w3.org/2000/svg"
+										xmlns:xlink="http://www.w3.org/1999/xlink"
+										viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000"
+										xml:space="preserve"
+									>
+										<g id="svg-link-def" transform="matrix(1 0 0 -1 0 1008)">
+											<path d="M780 368h140V18H10v910h350V788H150V158h630V368z
+												M500 998h490V508H850v245L395 298 290 403l455 455H500V998z"
+											/>
+										</g>
+									</svg>
+								</a>
+							{{/if}}
+						</div>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+						<div class="table-scroll">
+							<!-- this table is used for search results rows -->
+							<table class="pushTable">
+								<thead>
+									<tr>
+										{{~#each columns as |column|~}}
+											{{#if column.selected}}
+												<th class="header"
+													{{#if column.width}}
+														style="width:{{column.width}}px !important;"
+													{{/if}}
+												>
+													{{~{column.header}~}}
+												</th>
+											{{/if}}
+										{{/each}}
+									</tr>
+								</thead>
+								<tbody>
+									{{~#each tickets as |ticket|~}}
+										<tr class="resultsRow {{ticket.class}}">
+											{{~#each ../columns as |ticketCol|~}}
+												{{#if ticketCol.selected}}
+													<td class="{{ticketCol.index}} cell">
+														{{~{lookup ticket ticketCol.index}~}}
+													</td>
+												{{/if}}
+											{{/each}}
+										</tr>
+									{{/each}}
+								</tbody>
+							</table>
+						</div>
+					</td>
+				</tr>
+
+				<tr id="summary-row" style="position: unset;">
+					<td style="
+						display: flex;
+						width: calc(100vw - 8mm);
+						max-width: calc(100vw - 8mm);
+						padding: 0;
+						flex-direction: column;
+					">
+						<div>
+						{{#if emptyColumns}}
+							<span style="font-weight:bold;">&dagger; columns with no data are omitted:</span>
+							<ul>
+								{{#each emptyColumns}}
+									<li style="display: inline-block">{{this}}</li>
+								{{/each}}
+							</ul>
+						{{/if}}
+						</div>
+
+					<div class="summary-table text-right">
+						<p class="resultCountRow">Search Totals</p>
+						<!-- this table is used for summary rows -->
+						<table class="summaryTable">
+							<thead>
+								<tr>
+									{{#each summaryColumns as |summaryCol|}}
+										<th class="header {{summaryCol.index}}"
+											{{#if summaryCol.width}}
+												style="width:{{summaryCol.width}}px;"
+											{{/if}}
+										>{{summaryCol.header}}</th>
+									{{/each}}
+								</tr>
+							</thead>
+							<tbody>
+								{{#each summaryRows as |summary|}}
+								<tr class="summaryResultsRow resultsRow {{summary.class}}">
+									{{#each ../summaryColumns as |summaryCol|}}
+									<td class="cell {{summaryCol.index}}">
+										{{lookup summary summaryCol.index}}</td>
+									{{/each}}
+								</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>
+					</td>
+				</tr>
+			</tbody>
+
+			<tfoot>
+				<tr>
+					<td>
+						<div class="page-footer-space"></div>
+					</td>
+				</tr>
+			</tfoot>
+
+		</table>
+
+	</body>
+</html>

@@ -800,8 +800,8 @@ table {
 	border-bottom: 0.1pt solid #c3c3c3 !important;
 }
 
-.resultsRow:nth-child(even) {
-		background-color: #ededed;
+.resultsRow.even {
+	background-color: #ededed;
 }
 
 .criteriaRow {
@@ -931,7 +931,13 @@ table {
 .cell.alternateNetVolume {
 		text-align: right;
 }
-
+.cell.carrierBatchCode.grouped {
+	vertical-align: top;
+}
+.cell.carrierBatchCode.grouped div {
+	display: flex;
+	flex-direction: column;
+}
 
 #spacer {
 		height: 0;

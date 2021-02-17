@@ -172,12 +172,27 @@
 								</thead>
 								<tbody>
 									{{~#each tickets as |ticket|~}}
-										<tr class="resultsRow {{ticket.class}}">
+										<tr class="resultsRow {{ticket.class}}{{#if ticket.even}}even{{/if}}">
 											{{~#each ../columns as |ticketCol|~}}
 												{{#if ticketCol.selected}}
-													<td class="{{ticketCol.index}} cell">
-														{{~{lookup ticket ticketCol.index}~}}
-													</td>
+													{{#if (eq ticketCol.index "carrierBatchCode") }}
+														{{#unless ticket.isGrouped }}
+															<td class="carrierBatchCode cell {{#if ticket.groupLength}}grouped{{/if}}"
+																{{#if ticket.groupLength}}
+																	rowspan="{{ticket.groupLength}}"
+																{{/if}}
+															>
+																<div>
+																	<span>{{~{lookup ticket ticketCol.index}~}}</span>
+																	<span>Ins: {{ticket.ins}}, Outs: {{ticket.outs}}</span>
+																</div>
+															</td>
+														{{/unless}}
+													{{else}}
+														<td class="{{ticketCol.index}} cell">
+															{{~{lookup ticket ticketCol.index}~}}
+														</td>
+													{{/if}}
 												{{/if}}
 											{{/each}}
 										</tr>

@@ -41,13 +41,14 @@ const state = {
 		{ title: 'wasm.wat', wasm: true }
 	],
 	maybe: [
+		{ title: 'apl.apl', heat: 10 },
 		{ title: 'csharp.cs', heat: 8 },
 		{ title: 'fsharp.fs', heat: 8 },
 		{ title: 'java.java', heat: 3 },
 		{ title: 'kotlin.kt', heat: 3 },
 		{ title: 'ocaml.ml', heat: 6 },
 		{ title: 'perl.pl' },
-		{ title: 'raku.raku' }
+		{ title: 'raku.raku' },
 	],
 	meh: [
 		{ title: 'ada.adb' },
@@ -73,7 +74,7 @@ const others = [
 	'basic | vb', 'cobol', 'fortran', 'algol',
 	'assembly', 'smalltalk', 'racket', 'octave',
 	'autohotkey', 'objective c', 'haxe', 'pyret',
-	'befunge', 'apl', 
+	'befunge',
 ];
 
 const style = () => { return `

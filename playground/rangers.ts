@@ -399,7 +399,7 @@ class MostElements {
 
 	const elements = new MostElements(tometoParsed, hydrateRangers(lericoResources));
 	document.body.append(elements.html);
-	return;
+	//return;
 
 	
 	//guilds

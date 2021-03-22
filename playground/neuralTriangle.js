@@ -1,6 +1,7 @@
 //show-preview
-import { appendUrls, htmlToElement, importCSS } from '../.tools/misc.mjs';
+import { appendUrls, htmlToElement, importCSS, Stepper } from '../.tools/misc.mjs';
 import '../shared.styl';
+import './neuralTriangle.styl';
 
 const notes = () => `
 <pre class="notes">
@@ -32,102 +33,14 @@ By clicking forward into the steps, we see what I would want NN to do.  Todo, I'
 </pre>
 `
 
-const style = () => { return `
+const style = () => `
 <style>
-	.button {
-		background: grey;
-		color: black;
-		padding: 0.25em 0.5em;
-		border-radius: .1em;
-	}
-	.button:hover {
-		box-shadow: 0px 3px #4c4c4c,inset 0px 1px 1px 0px #bbb;
-		margin-top: -3px;
-		margin-bottom: 3px;
-		background: #a0a0a0;
-	}
-	.button.disabled {
-		pointer-events: none;
-		opacity: .3
-	}
-	#visuals, #labels {
-		display: flex;
-		width: 100%;
-	}
-	#visuals > canvas,
-	#visuals > .canvas-group,
-	#labels > div {
-		flex: 1;
-		margin: 0.5em;
-		text-align: center;
-		image-rendering: pixelated;
-		border-radius: 7px;
-	}
-
-	.canvas-group {
-		position: relative;
-	}
-	.canvas-group > canvas {
-		position: absolute;
-		left: 0; right: 0;
-		top: 0; bottom: 0;
-		width: 100%;
-		height: 100%;
-	}
-
-
-	#attempt {
-		filter:  url(#green);
-	}
-	#diff {
-		filter:  url(#red);
-	}
-	.selector {
-		display: flex;
-		width: 100%;
-		justify-content: center;
-		font-size: 2em;
-		margin-top: 1em;
-	}
-	.selector div + div {
-		margin-left: 0.2em;
-		user-select: none;
-	}
-	.selector .current {
-		background: #000;
-		width: 2em;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-	.selector .previous:before {
-		content: '<<'
-	}
-	.selector .next:after {
-		content: '>>'
-	}
-	.notes {
-		background: #111;
-		padding: 1.5em;
-		font-size: 1.5em;
-	}
-	.notes-links {
-		display: inline-flex;
-		width: 100%;
-		justify-content: center;
-	}
-	.notes-links a + a {
-		margin-left: 1em;
-	}
-	.canvas-overlay {
-		height: 100%;
-		width: 100%;
-	}
+	body{ opacity: 0; overflow: hidden; transition: opacity: 0.3s ease }
 </style>
-`}
+`
 const filters = () => { return `
 <svg style="display:none;">
-	<filter id="green" color-interpolation-filters="sRGB" x="0" y="0" height="100%" width="100%">
+	<filter id="blue" color-interpolation-filters="sRGB" x="0" y="0" height="100%" width="100%">
 		<feColorMatrix type="matrix"
 			values="
 				1 0 0 0 0.0
@@ -150,9 +63,11 @@ const filters = () => { return `
 `}
 const selector = () => { return `
 	<div class="selector">
-		<div class="previous button"></div>
-		<div class="current"></div>
-		<div class="next button"></div>
+		<div>
+			<div class="previous button"></div>
+			<div class="current"></div>
+			<div class="next button"></div>
+		</div>
 	</div>
 `}
 const visuals = () => { return `
@@ -282,31 +197,6 @@ class Diff {
 	}
 }
 
-class Stepper {
-	current = 0;
-	constructor(steps, onStep){
-		this.steps = steps;
-		this.onStep = () => onStep(this.current, this.steps[this.current]);
-		this.onStep();
-		
-		const keyHandler = event => ({
-			ArrowLeft: this.prev,
-			ArrowRight: this.next
-		}[event.key]);
-		document.onkeydown = (e) => keyHandler(e) && keyHandler(e)(e);
-	}
-	next = () => {
-		if(this.current + 1 >= this.steps.length) return
-		this.current++;
-		this.onStep()
-	}
-	prev = () => {
-		if(this.current - 1 < 0) return
-		this.current--;
-		this.onStep();
-	}
-}
-
 document.body.innerHTML = body;
 const prevButton = document.querySelector('.selector .previous')
 const nextButton = document.querySelector('.selector .next')
@@ -349,4 +239,11 @@ const stepper = new Stepper(steps, onStep)
 
 nextButton.onclick = stepper.next
 prevButton.onclick = stepper.prev
+
+document.onclick = () => {
+	document.body.classList.add('focused')
+}
+document.body.onblur = () => {
+	document.body.classList.remove('focused')
+}
 

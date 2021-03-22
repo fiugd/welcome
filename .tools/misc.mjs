@@ -147,6 +147,32 @@ function consoleHelper(){
 	};
 }
 
+export class Stepper {
+	current = 0;
+	constructor(steps, onStep){
+		this.steps = steps;
+		this.onStep = () => onStep(this.current, this.steps[this.current]);
+		this.onStep();
+		
+		const keyHandler = event => ({
+			ArrowLeft: this.prev,
+			ArrowRight: this.next
+		}[event.key]);
+		document.onkeydown = (e) => keyHandler(e) && keyHandler(e)(e);
+	}
+	next = () => {
+		if(this.current + 1 >= this.steps.length) return
+		this.current++;
+		this.onStep()
+	}
+	prev = () => {
+		if(this.current - 1 < 0) return
+		this.current--;
+		this.onStep();
+	}
+}
+
+
 export {
 	delay,
 	importCSS,

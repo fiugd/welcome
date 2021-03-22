@@ -4,8 +4,8 @@
 	the idea here is to fake an object that is big as it can be and measure how big it is
 */
 
-import { importCSS, prism, consoleHelper } from './.tools/misc.mjs';
-import './shared.styl';
+import { importCSS, prism, consoleHelper } from '../.tools/misc.mjs';
+import '../shared.styl';
 
 consoleHelper();
 

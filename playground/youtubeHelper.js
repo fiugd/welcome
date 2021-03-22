@@ -1,6 +1,6 @@
 //show-preview
-import { importCSS, prism, htmlToElement } from './.tools/misc.mjs';
-import './shared.styl';
+import { importCSS, prism, htmlToElement } from '../.tools/misc.mjs';
+import '../shared.styl';
 
 /*
 see https://github.com/eligrey/FileSaver.js

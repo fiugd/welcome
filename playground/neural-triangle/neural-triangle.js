@@ -1,7 +1,10 @@
 //show-preview
-import { appendUrls, htmlToElement, importCSS, Stepper } from '../.tools/misc.mjs';
-import '../shared.styl';
-import './neuralTriangle.styl';
+window.neuralTriangle = true; //used for testing components
+
+import { appendUrls, htmlToElement, importCSS, Stepper } from '../../.tools/misc.mjs';
+import '../../shared.styl';
+import './neural-triangle.styl';
+import { PointAdjuster } from './point-adjuster.js'
 
 const notes = () => `
 <pre class="notes">
@@ -88,11 +91,21 @@ const visuals = () => { return `
 	<div>ERROR</div>
 </div>
 `};
-
 const body = [
 	style, filters, visuals, selector, notes
 ].reduce((all, one) => `${all}${one()}`, '');
+document.body.innerHTML = body;
+const prevButton = document.querySelector('.selector .previous')
+const nextButton = document.querySelector('.selector .next')
+const currentIndicator = document.querySelector('.selector .current')
+document.onclick = () => {
+	document.body.classList.add('focused')
+}
+document.body.onblur = () => {
+	document.body.classList.remove('focused')
+}
 
+// --------------------------------------------------------------
 class Triangle {
 	points
 	constructor(id, points){
@@ -197,33 +210,26 @@ class Diff {
 	}
 }
 
-document.body.innerHTML = body;
-const prevButton = document.querySelector('.selector .previous')
-const nextButton = document.querySelector('.selector .next')
-const currentIndicator = document.querySelector('.selector .current')
-
 const originalPoints = [[9,9], [5,1], [1,9]]
 const original = new Triangle('original', originalPoints)
 
+const adjuster = new PointAdjuster(original.pixels)
+
 const steps = [
-	[[8,8], [5,3], [2,8]],
-	[[8,8], [5,2], [2,8]],
-	[[8,9], [5,2], [2,8]],
-	[[8,9], [5,2], [2,9]],
-	[[8,9], [5,1], [2,9]],
-	[[9,9], [5,1], [2,9]],
-	[[9,9], [5,1], [1,9]],
-]
+	[[8,10],[9,3],[0,5]],
+	[[8,10],[8,3],[1,6]],
+	[[8,10],[7,2],[1,7]],
+	[[8,10],[6,1],[1,8]],
+	[[9,9],[5,1],[1,8]],
+	[[9,9],[5,1],[1,9]],
+];
+
 
 let attempt, diff;
 const onStep = (number, step) => {
 	nextButton.classList.add('disabled');
 	prevButton.classList.add('disabled');
 	currentIndicator.innerHTML = number;
-	attempt = attempt || new Triangle('attempt')
-	diff = diff || new Diff('diff')
-	attempt.draw(step)
-	diff.draw(original, attempt)
 	if(number > 0 && number < steps.length-1){
 		nextButton.classList.remove('disabled');
 		prevButton.classList.remove('disabled');
@@ -234,16 +240,14 @@ const onStep = (number, step) => {
 	if(number === steps.length-1){
 		prevButton.classList.remove('disabled');
 	}
+
+	attempt = attempt || new Triangle('attempt')
+	diff = diff || new Diff('diff')
+	attempt.draw(step)
+	diff.draw(original, attempt)
 }
 const stepper = new Stepper(steps, onStep)
 
 nextButton.onclick = stepper.next
 prevButton.onclick = stepper.prev
-
-document.onclick = () => {
-	document.body.classList.add('focused')
-}
-document.body.onblur = () => {
-	document.body.classList.remove('focused')
-}
 

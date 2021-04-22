@@ -1,5 +1,4 @@
 <!-- no-select -->
-
 <style>
 	.background {
 		text-align: center;

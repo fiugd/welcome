@@ -1,29 +1,10 @@
 //show-preview
+import { importCSS } from '../../.tools/misc.mjs';
+import '../../shared.styl';
 
-/*
-
-use rxJS
-
-events in game are a series of observables
-
-models
-
-- tower
-- character
-- skill effects
-- attack / damage ?
-
-*/
-
-import { consoleHelper, htmlToElement, importCSS } from '../.tools/misc.mjs';
-import '../shared.styl';
-
-import * as rxjs from 'https://cdn.skypack.dev/rxjs';
-import * as operators from 'https://cdn.skypack.dev/rxjs/operators';
-const { animationFrameScheduler, of, Subject } = rxjs;;
-const { catchError, takeWhile, filter, tap, repeat } = operators;
-
-consoleHelper();
+import Engine from './td.engine.js';
+import Render from './td.render.js';
+import State from './td.state.js'
 
 const basicChar = {
 	hp: 2000,
@@ -33,7 +14,8 @@ const basicChar = {
 	x: 60,
 	move: 10
 };
-const state = {
+
+const state = new State({
 	field: {
 		height: 200,
 		width: 1000
@@ -58,124 +40,21 @@ const state = {
 		}]
 	}],
 	tick: 0,
-};
-
-const initDom = (state) => {
-	const dom = htmlToElement(`
-		<div>
-			<style>
-				body {
-					height: 100vh;
-					box-sizing: border-box;
-					margin-top: 0;
-					margin-bottom: 0;
-					padding-bottom: 5em;
-					overflow: hidden;
-				}
-			</style>
-			<canvas style="width:100%"></canvas>
-		</div>
-	`);
-	document.body.append(dom);
-	const canvas = dom.querySelector('canvas');
-	canvas.width = state.field.width;
-	canvas.height = state.field.height;
-	const ctx = canvas.getContext('2d');
-	return ctx;
-};
-const ctx = initDom(state);
-
-const clone = x => JSON.parse(JSON.stringify(x))
-const toggleCoords = (state, coordMode) => {
-	const stateClone = clone(state);
-	stateClone.towers
-		.forEach(tower => {
-			const isAttack = tower.type === "attacker";
-			const flipX = (x) => isAttack
-				? x
-				: coordMode === 'global'
-					? state.field.width - x
-					: Math.abs(x - state.field.width);
-			tower.x = flipX(tower.x);
-			tower.coordMode = coordMode;
-			tower.deployed.forEach(char => {
-				char.x = flipX(char.x);
-			});
-		});
-	return stateClone;
-};
-const cleanError = (e) => {
-	e.stack = e.stack
-		.split('\n')
-		.filter(x => !x.includes('rxjs'))
-		.join('\n');
-	return e;
-}
-const assignId = (x) => x.id = Math.random().toString().slice(2);
-const getById = (id) => [
-	...state.towers,
-	...state.towers[0].deployed,
-	...state.towers[1].deployed
-]
-	.find(x => x.id === id);
-const render = () => {
-	const { width: fieldWidth, height: fieldHeight} = state.field;
-	ctx.fillStyle = '#111';
-	ctx.fillRect(0, 0, fieldWidth, fieldHeight);
-	
-	const bottom = (height) => fieldHeight-height;
-	const center = (x, width) => x - (width/2);
-	
-	const renderTower = ({ x, color, dims, status }) => {
-		const [width, height] = dims;
-		ctx.fillStyle = status === 'dead' ? '#333' : color;
-		ctx.fillRect(
-			center(x, width), bottom(height),
-			width, height
-		);
-	};
-
-	const renderCharacter = ({ x }) => {
-		const width = 30;
-		ctx.fillRect(
-			center(x, width), bottom(width),
-			width, width
-		);
-	};
-
-	const globalModeState = toggleCoords(state, 'global');
-	globalModeState.towers.forEach(tower => {
-		renderTower({ ...tower });
-		tower.deployed.forEach(renderCharacter);
-	});
-	
-	if(state.towers[0].status === 'dead'){
-		console.log('Red wins!');
-	}
-	if(state.towers[1].status === 'dead'){
-		console.log('Blue wins!');
-	}
-};
-const tryRender = () => {
-	try {
-		render();
-		return true;
-	} catch(e) {
-		console.error(cleanError(e));
-		return false;
-	}
-};
+});
 
 const moveDeployed = ({ tick, towers }) => {
-	towers.forEach((tower, i) => {
-		tower.deployed.forEach(char => {
-			if(char.target) return;
-			char.x += char.move;
-		})
-	});
+	const move = char => {
+		if(char.target) return;
+		char.x += char.move;
+	};
+	const deployed = towers.reduce(
+		(all, one) => ([...all, ...one.deployed]
+	), []);
+	deployed.forEach(move);
 };
+
 const targetOpponents = (state) => {
-	const { towers } = toggleCoords(state, 'global');
+	const { towers } = state.global();
 	towers.forEach((tower, i) => {
 		const isAttack = tower.type === "attacker";
 		const opponent = towers[isAttack ? 1 : 0];
@@ -193,11 +72,12 @@ const targetOpponents = (state) => {
 		})
 	});
 };
+
 const attackOpponents = ({ towers }) => {
 	const attacking = [...towers[0].deployed, ...towers[1].deployed]
 		.filter(x => x.target);
 	attacking.forEach(attacker => {
-		const target = getById(attacker.target);
+		const target = state.getById(attacker.target);
 		target.hp -= attacker.attack;
 		if(target.hp < 0){
 			target.status = 'dead';
@@ -230,27 +110,14 @@ const gameLoop = () => {
 	} 
 };
 
-const throttle = (MIN_TIME) => () => {
-	const curr = performance.now();
-	if(state.time && (curr - state.time) < MIN_TIME)
-		return false;
-	state.time = curr;
-	return true;
-};
 const highPriority = () => {}; //animation events?
 
-const gameSteps = [
-	repeat(),
-	tap(highPriority),
-	filter(throttle(50)),
-	takeWhile(gameLoop),
-	takeWhile(tryRender),
-];
+const engine = new Engine({
+	throttle: 150,
+	state,
+	highPriority,
+	gameLoop,
+	tryRender: new Render({ state }),
+});
 
-setTimeout(() => {
-	[...state.towers, ...state.towers[0].deployed, ...state.towers[1].deployed]
-		.forEach(assignId)
-	of(null, animationFrameScheduler)
-		.pipe(...gameSteps)
-		.subscribe();
-}, 50);
+setTimeout(engine.start, 50);

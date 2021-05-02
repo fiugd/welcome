@@ -45,7 +45,7 @@ const lericoResources = {
 			"en:CUSTOM_SHORTFORM",
 			"en:CUSTOM_UPGRADE",
 			"en:EQUIP",
-			"en:ITEM"
+			"en:ITEM",
 			"en:PROPERTIES",
 			"en:SKILL",
 			"en:UNIT",

@@ -206,7 +206,7 @@ const style = () => { return `
 				display: grid;
 				margin-top: 1em;
 				grid-template-columns: repeat(4, 1fr);
-margin-bottom: auto;
+				margin-bottom: auto;
 			}
 			.other-languages > div div { margin: auto; margin-top: 0.5em; }
 		</style>

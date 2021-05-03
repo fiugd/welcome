@@ -5,13 +5,16 @@ import '../../shared.styl';
 import Engine from './td.engine.js';
 import Render from './td.render.js';
 import State from './td.state.js'
+import { loadAssets } from './td.assets.js';
+
+const towerX = 60;
 
 const basicChar = {
 	hp: 2000,
 	respawn: 200,
 	range: 150,
 	attack: 30,
-	x: 60,
+	x: towerX + 35,
 	move: 10
 };
 
@@ -23,7 +26,7 @@ const state = new State({
 	towers: [{
 		type: 'attacker',
 		dims: [30, 90],
-		x: 25,
+		x: towerX,
 		color: '#67b',
 		hp: 500,
 		deployed: [{
@@ -32,7 +35,7 @@ const state = new State({
 	}, {
 		type: 'defender',
 		dims: [30, 90],
-		x: 25,
+		x: towerX,
 		color: '#b76',
 		hp: 500,
 		// attack: <=68(blue), 69-71.4(tie), >=71.5 (red)
@@ -101,8 +104,7 @@ const gameLoop = () => {
 		targetOpponents(state);
 		attackOpponents(state);
 		moveDeployed(state);
-		const gameOver = !(state.towers[0].hp > 0 &&
-			state.towers[1].hp > 0);
+		const gameOver = state.towers.find(x => x.hp <= 0);
 		const continueGame = !state.gameOver
 		state.gameOver = gameOver;
 		state.tick++;
@@ -123,4 +125,7 @@ const engine = new Engine({
 	tryRender: new Render({ state }),
 });
 
-setTimeout(engine.start, 50);
+setTimeout(async () => {
+	state.assets = await loadAssets();
+	engine.start()
+}, 50);

@@ -32,14 +32,15 @@ const initDom = (state) => {
 
 const render = (state, ctx) => {
 	const { width: fieldWidth, height: fieldHeight} = state.field;
-	ctx.fillStyle = '#111';
-	ctx.fillRect(0, 0, fieldWidth, fieldHeight);
+	//ctx.fillStyle = '#111';
+	ctx.clearRect(0, 0, fieldWidth, fieldHeight);
+	ctx.drawImage(state.assets.images.background, 0, 0);
 
-	const bottom = (height) => fieldHeight-height;
+	const bottom = (height) => fieldHeight-height-60;
 	const center = (x, width) => x - (width/2);
 
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
-		ctx.strokeStyle = '#ddd';
+		ctx.strokeStyle = hp > 0 ? '#ddd' : '#111';
 		ctx.lineJoin = 'round';
 		ctx.lineWidth = 0.5;
 		ctx.fillStyle = 'orange';
@@ -52,7 +53,7 @@ const render = (state, ctx) => {
 		const [x, y] = [center(centerX, width), bottom(height)];
 		const isDead = status === 'dead';
 		healthBar({ x, y, width, hp, hpMax });
-		ctx.fillStyle = isDead ? '#333' : color;
+		ctx.fillStyle = isDead ? '#111' : color;
 		ctx.fillRect(x, y, width, height);
 	};
 

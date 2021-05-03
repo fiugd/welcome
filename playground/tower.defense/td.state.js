@@ -20,6 +20,7 @@ export const toggleCoords = (state, coordMode) => {
 };
 
 const assignId = (x) => x.id = Math.random().toString().slice(2);
+const setHpMax = (x) => x.hpMax = x.hp;
 
 const getById = (state, id) => [
 	...state.towers,
@@ -36,7 +37,10 @@ export default class State {
 			...state.towers[0].deployed,
 			...state.towers[1].deployed
 		]
-			.forEach(assignId)
+			.forEach((x) => {
+				assignId(x);
+				setHpMax(x);
+			})
 
 		state.getById = (id) => getById(state, id);
 

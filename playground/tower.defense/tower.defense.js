@@ -26,7 +26,9 @@ const state = new State({
 		x: 25,
 		color: '#67b',
 		hp: 500,
-		deployed: [ basicChar ]
+		deployed: [{
+			...basicChar, color: '#67b'
+		}],
 	}, {
 		type: 'defender',
 		dims: [30, 90],
@@ -36,8 +38,9 @@ const state = new State({
 		// attack: <=68(blue), 69-71.4(tie), >=71.5 (red)
 		deployed: [{
 			...basicChar,
+			color: '#b76',
 			hp:100, range: 400, attack: 68
-		}]
+		}],
 	}],
 	tick: 0,
 });

@@ -38,28 +38,36 @@ const render = (state, ctx) => {
 	const bottom = (height) => fieldHeight-height;
 	const center = (x, width) => x - (width/2);
 
-	const renderTower = ({ x, color, dims, status }) => {
+	const healthBar = ({ x, y, width, hp, hpMax }) => {
+		ctx.strokeStyle = '#ddd';
+		ctx.lineJoin = 'round';
+		ctx.lineWidth = 0.5;
+		ctx.fillStyle = 'orange';
+		hp > 0 && ctx.fillRect(x, y-10, width*(hp/hpMax), 5);
+		ctx.strokeRect(x, y-10, width, 5);
+	};
+	
+	const renderTower = ({ x: centerX, color, dims, status, hp, hpMax }) => {
 		const [width, height] = dims;
-		ctx.fillStyle = status === 'dead'
-			? '#333'
-			: color;
-		ctx.fillRect(
-			center(x, width), bottom(height),
-			width, height
-		);
+		const [x, y] = [center(centerX, width), bottom(height)];
+		const isDead = status === 'dead';
+		healthBar({ x, y, width, hp, hpMax });
+		ctx.fillStyle = isDead ? '#333' : color;
+		ctx.fillRect(x, y, width, height);
 	};
 
-	const renderCharacter = ({ x }) => {
+	const renderCharacter = ({ x: centerX, hp, hpMax, color }) => {
 		const width = 30;
-		ctx.fillRect(
-			center(x, width), bottom(width),
-			width, width
-		);
+		const height = 30;
+		const [x, y] = [center(centerX, width), bottom(height)];
+		healthBar({ x, y, width, hp, hpMax });
+		ctx.fillStyle = color;
+		ctx.fillRect(x, y, width, height);
 	};
 
 	const globalModeState = toggleCoords(state, 'global');
 	globalModeState.towers.forEach(tower => {
-		renderTower({ ...tower });
+		renderTower(tower);
 		tower.deployed.forEach(renderCharacter);
 	});
 

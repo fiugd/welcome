@@ -4,7 +4,9 @@ import {
 } from './td.utils.js';
 import {
 	toggleCoords
-} from './td.state.js'
+} from './td.state.js';
+
+const BOTTOM_OFFSET = 65;
 
 const initDom = (state) => {
 	const dom = htmlToElement(`
@@ -36,15 +38,15 @@ const render = (state, ctx) => {
 	ctx.clearRect(0, 0, fieldWidth, fieldHeight);
 	ctx.drawImage(state.assets.images.background, 0, 0);
 
-	const bottom = (height) => fieldHeight-height-60;
+	const bottom = (height) => fieldHeight-height-BOTTOM_OFFSET;
 	const center = (x, width) => x - (width/2);
 
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
 		ctx.strokeStyle = hp > 0 ? '#ddd' : '#111';
 		ctx.lineJoin = 'round';
 		ctx.lineWidth = 0.5;
-		ctx.fillStyle = 'orange';
-		hp > 0 && ctx.fillRect(x, y-10, width*(hp/hpMax), 5);
+		ctx.fillStyle = hp > 0 ? 'green' : 'black';
+		ctx.fillRect(x, y-10, width*(hp > 0 ? hp/hpMax : 1), 5);
 		ctx.strokeRect(x, y-10, width, 5);
 	};
 	

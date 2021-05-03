@@ -25,7 +25,7 @@ const state = new State({
 	},
 	towers: [{
 		type: 'attacker',
-		dims: [30, 90],
+		dims: [30, 70],
 		x: towerX,
 		color: '#67b',
 		hp: 500,
@@ -34,7 +34,7 @@ const state = new State({
 		}],
 	}, {
 		type: 'defender',
-		dims: [30, 90],
+		dims: [30, 70],
 		x: towerX,
 		color: '#b76',
 		hp: 500,

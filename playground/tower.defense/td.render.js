@@ -5,6 +5,7 @@ import {
 import {
 	toggleCoords
 } from './td.state.js';
+import GifMaker from './td.gif.js';
 
 const BOTTOM_OFFSET = 65;
 
@@ -29,10 +30,13 @@ const initDom = (state) => {
 	canvas.width = state.field.width;
 	canvas.height = state.field.height;
 	const ctx = canvas.getContext('2d');
-	return ctx;
+	const gif = state.record && new GifMaker({
+		...state.field
+	});
+	return { ctx, gif };
 };
 
-const render = (state, ctx) => {
+const render = (state, ctx, gif) => {
 	const { width: fieldWidth, height: fieldHeight} = state.field;
 	//ctx.fillStyle = '#111';
 	ctx.clearRect(0, 0, fieldWidth, fieldHeight);
@@ -80,11 +84,25 @@ const render = (state, ctx) => {
 	if(state.towers[1].status === 'dead'){
 		console.log('Blue wins!');
 	}
+
+	if(!state.record) return;
+	if(state.towers.find(x => x.status === 'dead')){
+		(async () => {
+			const image = document.createElement('img');
+			(new Array(20)).fill().forEach(() => {
+				gif.addFrame(ctx);
+			});
+			image.src= await gif.finish();
+			document.body.append(image);
+		})();
+	} else {
+		gif.addFrame(ctx);
+	}
 };
 
-const tryRender = (state, ctx) => {
+const tryRender = (state, ctx, gif) => {
 	try {
-		render(state, ctx);
+		render(state, ctx, gif);
 		return true;
 	} catch(e) {
 		console.error(cleanError(e));
@@ -94,7 +112,7 @@ const tryRender = (state, ctx) => {
 
 export default class Render {
 	constructor({ state }){
-		const ctx = initDom(state);
-		return () => tryRender(state, ctx);
+		const { ctx, gif } = initDom(state);
+		return () => tryRender(state, ctx, gif);
 	}
 }

@@ -19,6 +19,7 @@ const basicChar = {
 };
 
 const state = new State({
+	record: false,
 	field: {
 		height: 200,
 		width: 1000

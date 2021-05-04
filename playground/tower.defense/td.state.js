@@ -19,8 +19,8 @@ export const toggleCoords = (state, coordMode) => {
 	return stateClone;
 };
 
-const assignId = (x) => x.id = Math.random().toString().slice(2);
-const setHpMax = (x) => x.hpMax = x.hp;
+export const assignId = (x) => x.id = Math.random().toString().slice(2);
+export const setHpMax = (x) => x.hpMax = x.hp;
 
 const getById = (state, id) => [
 	...state.towers,

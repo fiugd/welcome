@@ -1,10 +1,6 @@
 import { htmlToElement } from '../../.tools/misc.mjs';
-import {
-	cleanError
-} from './td.utils.js';
-import {
-	toggleCoords
-} from './td.state.js';
+import { cleanError } from './td.utils.js';
+import { toggleCoords } from './td.state.js';
 import GifMaker from './td.gif.js';
 
 const BOTTOM_OFFSET = 65;
@@ -45,6 +41,13 @@ const render = (state, ctx, gif) => {
 	const bottom = (height) => fieldHeight-height-BOTTOM_OFFSET;
 	const center = (x, width) => x - (width/2);
 
+	
+	const writeTicker = () => {
+		ctx.fillStyle = '#777';
+		ctx.font = "15px sans-serif";
+		ctx.fillText(state.tick.toString().padStart(5, ' '), 20, 20);
+	}
+	
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
 		ctx.strokeStyle = hp > 0 ? '#ddd' : '#111';
 		ctx.lineJoin = 'round';
@@ -70,12 +73,15 @@ const render = (state, ctx, gif) => {
 		healthBar({ x, y, width, hp, hpMax });
 		ctx.fillStyle = color;
 		ctx.fillRect(x, y, width, height);
+		ctx.strokeStyle = '#111';
+		ctx.strokeRect(x, y, width, height);
 	};
 
 	const globalModeState = toggleCoords(state, 'global');
 	globalModeState.towers.forEach(tower => {
 		renderTower(tower);
 		tower.deployed.forEach(renderCharacter);
+		writeTicker();
 	});
 
 	if(state.towers[0].status === 'dead'){

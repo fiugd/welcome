@@ -4,22 +4,34 @@ import '../../shared.styl';
 
 import Engine from './td.engine.js';
 import Render from './td.render.js';
-import State from './td.state.js'
+import State, { assignId, setHpMax } from './td.state.js'
 import { loadAssets } from './td.assets.js';
+import { clone } from './td.utils.js';
 
 const towerX = 60;
 
 const basicChar = {
-	hp: 2000,
-	respawn: 200,
+	color: '#67b',
+	hp: 2100,
+	respawn: 19,
 	range: 150,
-	attack: 30,
+	attack: 28,
+	x: towerX + 35,
+	move: 11
+};
+
+const basicOppChar = {
+	color: '#b76',
+	hp:250,
+	respawn: 43,
+	range: 370,
+	attack: 68,
 	x: towerX + 35,
 	move: 10
 };
 
 const state = new State({
-	record: false,
+	record: true,
 	field: {
 		height: 200,
 		width: 1000
@@ -29,22 +41,17 @@ const state = new State({
 		dims: [30, 70],
 		x: towerX,
 		color: '#67b',
-		hp: 500,
-		deployed: [{
-			...basicChar, color: '#67b'
-		}],
+		hp: 460,
+		deployed: [],
+		team: [basicChar],
 	}, {
 		type: 'defender',
 		dims: [30, 70],
 		x: towerX,
 		color: '#b76',
 		hp: 500,
-		// attack: <=68(blue), 69-71.4(tie), >=71.5 (red)
-		deployed: [{
-			...basicChar,
-			color: '#b76',
-			hp:100, range: 400, attack: 68
-		}],
+		deployed: [],
+		team: [basicOppChar],
 	}],
 	tick: 0,
 });
@@ -85,6 +92,10 @@ const attackOpponents = ({ towers }) => {
 		.filter(x => x.target);
 	attacking.forEach(attacker => {
 		const target = state.getById(attacker.target);
+		if(!target){
+			attacker.target = undefined;
+			return;
+		}
 		target.hp -= attacker.attack;
 		if(target.hp < 0){
 			target.status = 'dead';
@@ -98,10 +109,26 @@ const attackOpponents = ({ towers }) => {
 	});
 };
 
+const spawnTeam = ({ towers }) => {
+	const iterate = (char, deployed) => {
+		if(char.spawnTicker) return char.spawnTicker--;
+		const newChar = clone(char);
+		assignId(newChar);
+		setHpMax(newChar);
+		deployed.push(newChar);
+		char.spawnTicker = char.respawn;
+	};
+	const spawn = (tower) => tower.team.forEach((char) => {
+		iterate(char, tower.deployed);
+	});
+	towers.forEach(spawn);
+};
+
 // towers spawn characters (use spawn timer)
 // characters move or attack
 const gameLoop = () => {
 	try {
+		spawnTeam(state);
 		targetOpponents(state);
 		attackOpponents(state);
 		moveDeployed(state);

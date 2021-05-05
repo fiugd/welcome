@@ -8,16 +8,6 @@ const BOTTOM_OFFSET = 65;
 const initDom = (state) => {
 	const dom = htmlToElement(`
 		<div>
-			<style>
-				body {
-					height: 100vh;
-					box-sizing: border-box;
-					margin-top: 0;
-					margin-bottom: 0;
-					padding-bottom: 5em;
-					overflow: hidden;
-				}
-			</style>
 			<canvas style="width:100%"></canvas>
 		</div>
 	`);
@@ -34,14 +24,40 @@ const initDom = (state) => {
 
 const render = (state, ctx, gif) => {
 	const { width: fieldWidth, height: fieldHeight} = state.field;
-	//ctx.fillStyle = '#111';
-	ctx.clearRect(0, 0, fieldWidth, fieldHeight);
-	ctx.drawImage(state.assets.images.background, 0, 0);
-
 	const bottom = (height) => fieldHeight-height-BOTTOM_OFFSET;
 	const center = (x, width) => x - (width/2);
 
-	
+	const drawBackground = () => {
+		const hScale = 1;
+		const vScale = 1;
+		const hSkew = 0;
+		const vSkew = -0.66;
+		ctx.transform(hScale, hSkew, vSkew, vScale, 0, 0);
+
+		// image, dx, dy
+		// image, dx, dy, dWidth, dHeight
+		// image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
+		const skewOffSet = 90;
+		ctx.drawImage(state.assets.images.background, skewOffSet-fieldWidth,0);
+		ctx.drawImage(state.assets.images.background, skewOffSet,0);
+		ctx.drawImage(state.assets.images.background, skewOffSet+fieldWidth, 0);
+
+		ctx.resetTransform();
+
+		//draw unskewed top part
+		ctx.drawImage(
+			state.assets.images.background,
+			0,0,fieldWidth, 0.45*fieldHeight,
+			0,0,fieldWidth, 0.45*fieldHeight
+		);
+		//draw unskewed bottom part
+		ctx.drawImage(
+			state.assets.images.background,
+			0, 165,fieldWidth, 0.5*fieldHeight,
+			0, 165,fieldWidth, 0.5*fieldHeight
+		);
+	};
+
 	const writeTicker = () => {
 		ctx.fillStyle = '#777';
 		ctx.font = "15px sans-serif";
@@ -76,6 +92,9 @@ const render = (state, ctx, gif) => {
 		ctx.strokeStyle = '#111';
 		ctx.strokeRect(x, y, width, height);
 	};
+
+	ctx.clearRect(0, 0, fieldWidth, fieldHeight);
+	drawBackground();
 
 	const globalModeState = toggleCoords(state, 'global');
 	globalModeState.towers.forEach(tower => {

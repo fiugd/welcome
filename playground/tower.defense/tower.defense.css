@@ -1,0 +1,16 @@
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	background: #080b17;
+	height: 100vh;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-bottom: 5em;
+	overflow: hidden;
+	align-items: center;
+	box-sizing: border-box;
+}
+canvas {
+	max-width: 1000px;
+}

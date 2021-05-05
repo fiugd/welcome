@@ -1,7 +1,3 @@
-//show-preview
-import { importCSS } from '../../.tools/misc.mjs';
-import '../../shared.styl';
-
 import Engine from './td.engine.js';
 import Render from './td.render.js';
 import State, { assignId, setHpMax } from './td.state.js'
@@ -40,7 +36,7 @@ const state = new State({
 		type: 'attacker',
 		dims: [30, 70],
 		x: towerX,
-		color: '#67b',
+		color: '#25b',
 		hp: 460,
 		deployed: [],
 		team: [basicChar],
@@ -48,7 +44,7 @@ const state = new State({
 		type: 'defender',
 		dims: [30, 70],
 		x: towerX,
-		color: '#b76',
+		color: '#b23',
 		hp: 500,
 		deployed: [],
 		team: [basicOppChar],
@@ -153,7 +149,7 @@ const engine = new Engine({
 	tryRender: new Render({ state }),
 });
 
-setTimeout(async () => {
+(async () => {
 	state.assets = await loadAssets();
-	engine.start()
-}, 50);
+	engine.start();
+})();

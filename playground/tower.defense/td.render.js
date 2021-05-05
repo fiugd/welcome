@@ -1,16 +1,9 @@
 import { cleanError } from './td.utils.js';
 import { toggleCoords } from './td.state.js';
 import GifMaker from './td.gif.js';
+import { htmlToElement } from '../../.tools/misc.mjs';
 
 const BOTTOM_OFFSET = 65;
-
-const htmlToElement = function htmlToElement(html) {
-	var template = document.createElement('template');
-	html = html.trim(); // Never return a text node of whitespace as the result
-	template.innerHTML = html;
-	//also would be cool to remove indentation from all lines
-	return template.content.firstChild;
-}
 
 const initDom = (state) => {
 	const dom = htmlToElement(`

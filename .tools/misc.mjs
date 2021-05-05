@@ -1,8 +1,6 @@
-import '/shared/vendor/stylus.min.js';
+import './stylus.min.js';
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
-
-
 
 const alreadyAppended = {};
 const appendScript = (url) => {

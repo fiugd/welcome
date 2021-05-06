@@ -1,5 +1,10 @@
 const proxy = 'https://api.allorigins.win/raw?url=';
 
+const subD = (numb, width, fn) => !numb || numb === 1
+	? fn(0, width)
+	: (new Array(numb)).fill().map((a,i,all) => fn(i,width/numb));
+	
+
 const images = {
 	background: 'td.background.png',
 	bgTop: ({ background: bg }) => Tile(
@@ -24,7 +29,9 @@ const images = {
 		32
 	),
 	teeGames: 'sprites/teeGames.png',
-	teeRun1: ({ teeGames: img }) => Tile(img,0,300,img.width,100),
+	teeRun: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+		Tile(img, 15+(i*(w+1)),285+84, w,56)
+	),
 };
 
 const loadImage = (src, root) => new Promise((resolve, reject) => {

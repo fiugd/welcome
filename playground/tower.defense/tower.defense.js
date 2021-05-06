@@ -8,7 +8,7 @@ const towerX = 60;
 
 const basicChar = {
 	color: '#67b',
-	hp: 2100,
+	hp: 2150,
 	respawn: 19,
 	range: 150,
 	attack: 28,
@@ -21,7 +21,7 @@ const basicOppChar = {
 	hp:250,
 	respawn: 43,
 	range: 370,
-	attack: 68,
+	attack: 67,
 	x: towerX + 35,
 	move: 10
 };
@@ -37,7 +37,7 @@ const state = new State({
 		dims: [30, 70],
 		x: towerX,
 		color: '#25b',
-		hp: 460,
+		hp: 2000,
 		deployed: [],
 		team: [basicChar],
 	}, {
@@ -45,7 +45,7 @@ const state = new State({
 		dims: [30, 70],
 		x: towerX,
 		color: '#b23',
-		hp: 500,
+		hp: 2000,
 		deployed: [],
 		team: [basicOppChar],
 	}],

@@ -1,3 +1,5 @@
+const proxy = 'https://api.allorigins.win/raw?url=';
+
 const images = {
 	background: 'td.background.png',
 	bgTop: ({ background: bg }) => Tile(
@@ -21,6 +23,8 @@ const images = {
 		bg.width,
 		32
 	),
+	teeGames: 'sprites/teeGames.png',
+	teeRun1: ({ teeGames: img }) => Tile(img,0,300,img.width,100),
 };
 
 const loadImage = (src, root) => new Promise((resolve, reject) => {
@@ -35,7 +39,9 @@ const loadImage = (src, root) => new Promise((resolve, reject) => {
 	let img = new Image();
 	img.onload = () => resolve(img);
 	img.onerror = reject;
-	img.src = root + src;
+	img.src = src.slice(0,4) === 'http'
+		? proxy + src
+		: root + src;
 });
 
 const Tile = (inputCanvas, offsetX, offsetY, width, height) => {

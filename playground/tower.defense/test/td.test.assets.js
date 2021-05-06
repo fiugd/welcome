@@ -23,7 +23,7 @@ const testSlices = async () => {
 		const {width, height} = img;
 		if(typeof i === 'undefined'){
 			append(`<pre>${k}: ${[width, height].join(' x ')}</pre>`);
-			document.body.append(img);
+			document.body.append(img.cloneNode(true));
 			return;
 		}
 		let container = document.querySelector(`#${k}`);
@@ -31,7 +31,7 @@ const testSlices = async () => {
 			append(`<pre>${k}: ${[width, height].join(' x ')}</pre>`);
 			container = append(`<div id="${k}" style="display:flex"></div>`);
 		}
-		container.append(img);
+		container.append(img.cloneNode(true));
 	};
 	for (var [k,value] of Object.entries(images)){
 		if(Array.isArray(value)){
@@ -42,4 +42,31 @@ const testSlices = async () => {
 	}
 };
 
-testSlices();
+const testTeeRun = async () => {
+	const { images: { teeRun} } = await loadAssets({ root: '../'});
+	append(`<pre>teeRun animated</prev>`);
+	console.log(teeRun[0].width / 2)
+	const canvas = append(`<canvas 
+		width="${teeRun[0].width / 2}"
+		height="${teeRun[0].height / 2}"
+	></canvas>`);
+	canvas.width = teeRun[0].width / 2;
+	canvas.height = teeRun[0].height / 2;
+	const ctx = canvas.getContext('2d');
+	let i =0;
+	const frame = () => {
+		if(!teeRun[i]) i = 0;
+		ctx.drawImage(teeRun[i], 0, 0, teeRun[0].width / 2, teeRun[0].height / 2);
+		i++;
+	};
+	const animate = () => {
+		requestAnimationFrame(frame);
+		setTimeout(animate, 125);
+	};
+	animate();
+};
+
+(async () => {
+	await testSlices();
+	await testTeeRun();
+})()

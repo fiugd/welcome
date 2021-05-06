@@ -9,7 +9,7 @@ const towerX = 60;
 const basicChar = {
 	type: 'attacker',
 	color: '#67b',
-	hp: 2150,
+	hp: 2600,
 	respawn: 19,
 	range: 150,
 	attack: 28,
@@ -20,10 +20,10 @@ const basicChar = {
 const basicOppChar = {
 	type: 'defender',
 	color: '#b76',
-	hp:250,
-	respawn: 43,
-	range: 370,
-	attack: 67,
+	hp: 275,
+	respawn: 47,
+	range: 390,
+	attack: 84,
 	x: towerX + 35,
 	move: 10
 };

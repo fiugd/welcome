@@ -97,14 +97,14 @@ const images = {
 			img, 15+(i*(w+1)),285+84, w,56
 		)
 	),
-	teeAttackBlue: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+	teeAttackBlue: ({ teeGames: img }) => subD(6, 378-28, (i,w) =>
 		Tile(
 			(c,ct) => { transparent(c,ct); colorize("#03e9")(c,ct); }
 		)(
-			img, 15+(i*(w+1)),285+84, w,56
+			img, 15+(i*(w+1)),285+602, w,58
 		)
 	),
-	teeAttackRed: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+	teeAttackRed: ({ teeGames: img }) => subD(6, 378-28, (i,w) =>
 		Tile(
 			(c,ct) => {
 				transparent(c,ct);
@@ -112,7 +112,7 @@ const images = {
 				flipH()(c,ct);
 			}
 		)(
-			img, 15+(i*(w+1)),285+84, w,56
+			img, 15+(i*(w+1)),285+602, w,58
 		)
 	),
 };

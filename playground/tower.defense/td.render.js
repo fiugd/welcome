@@ -29,7 +29,7 @@ const render = (state, ctx, gif) => {
 
 	const {
 		background: bgimg, bgMid, bgTop, bgBottom,
-		teeRunBlue, teeRunRed
+		teeRunBlue, teeRunRed, teeAttackBlue, teeAttackRed
 	} = state.assets.images;
 
 	const drawBackground = () => {
@@ -90,19 +90,6 @@ const render = (state, ctx, gif) => {
 	};
 
 	const renderCharacter = ({ x: centerX, hp, hpMax, color, type, target }) => {
-		/*
-		const width = 30;
-		const height = 30;
-		const [x, y] = [center(centerX, width), bottom(height)];
-		healthBar({ x, y, width, hp, hpMax });
-		const [x, y] = [center(centerX, width), bottom(height)];
-		healthBar({ x, y, width, hp, hpMax });
-		ctx.fillStyle = color;
-		ctx.fillRect(x, y, width, height);
-		ctx.strokeStyle = '#111';
-		ctx.strokeRect(x, y, width, height);
-		*/
-
 		const frame = {
 			defender: target
 				? teeAttackRed[state.tick % 6]
@@ -121,7 +108,7 @@ const render = (state, ctx, gif) => {
 			img: frame,
 		};
 		ctx.drawImage(sprite.img, sprite.x, sprite.y, sprite.width, sprite.height);
-		healthBar({ ...sprite, hp, hpMax });
+		healthBar({ ...sprite, hp, hpMax, x: center(centerX, 20), width: 20 });
 	};
 
 	ctx.clearRect(0, 0, fieldWidth, fieldHeight);

@@ -28,37 +28,41 @@ const render = (state, ctx, gif) => {
 	const center = (x, width) => x - (width/2);
 
 	const drawBackground = () => {
-		const { background: bgimg } = state.assets.images;
-		const hScale = 1;
-		const vScale = 1;
-		const hSkew = 0;
-		const vSkew = -0.66;
+		const {
+			background: bgimg, bgMid, bgTop, bgBottom
+		} = state.assets.images;
 
-		ctx.transform(hScale, hSkew, vSkew, vScale, 0, 0);
+
 
 		// image, dx, dy
 		// image, dx, dy, dWidth, dHeight
 		// image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight
-		const skewOffSet = 90;
-		ctx.fillStyle = ctx.createPattern(bgimg, "repeat-x");
-		ctx.fillRect(
-			skewOffSet-fieldWidth, 0.45*fieldHeight-35,
-			fieldWidth*3, fieldHeight
-		);
 
+		//draw skewed, middle part
+		const hScale = 1;
+		const vScale = 1;
+		const hSkew = 0;
+		const vSkew = -0.66;
+		const skewOffSet = 90;
+		ctx.transform(hScale, hSkew, vSkew, vScale, 0, 0);
+		ctx.fillStyle = ctx.createPattern(bgMid, "repeat");
+		ctx.fillRect(
+			skewOffSet-fieldWidth, bgTop.height-1,
+			fieldWidth*3, bgMid.height
+		);
 		ctx.resetTransform();
 
 		//draw unskewed top part
 		ctx.drawImage(
-			bgimg,
-			0,0,fieldWidth, 0.45*fieldHeight,
-			0,0,fieldWidth, 0.45*fieldHeight
+			bgTop,
+			0,0,fieldWidth, bgTop.height
 		);
+
 		//draw unskewed bottom part
 		ctx.drawImage(
-			bgimg,
-			0, 165,fieldWidth, 0.5*fieldHeight,
-			0, 165,fieldWidth, 0.5*fieldHeight
+			bgBottom,
+			0, bgTop.height+bgMid.height-1,
+			fieldWidth, bgBottom.height
 		);
 	};
 
@@ -106,6 +110,7 @@ const render = (state, ctx, gif) => {
 		tower.deployed.forEach(renderCharacter);
 		writeTicker();
 	});
+
 
 	if(state.towers[0].status === 'dead'){
 		console.log('Red wins!');

@@ -29,7 +29,7 @@ const basicOppChar = {
 };
 
 const state = new State({
-	record: true,
+	record: false,
 	field: {
 		height: 200,
 		width: 1000

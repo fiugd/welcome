@@ -7,6 +7,7 @@ import { clone } from './td.utils.js';
 const towerX = 60;
 
 const basicChar = {
+	type: 'attacker',
 	color: '#67b',
 	hp: 2150,
 	respawn: 19,
@@ -17,6 +18,7 @@ const basicChar = {
 };
 
 const basicOppChar = {
+	type: 'defender',
 	color: '#b76',
 	hp:250,
 	respawn: 43,

@@ -1,27 +1,77 @@
 const proxy = 'https://api.allorigins.win/raw?url=';
 
+function cloneCanvas(oldCanvas) {
+	var canvas = document.createElement('canvas');
+	var ctx = canvas.getContext('2d');
+	canvas.width = oldCanvas.width;
+	canvas.height = oldCanvas.height;
+	ctx.drawImage(oldCanvas, 0, 0);
+	return { canvas, ctx };
+}
+
 const subD = (numb, width, fn) => !numb || numb === 1
 	? fn(0, width)
 	: (new Array(numb)).fill().map((a,i,all) => fn(i,width/numb));
 	
+const transparent = (canvas, ctx) => {
+	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	const data = imageData.data;
+
+	const start = [ data[0], data[1], data[2] ];
+
+	const diff = ([r,g,b], [r2,g2,b2]) => [r-r2, g-g2, b-b2]
+		.reduce((all, one) => all + Math.abs(one), 0);
+
+	const startDiff = (d) => diff(d, start);
+
+	const tolerance = 150;
+	for(var i = 0, len = data.length; i < len; i += 4) {
+		const thisDiff = startDiff([ data[i], data[i+1], data[i+2] ]);
+		if(thisDiff >= tolerance) continue;
+		data[i] = data[i+1] = data[i+2] = data[i+3] = 0;
+	}
+	ctx.putImageData(imageData, 0, 0);
+};
+
+const colorize = (color) => (canvas, ctx) => {
+	const clone = cloneCanvas(canvas);
+	const { width, height } = canvas;
+	clone.ctx.fillStyle = color || "#02e9";
+	clone.ctx.fillRect(0, 0, width, height);
+	clone.ctx.globalCompositeOperation = "destination-in";
+	clone.ctx.drawImage(canvas, 0, 0, width, height);
+	ctx.drawImage(clone.canvas, 0, 0);
+};
+
+const flipH = (x=0, y=0) => (canvas, ctx) => {
+	const clone = cloneCanvas(canvas);
+	const { width, height } = canvas;
+	clone.ctx.clearRect(0,0,width,height);
+	clone.ctx.translate(x + width/2, y + width/2);
+	clone.ctx.scale(-1, 1);
+	clone.ctx.translate(-(x + width/2), -(y + width/2));
+	clone.ctx.drawImage(canvas, x, y, width, height);
+	ctx.clearRect(0,0,width,height);
+	ctx.drawImage(clone.canvas, 0, 0);
+}
 
 const images = {
 	background: 'td.background.png',
-	bgTop: ({ background: bg }) => Tile(
+	bgTop: ({ background: bg }) => Tile()(
 		bg,
 		0, // xoff
 		0, // yoff
 		bg.width,
 		84
 	),
-	bgMid: ({ background: bg }) => Tile(
+	bgMid: ({ background: bg }) => Tile()(
 		bg,
 		0,
 		84,
 		96, // width
 		84
 	),
-	bgBottom: ({ background: bg }) => Tile(
+	bgBottom: ({ background: bg }) => Tile()(
 		bg,
 		0,
 		168,
@@ -29,8 +79,41 @@ const images = {
 		32
 	),
 	teeGames: 'sprites/teeGames.png',
-	teeRun: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
-		Tile(img, 15+(i*(w+1)),285+84, w,56)
+	teeRunBlue: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+		Tile(
+			(c,ct) => { transparent(c,ct); colorize("#03e9")(c,ct); }
+		)(
+			img, 15+(i*(w+1)),285+84, w,56
+		)
+	),
+	teeRunRed: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+		Tile(
+			(c,ct) => {
+				transparent(c,ct);
+				colorize("#d209")(c,ct);
+				flipH()(c,ct);
+			}
+		)(
+			img, 15+(i*(w+1)),285+84, w,56
+		)
+	),
+	teeAttackBlue: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+		Tile(
+			(c,ct) => { transparent(c,ct); colorize("#03e9")(c,ct); }
+		)(
+			img, 15+(i*(w+1)),285+84, w,56
+		)
+	),
+	teeAttackRed: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
+		Tile(
+			(c,ct) => {
+				transparent(c,ct);
+				colorize("#d209")(c,ct);
+				flipH()(c,ct);
+			}
+		)(
+			img, 15+(i*(w+1)),285+84, w,56
+		)
 	),
 };
 
@@ -51,7 +134,7 @@ const loadImage = (src, root) => new Promise((resolve, reject) => {
 		: root + src;
 });
 
-const Tile = (inputCanvas, offsetX, offsetY, width, height) => {
+const Tile = (process)=>(inputCanvas, offsetX, offsetY, width, height) => {
 	const buffer = document.createElement('canvas');
 	const b_ctx = buffer.getContext('2d');
 	buffer.width = width;
@@ -63,6 +146,7 @@ const Tile = (inputCanvas, offsetX, offsetY, width, height) => {
 		0, 0,
 		buffer.width, buffer.height
 	);
+	if(process) process(buffer, b_ctx);
 	const image = new Image();
 	image.src = buffer.toDataURL();
 	return image;

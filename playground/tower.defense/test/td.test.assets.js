@@ -14,6 +14,7 @@ append(`
 		/*body { background: #123851; }*/
 		img { width: 100%; max-height: 200px; }
 		img {object-fit: contain; object-position: left; }
+		img, canvas { image-rendering: pixelated; }
 	</style>
 `);
 
@@ -33,7 +34,10 @@ const testSlices = async () => {
 		}
 		container.append(img.cloneNode(true));
 	};
-	for (var [k,value] of Object.entries(images)){
+	const allImages = Object.entries(images);
+	const onlyTee = Object.entries(images)
+		.filter(([k,v]) => k.includes('tee'));
+	for (var [k,value] of onlyTee){
 		if(Array.isArray(value)){
 			value.forEach((v, i) => showImage(k, v, i));
 			continue;
@@ -43,30 +47,35 @@ const testSlices = async () => {
 };
 
 const testTeeRun = async () => {
-	const { images: { teeRun} } = await loadAssets({ root: '../'});
-	append(`<pre>teeRun animated</prev>`);
-	console.log(teeRun[0].width / 2)
-	const canvas = append(`<canvas 
-		width="${teeRun[0].width / 2}"
-		height="${teeRun[0].height / 2}"
-	></canvas>`);
-	canvas.width = teeRun[0].width / 2;
-	canvas.height = teeRun[0].height / 2;
+	const { images: { teeAttackBlue: teeRun} } = await loadAssets({ root: '../'});
+	let { width, height } = teeRun[0];
+	[width, height] = [width,height].map(x => x*.5)
+	append(`<pre>teeAttack animated</prev>`);
+	const canvas = append(`<canvas></canvas>`);
+	canvas.width = width;
+	canvas.height = height;
 	const ctx = canvas.getContext('2d');
 	let i =0;
 	const frame = () => {
 		if(!teeRun[i]) i = 0;
-		ctx.drawImage(teeRun[i], 0, 0, teeRun[0].width / 2, teeRun[0].height / 2);
+		ctx.clearRect(0,0,width,height);
+		ctx.drawImage(teeRun[i], 0, 0,width,height);
 		i++;
 	};
 	const animate = () => {
-		requestAnimationFrame(frame);
-		setTimeout(animate, 125);
+		requestAnimationFrame(() => {
+			frame();
+			setTimeout(animate, 125);
+		});
 	};
 	animate();
+};
+
+const testTeeAttack = async () => {
 };
 
 (async () => {
 	await testSlices();
 	await testTeeRun();
+	await testTeeAttack();
 })()

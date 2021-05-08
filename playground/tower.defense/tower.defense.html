@@ -9,6 +9,32 @@
 		<link rel="stylesheet" href="tower.defense.css">
 	</head>
 	<body></body>
+	<script>
+		window.towerX = 60;
+
+		window.basicChar = {
+			type: 'attacker',
+			color: '#67b',
+			hp: 3000,
+			respawn: 40,
+			range: 100,
+			attack: 110,
+			x: towerX + 35,
+			move: 10
+		};
+
+		window.basicOppChar = {
+			type: 'defender',
+			color: '#b76',
+			hp: 3000,
+			respawn: 40,
+			range: 147,
+			attack: 95,
+			move: 10,
+			x: towerX + 35,
+		};
+	</script>
 	<script src="tower.defense.js" type="module"></script>
 </html>
+
 <!-- http://bit.ly/TowerDefenseGo -->

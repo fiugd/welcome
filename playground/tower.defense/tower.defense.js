@@ -2,31 +2,9 @@ import Engine from './td.engine.js';
 import Render from './td.render.js';
 import State, { assignId, setHpMax } from './td.state.js'
 import { loadAssets } from './td.assets.js';
-import { clone } from './td.utils.js';
+import { clone, unNest } from './td.utils.js';
 
-const towerX = 60;
 
-const basicChar = {
-	type: 'attacker',
-	color: '#67b',
-	hp: 2600,
-	respawn: 19,
-	range: 150,
-	attack: 28,
-	x: towerX + 35,
-	move: 11
-};
-
-const basicOppChar = {
-	type: 'defender',
-	color: '#b76',
-	hp: 275,
-	respawn: 47,
-	range: 390,
-	attack: 84,
-	x: towerX + 35,
-	move: 10
-};
 
 const state = new State({
 	record: false,
@@ -37,19 +15,19 @@ const state = new State({
 	towers: [{
 		type: 'attacker',
 		dims: [30, 70],
-		x: towerX,
+		x: window.towerX,
 		color: '#25b',
 		hp: 2000,
 		deployed: [],
-		team: [basicChar],
+		team: [window.basicChar],
 	}, {
 		type: 'defender',
 		dims: [30, 70],
-		x: towerX,
+		x: window.towerX,
 		color: '#b23',
 		hp: 2000,
 		deployed: [],
-		team: [basicOppChar],
+		team: [window.basicOppChar],
 	}],
 	tick: 0,
 });
@@ -134,6 +112,13 @@ const gameLoop = () => {
 		const continueGame = !state.gameOver
 		state.gameOver = gameOver;
 		state.tick++;
+		unNest(state, 'tower(s)/deployed')
+			.forEach(({ tower, deployed }) => {
+				deployed.tick = typeof deployed.tick === 'undefined'
+					? -1
+					: deployed.tick;
+				deployed.tick++;
+			});
 		return continueGame;
 	} catch(e) {
 		console.error(e);
@@ -141,14 +126,17 @@ const gameLoop = () => {
 	} 
 };
 
-const highPriority = () => {}; //animation events?
+
+const render = new Render({ state });
+
+const highPriority = () => {};
 
 const engine = new Engine({
-	throttle: 150,
+	throttle: 80,
 	state,
 	highPriority,
 	gameLoop,
-	tryRender: new Render({ state }),
+	tryRender: render
 });
 
 (async () => {

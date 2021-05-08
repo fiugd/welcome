@@ -72,10 +72,10 @@ const render = (state, ctx, gif) => {
 	}
 	
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
-		ctx.strokeStyle = hp > 0 ? '#ddd' : '#111';
+		ctx.strokeStyle = '#111';
 		ctx.lineJoin = 'round';
 		ctx.lineWidth = 0.5;
-		ctx.fillStyle = hp > 0 ? 'green' : 'black';
+		ctx.fillStyle = '#785108'; //orange
 		ctx.fillRect(x, y-10, width*(hp > 0 ? hp/hpMax : 1), 5);
 		ctx.strokeRect(x, y-10, width, 5);
 	};
@@ -89,16 +89,15 @@ const render = (state, ctx, gif) => {
 		ctx.fillRect(x, y, width, height);
 	};
 
-	const renderCharacter = ({ x: centerX, hp, hpMax, color, type, target }) => {
+	const renderCharacter = ({ x: centerX, hp, hpMax, color, type, target, tick=0 }) => {
 		const frame = {
 			defender: target
-				? teeAttackRed[state.tick % 6]
-				: teeRunRed[state.tick % 6],
+				? teeAttackRed[tick % 6]
+				: teeRunRed[tick % 6],
 			attacker: target
-				? teeAttackBlue[state.tick % 6]
-				: teeRunBlue[state.tick % 6]
+				? teeAttackBlue[tick % 6]
+				: teeRunBlue[tick % 6]
 		}[type];
-
 		const scale = 0.7;
 		const sprite = {
 			x: center(centerX, frame.width*scale),
@@ -108,7 +107,7 @@ const render = (state, ctx, gif) => {
 			img: frame,
 		};
 		ctx.drawImage(sprite.img, sprite.x, sprite.y, sprite.width, sprite.height);
-		healthBar({ ...sprite, hp, hpMax, x: center(centerX, 20), width: 20 });
+		hp > 0 && healthBar({ ...sprite, hp, hpMax, x: center(centerX, 20), width: 20 });
 	};
 
 	ctx.clearRect(0, 0, fieldWidth, fieldHeight);

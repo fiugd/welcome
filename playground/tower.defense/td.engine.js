@@ -22,7 +22,7 @@ export default class Engine {
 			throttle: throttleAmount,
 			highPriority,
 			gameLoop,
-			tryRender,
+			tryRender
 		} = args;
 
 		const gameSteps = [

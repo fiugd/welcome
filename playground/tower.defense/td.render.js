@@ -6,12 +6,7 @@ import { htmlToElement } from '../../.tools/misc.mjs';
 const BOTTOM_OFFSET = 65;
 
 const initDom = (state) => {
-	const dom = htmlToElement(`
-		<div>
-			<canvas style="width:100%"></canvas>
-		</div>
-	`);
-	document.body.append(dom);
+	const dom = document.querySelector('.container');
 	const canvas = dom.querySelector('canvas');
 	canvas.width = state.field.width;
 	canvas.height = state.field.height;

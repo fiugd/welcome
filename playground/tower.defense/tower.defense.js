@@ -4,8 +4,6 @@ import State, { assignId, setHpMax } from './td.state.js'
 import { loadAssets } from './td.assets.js';
 import { clone, unNest } from './td.utils.js';
 
-
-
 const state = new State({
 	record: false,
 	field: {
@@ -125,7 +123,6 @@ const gameLoop = () => {
 		return false;
 	} 
 };
-
 
 const render = new Render({ state });
 

@@ -7,8 +7,11 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<link rel="stylesheet" href="tower.defense.css">
+		<link rel="manifest" href="./pwa/manifest.json" />
 	</head>
+
 	<body></body>
+
 	<script>
 		window.towerX = 60;
 
@@ -34,7 +37,14 @@
 			x: towerX + 35,
 		};
 	</script>
+
 	<script src="tower.defense.js" type="module"></script>
+
+	<!--
+	<script async src="https://unpkg.com/pwacompat" crossorigin="anonymous">
+	</script>
+	-->
+
 </html>
 
 <!-- http://bit.ly/TowerDefenseGo -->

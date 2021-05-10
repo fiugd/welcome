@@ -1,5 +1,8 @@
 const proxy = 'https://api.allorigins.win/raw?url=';
 
+const redColor = "#920a";
+const blueColor = "#03e9"
+
 function cloneCanvas(oldCanvas) {
 	var canvas = document.createElement('canvas');
 	var ctx = canvas.getContext('2d');
@@ -81,7 +84,7 @@ const images = {
 	teeGames: 'sprites/teeGames.png',
 	teeRunBlue: ({ teeGames: img }) => subD(6, 378-186, (i,w) =>
 		Tile(
-			(c,ct) => { transparent(c,ct); colorize("#03e9")(c,ct); }
+			(c,ct) => { transparent(c,ct); colorize(blueColor)(c,ct); }
 		)(
 			img, 15+(i*(w+1)),285+84, w,56
 		)
@@ -90,7 +93,7 @@ const images = {
 		Tile(
 			(c,ct) => {
 				transparent(c,ct);
-				colorize("#d209")(c,ct);
+				colorize(redColor)(c,ct);
 				flipH()(c,ct);
 			}
 		)(
@@ -99,7 +102,7 @@ const images = {
 	),
 	teeAttackBlue: ({ teeGames: img }) => subD(6, 378-28, (i,w) =>
 		Tile(
-			(c,ct) => { transparent(c,ct); colorize("#03e9")(c,ct); }
+			(c,ct) => { transparent(c,ct); colorize(blueColor)(c,ct); }
 		)(
 			img, 15+(i*(w+1)),285+602, w,58
 		)
@@ -108,7 +111,7 @@ const images = {
 		Tile(
 			(c,ct) => {
 				transparent(c,ct);
-				colorize("#d209")(c,ct);
+				colorize(redColor)(c,ct);
 				flipH()(c,ct);
 			}
 		)(

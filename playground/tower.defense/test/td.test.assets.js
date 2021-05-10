@@ -37,7 +37,7 @@ const testSlices = async () => {
 	const allImages = Object.entries(images);
 	const onlyTee = Object.entries(images)
 		.filter(([k,v]) => k.includes('tee'));
-	for (var [k,value] of onlyTee){
+	for (var [k,value] of allImages){
 		if(Array.isArray(value)){
 			value.forEach((v, i) => showImage(k, v, i));
 			continue;
@@ -47,10 +47,10 @@ const testSlices = async () => {
 };
 
 const testTeeRun = async () => {
-	const { images: { teeAttackBlue: teeRun} } = await loadAssets({ root: '../'});
+	const { images: { teeRunBlue: teeRun} } = await loadAssets({ root: '../'});
 	let { width, height } = teeRun[0];
 	[width, height] = [width,height].map(x => x*.5)
-	append(`<pre>teeAttack animated</prev>`);
+	append(`<pre>teeRun animated</prev>`);
 	const canvas = append(`<canvas></canvas>`);
 	canvas.width = width;
 	canvas.height = height;
@@ -72,6 +72,28 @@ const testTeeRun = async () => {
 };
 
 const testTeeAttack = async () => {
+	const { images: { teeAttackBlue: teeAttack} } = await loadAssets({ root: '../'});
+	let { width, height } = teeAttack[0];
+	[width, height] = [width,height].map(x => x*.5)
+	append(`<pre>teeAttack animated</prev>`);
+	const canvas = append(`<canvas></canvas>`);
+	canvas.width = width;
+	canvas.height = height;
+	const ctx = canvas.getContext('2d');
+	let i =0;
+	const frame = () => {
+		if(!teeAttack[i]) i = 0;
+		ctx.clearRect(0,0,width,height);
+		ctx.drawImage(teeAttack[i], 0, 0,width,height);
+		i++;
+	};
+	const animate = () => {
+		requestAnimationFrame(() => {
+			frame();
+			setTimeout(animate, 125);
+		});
+	};
+	animate();
 };
 
 (async () => {

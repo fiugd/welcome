@@ -1,4 +1,4 @@
-import { cleanError } from './td.utils.js';
+import { cleanError, colorShade } from './td.utils.js';
 import { toggleCoords } from './td.state.js';
 import GifMaker from './td.gif.js';
 import { htmlToElement } from '../../.tools/misc.mjs';
@@ -36,12 +36,12 @@ const render = (state, ctx, gif) => {
 		const hScale = 1;
 		const vScale = 1;
 		const hSkew = 0;
-		const vSkew = -0.66;
+		const vSkew = -1.8;
 		const skewOffSet = 90;
 		ctx.transform(hScale, hSkew, vSkew, vScale, 0, 0);
 		ctx.fillStyle = ctx.createPattern(bgMid, "repeat");
 		ctx.fillRect(
-			skewOffSet-fieldWidth, bgTop.height-1,
+			skewOffSet-fieldWidth, bgTop.height-1+21.5,
 			fieldWidth*3, bgMid.height
 		);
 		ctx.resetTransform();
@@ -50,6 +50,13 @@ const render = (state, ctx, gif) => {
 		ctx.drawImage(
 			bgTop,
 			0,0,fieldWidth, bgTop.height
+		);
+		ctx.drawImage(
+			bgTop,
+			0,bgTop.height-5, //sx sy
+			fieldWidth, 5, // sw sh
+			0,bgTop.height-5, //dx dy
+			fieldWidth, 25 //dw dh
 		);
 
 		//draw unskewed bottom part
@@ -70,18 +77,48 @@ const render = (state, ctx, gif) => {
 		ctx.strokeStyle = '#111';
 		ctx.lineJoin = 'round';
 		ctx.lineWidth = 0.5;
+		ctx.fillStyle = '#0002'
+		ctx.fillRect(x, y-10, width, 5);
 		ctx.fillStyle = '#785108'; //orange
-		ctx.fillRect(x, y-10, width*(hp > 0 ? hp/hpMax : 1), 5);
+		ctx.fillRect(x, y-10, width*(hp > 0 ? hp/hpMax : 0), 5);
 		ctx.strokeRect(x, y-10, width, 5);
 	};
 	
-	const renderTower = ({ x: centerX, color, dims, status, hp, hpMax }) => {
+	const shadow = ({ x, y, width, height }) => {
+		const radius = width/2;
+		ctx.fillStyle = '#00000020';
+		//ctx.fillStyle = 'red';
+		ctx.beginPath();
+		ctx.ellipse(x+radius, y+height, radius, radius/3, 0, 0, Math.PI * 2);
+		ctx.fill();
+	};
+	
+	const renderTower = ({ x: centerX, color, dims, status, hp, hpMax, type }) => {
 		const [width, height] = dims;
 		const [x, y] = [center(centerX, width), bottom(height)];
 		const isDead = status === 'dead';
-		healthBar({ x, y, width, hp, hpMax });
-		ctx.fillStyle = isDead ? '#111' : color;
+		healthBar({ x, y: y-5, width, hp, hpMax });
+		shadow({ x: x-10, y: y+2, width: width+20, height: height });
+
+		let grd = ctx.createLinearGradient(x, 0, x+width, 0);
+		if(!isDead){
+			grd.addColorStop(0, type === 'attacker' ? colorShade(color, -90) : color);
+			grd.addColorStop(1, type === 'attacker' ? color : colorShade(color, -90));
+		} else {
+			grd.addColorStop(0, type === 'attacker' ? '#111' : '#444');
+			grd.addColorStop(1, type === 'attacker' ? '#444' : '#111');
+		}
+
+		ctx.fillStyle = grd;
 		ctx.fillRect(x, y, width, height);
+		ctx.beginPath();
+		const radius = width/2;
+		ctx.ellipse(x+radius, y+height, radius, radius/3, 0, 0, Math.PI * 2);
+		ctx.fill()
+		
+		ctx.beginPath();
+		ctx.ellipse(x+radius, y, radius, radius/5, 0, 0, Math.PI * 2);
+		ctx.fill()
 	};
 
 	const renderCharacter = ({ x: centerX, hp, hpMax, color, type, target, tick=0 }) => {
@@ -96,11 +133,15 @@ const render = (state, ctx, gif) => {
 		const scale = 0.7;
 		const sprite = {
 			x: center(centerX, frame.width*scale),
-			y: bottom(frame.height*scale),
+			y: bottom(frame.height*scale)+10,
 			width: frame.width*scale,
 			height: frame.height*scale,
 			img: frame,
 		};
+		const shadowX = type === "attacker"
+			? target ? sprite.x+10 : sprite.x-5
+			: sprite.x
+		shadow({ ...sprite, width: 30, x: shadowX, y: sprite.y-2 });
 		ctx.drawImage(sprite.img, sprite.x, sprite.y, sprite.width, sprite.height);
 		hp > 0 && healthBar({ ...sprite, hp, hpMax, x: center(centerX, 20), width: 20 });
 	};

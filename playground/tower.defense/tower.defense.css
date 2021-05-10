@@ -23,10 +23,18 @@ body {
 	height: 100%;
 	overflow-x: scroll;
 }
-canvas {
+.container.dev {
+	width: unset;
+	height: unset;
+	text-align: center;
+}
+.container.dev canvas {
 /* 	max-width: 1000px; */
-	height: 100%;
 /* 	object-fit: cover; */
+	height: unset;
+}
+canvas {
+	height: 100%;
 	image-rendering: pixelated;
 	transform: translateX(0px);
 }

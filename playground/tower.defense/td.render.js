@@ -79,7 +79,7 @@ const render = (state, ctx, gif) => {
 		ctx.lineWidth = 0.5;
 		ctx.fillStyle = '#0002'
 		ctx.fillRect(x, y-10, width, 5);
-		ctx.fillStyle = '#785108'; //orange
+		ctx.fillStyle = '#DE9900'; //orange
 		ctx.fillRect(x, y-10, width*(hp > 0 ? hp/hpMax : 0), 5);
 		ctx.strokeRect(x, y-10, width, 5);
 	};

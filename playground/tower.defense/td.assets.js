@@ -1,7 +1,11 @@
 const proxy = 'https://api.allorigins.win/raw?url=';
 
-const redColor = "#920a";
-const blueColor = "#03e9"
+
+window.towerColor1 = window.towerColor1 || '#24b';
+window.towerColor2 = window.towerColor2 || '#934';
+
+const redColor = towerColor2;
+const blueColor = towerColor1;
 
 function cloneCanvas(oldCanvas) {
 	var canvas = document.createElement('canvas');
@@ -17,6 +21,7 @@ const subD = (numb, width, fn) => !numb || numb === 1
 	: (new Array(numb)).fill().map((a,i,all) => fn(i,width/numb));
 	
 const transparent = (canvas, ctx) => {
+	const tolerance = 75;
 	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	const data = imageData.data;
 
@@ -27,7 +32,6 @@ const transparent = (canvas, ctx) => {
 
 	const startDiff = (d) => diff(d, start);
 
-	const tolerance = 150;
 	for(var i = 0, len = data.length; i < len; i += 4) {
 		const thisDiff = startDiff([ data[i], data[i+1], data[i+2] ]);
 		if(thisDiff >= tolerance) continue;
@@ -39,10 +43,16 @@ const transparent = (canvas, ctx) => {
 const colorize = (color) => (canvas, ctx) => {
 	const clone = cloneCanvas(canvas);
 	const { width, height } = canvas;
-	clone.ctx.fillStyle = color || "#02e9";
+
+	clone.ctx.drawImage(canvas, 0, 0, width, height);
+
+	clone.ctx.globalCompositeOperation = "normal";
+	clone.ctx.fillStyle = color+'b';
 	clone.ctx.fillRect(0, 0, width, height);
+
 	clone.ctx.globalCompositeOperation = "destination-in";
 	clone.ctx.drawImage(canvas, 0, 0, width, height);
+
 	ctx.drawImage(clone.canvas, 0, 0);
 };
 

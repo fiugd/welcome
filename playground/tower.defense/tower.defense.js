@@ -98,8 +98,6 @@ const spawnTeam = ({ towers }) => {
 	towers.forEach(spawn);
 };
 
-// towers spawn characters (use spawn timer)
-// characters move or attack
 const gameLoop = () => {
 	try {
 		spawnTeam(state);
@@ -121,7 +119,7 @@ const gameLoop = () => {
 	} catch(e) {
 		console.error(e);
 		return false;
-	} 
+	}
 };
 
 const render = new Render({ state });

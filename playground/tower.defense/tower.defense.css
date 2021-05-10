@@ -16,7 +16,7 @@ body {
 	background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-	background: #2227;
+	background: #2224;
 }
 .container {
 	width: 100%;
@@ -48,7 +48,7 @@ img {
 	color: #777;
 	font-family: monospace;
 	position: absolute;
-	bottom: 0;
+	bottom: 10px;
 	background: black;
 	padding: 0.2em 1em;
 }

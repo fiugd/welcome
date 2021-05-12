@@ -7,12 +7,12 @@ import { clone, unNest } from './td.utils.js';
 const state = new State({
 	record: false,
 	field: {
-		height: 200,
-		width: 1000
+		height: 800,
+		width: 4000
 	},
 	towers: [{
 		type: 'attacker',
-		dims: [35, 70],
+		dims: [200, 343],
 		x: window.towerX,
 		color: window.towerColor1,
 		hp: 2000,
@@ -20,7 +20,7 @@ const state = new State({
 		team: [window.basicChar],
 	}, {
 		type: 'defender',
-		dims: [35, 70],
+		dims: [200, 343],
 		x: window.towerX,
 		color: window.towerColor2,
 		hp: 2000,
@@ -84,6 +84,7 @@ const attackOpponents = ({ towers }) => {
 };
 
 const spawnTeam = ({ towers }) => {
+
 	const iterate = (char, deployed) => {
 		if(char.spawnTicker) return char.spawnTicker--;
 		const newChar = clone(char);
@@ -127,7 +128,7 @@ const render = new Render({ state });
 const highPriority = () => {};
 
 const engine = new Engine({
-	throttle: 80,
+	throttle: 67,
 	state,
 	highPriority,
 	gameLoop,

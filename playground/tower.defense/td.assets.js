@@ -69,7 +69,7 @@ const flipH = (x=0, y=0) => (canvas, ctx) => {
 }
 
 const images = {
-	background: 'td.background.png',
+	background: 'sprites/td.background.png',
 	bgTop: ({ background: bg }) => Tile()(
 		bg,
 		0, // xoff

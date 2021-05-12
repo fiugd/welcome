@@ -2,7 +2,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	background: #080b17;
+	background: #0a0d19;
 	height: 100vh;
 	margin-top: 0;
 	margin-bottom: 0;
@@ -24,19 +24,21 @@ body {
 	overflow-x: scroll;
 }
 .container.dev {
-	width: unset;
-	height: unset;
+	width: 1000px;
+	height: 200px;
 	text-align: center;
 }
 .container.dev canvas {
 /* 	max-width: 1000px; */
 /* 	object-fit: cover; */
-	height: unset;
+	height: 100%;
+	width: 100%;
 }
 canvas {
 	height: 100%;
 	image-rendering: pixelated;
 	transform: translateX(0px);
+	filter: contrast(1.05);
 }
 img {
 	width: 100%;

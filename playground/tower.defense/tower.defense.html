@@ -24,7 +24,7 @@
 			container.classList.add('dev');
 		}
 
-		window.towerX = 60;
+		window.towerX = 200;
 		window.towerColor1 = '#24b';
 		window.towerColor2 = '#934';
 
@@ -32,20 +32,20 @@
 			type: 'attacker',
 			hp: 3000,
 			respawn: 40,
-			range: 100,
+			range: 400,
 			attack: 110,
-			x: towerX + 35,
-			move: 10
+			x: towerX + 140,
+			move: 40
 		};
 
 		window.basicOppChar = {
 			type: 'defender',
 			hp: 3000,
 			respawn: 40,
-			range: 147,
+			range: 560,
 			attack: 95,
-			move: 10,
-			x: towerX + 35,
+			move: 40,
+			x: towerX + 140,
 		};
 	</script>
 
@@ -66,6 +66,14 @@ heights zoomed in
 total - 400/1400(28.5%) (above tower) + 650/1400(46.4%) (tower - including shadow of 50px) + 350/1400(25%) (below tower)
 horizon line at 800/1400 from top
 character - about 350/1400 (25%)
+
+new res 800 x 4000
+tower top - 229px from top
+tower - 371px (with 28px shadow)
+tower bottom - 600px from top
+
+character - 200px
+
 -->
 
 

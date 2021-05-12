@@ -10,7 +10,11 @@ const initDom = (state) => {
 	const canvas = dom.querySelector('canvas');
 	canvas.width = state.field.width;
 	canvas.height = state.field.height;
-	const ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext('2d', {
+		antialias: false,
+		depth: false,
+		desynchronized: true
+	});
 	const gif = state.record && new GifMaker({
 		...state.field
 	});

@@ -1,5 +1,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three';
 
+const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
+
 class Canvas2D {
 	constructor(selector){
 		this.canvas = document.querySelector(selector);
@@ -49,7 +51,30 @@ export default class MixedCanvas {
 		this.canvas3d = new Canvas3D(width, height);
 		
 		this.clear = () => this.canvas2d.ctx.clearRect(0,0,width,height)
-		this.loop = this.canvas3d.loop;
+
+		this.loop = (...args) => {
+			const [first, ...rest] = args;
+			if(!first) return;
+
+			const defaultFrameTime = 15;
+			const firstIsFn = typeof first === 'function';
+			const frameTime = firstIsFn ? defaultFrameTime : first;
+			console.log(`frame time: ${frameTime}`);
+			const ifFirst = firstIsFn
+				? first
+				: () => {};
+
+			let lastRender = 0;
+			const gameLoop = (time) => {
+				const timeDiff = time-lastRender;
+				if(frameTime > timeDiff) return;
+				lastRender = time;
+				[ifFirst, ...rest].forEach(a => a(time));
+			};
+
+			this.canvas3d.loop(gameLoop);
+		};
+
 		this.add3d = this.canvas3d.add3d;
 		this.draw3d = () => {
 			this.canvas3d.render();

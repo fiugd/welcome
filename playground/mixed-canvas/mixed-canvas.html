@@ -147,9 +147,9 @@
 		};
 
 		const tick = (time) => {
-			mesh.rotation.x = time / 8000;
-			mesh.rotation.y = time / 4000;
-			mesh.material.uniforms.time.value = time * 0.00005;
+			mesh.rotation.x = time / 16000;
+			mesh.rotation.y = time / 8000;
+			mesh.material.uniforms.time.value = time * 0.0005;
 		};
 
 		loop(30,tick, render);

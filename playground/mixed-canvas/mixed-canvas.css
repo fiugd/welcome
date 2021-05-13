@@ -5,7 +5,3 @@ body {
 	align-items: center;
 	height: -webkit-fill-available;
 }
-.three-dee canvas {
-	background: #1113;
-	display: none;
-}

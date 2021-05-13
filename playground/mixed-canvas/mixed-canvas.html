@@ -10,9 +10,54 @@
 	</head>
 
 	<body>
-		<div class="two-dee"><canvas></canvas></div>
+		<canvas width="400" height="400"></canvas>
 	</body>
 
-	<script src="mixed-canvas.js" type="module"></script>
+	<script type="module">
+		import * as THREE from 'https://cdn.skypack.dev/three';
+		import MixedCanvas from './mixed-canvas.js';
+
+		const canvas = new MixedCanvas('canvas');
+		const { loop, width, height } = canvas;
+
+		const geometry = new THREE.BoxGeometry( 0.2, 0.2, 0.2 );
+		const material = new THREE.MeshNormalMaterial();
+		const mesh = new THREE.Mesh( geometry, material );
+		canvas.add3d( mesh );
+
+		const textOffset = 70;
+
+		canvas.fillStyle = 'grey';
+		canvas.font = "40px Verdana";
+		canvas.textAlign = "center";
+		canvas.textBaseline = "middle";
+
+		const render = () => {
+			canvas.clear();
+			canvas.draw3d();
+			canvas.fillText("This is a 2D canvas", width/2, textOffset);
+			canvas.fillText("...with 3D content!", width/2, height-textOffset);
+		};
+
+		const tick = (time) => {
+			mesh.rotation.x = time / 2000;
+			mesh.rotation.y = time / 1000;
+		};
+
+		const gameLoop = (() => {
+			const frameTime = 15;
+			let lastRender = 0;
+
+			return (time) => {
+				const timeDiff = time-lastRender;
+				if(frameTime > timeDiff) return;
+				lastRender = time;
+				tick(time);
+				render();
+			};
+		})();
+
+		loop(gameLoop);
+	</script>
 
 </html>

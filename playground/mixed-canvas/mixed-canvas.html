@@ -64,6 +64,7 @@
 		const positions = [];
 		const colors = [];
 
+		// see https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
 		const linesToArray = str => str
 			.split('\n').filter(x=>!!x).map(x => x.trim().split('  ').map(Number))
 		const vertices = linesToArray(`
@@ -103,39 +104,50 @@
 5  9  1
 `).flat();
 
-		const shape = faces.reverse().map(x => vertices[x-1]);
+		const shape = faces.map(x => vertices[x-1]);
+		const vColors = vertices.map(x => ([
+			Math.random() * 255,
+			Math.random() * 255,
+			Math.random() * 255,
+			235
+		]));
+		const shapeColors = faces.map(x => vColors[x-1])
+
 		for (let vt in shape){
 			positions.push(...shape[vt].map(x=>x*0.2));
-
-			// adding r,g,b,a
-			colors.push( Math.random() * 200 );
-			colors.push( Math.random() * 200 );
-			colors.push( Math.random() * 200 );
-			colors.push( 245 );
+			colors.push( ...shapeColors[vt] );
 		}
 
-		const positionAttribute = new THREE.Float32BufferAttribute( positions, 3 );
-		const colorAttribute = new THREE.Uint8BufferAttribute( colors, 4 );
+		const positionAttribute = new THREE.Float32BufferAttribute(positions, 3);
+		const colorAttribute = new THREE.Uint8BufferAttribute(colors, 4);
 		colorAttribute.normalized = true;
-		geometry.setAttribute( 'position', positionAttribute );
-		geometry.setAttribute( 'color', colorAttribute );
-		const material = new THREE.RawShaderMaterial( {
+		geometry.setAttribute('position', positionAttribute);
+		geometry.setAttribute('color', colorAttribute);
+		const material = new THREE.RawShaderMaterial({
 			uniforms: {
 				time: { value: 1.0 }
 			},
-			vertexShader: document.getElementById( 'vertexShader' ).textContent,
-			fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+			vertexShader: document.getElementById('vertexShader').textContent,
+			fragmentShader: document.getElementById('fragmentShader').textContent,
 			side: THREE.DoubleSide,
 			transparent: true
 		});
+		
+		// wireframe
+		const geometry2 = new THREE.EdgesGeometry(geometry);
+		const material2 = new THREE.LineBasicMaterial({
+			color: 0x00bbff, transparent: true, linewidth: 10
+		});
+		const wireframe = new THREE.LineSegments( geometry2, material2 );
 
 		const mesh = new THREE.Mesh( geometry, material );
+		mesh.add(wireframe)
 		canvas.add3d( mesh );
 
 		const textOffset = 70;
 
-		canvas.fillStyle = 'grey';
-		canvas.font = "40px Verdana";
+		canvas.fillStyle = '#777c';
+		canvas.font = "40px Arial";
 		canvas.textAlign = "center";
 		canvas.textBaseline = "middle";
 
@@ -152,7 +164,7 @@
 			mesh.material.uniforms.time.value = time * 0.0005;
 		};
 
-		loop(30,tick, render);
+		loop(tick, render);
 	</script>
 
 </html>

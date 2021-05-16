@@ -55,117 +55,104 @@
 		import * as THREE from 'https://cdn.skypack.dev/three';
 		import MixedCanvas from './mixed-canvas.js';
 
-		const canvas = new MixedCanvas('canvas');
-		const { loop, width, height } = canvas;
-
-		const geometry = new THREE.BufferGeometry();
-		const vertexCount = 5 * 3;
-
-		const positions = [];
-		const colors = [];
-
 		// see https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
-		const linesToArray = str => str
-			.split('\n').filter(x=>!!x).map(x => x.trim().split('  ').map(Number))
-		const vertices = linesToArray(`
-0  -0.525731  0.850651
-0.850651  0  0.525731
-0.850651  0  -0.525731
--0.850651  0  -0.525731
--0.850651  0  0.525731
--0.525731  0.850651  0
-0.525731  0.850651  0
-0.525731  -0.850651  0
--0.525731  -0.850651  0
-0  -0.525731  -0.850651
-0  0.525731  -0.850651
-0  0.525731  0.850651
-`);
-		const faces = linesToArray(`
-2  3  7
-2  8  3
-4  5  6
-5  4  9
-7  6  12
-6  7  11
-10  11  3
-11  10  4
-8  9  10
-9  8  1
-12  1  2
-1  12  5
-7  3  11
-2  7  12
-4  6  11
-6  5  12
-3  8  10
-8  2  1
-4  10  9
-5  9  1
-`).flat();
-
-		const shape = faces.map(x => vertices[x-1]);
-		const vColors = vertices.map(x => ([
-			Math.random() * 255,
-			Math.random() * 255,
-			Math.random() * 255,
-			235
-		]));
-		const shapeColors = faces.map(x => vColors[x-1])
-
-		for (let vt in shape){
-			positions.push(...shape[vt].map(x=>x*0.2));
-			colors.push( ...shapeColors[vt] );
+		const ObjParser  = async (url) => {
+			const objText = await (await fetch('./icosohedron.obj')).text();
+			const linesToArray = str => str
+				.split('\n').filter(x=>!!x).map(x =>
+					x.trim().split(' ').map(Number)
+				);
+			const vertices = linesToArray(
+				objText.split('\n')
+					.filter(line => line.slice(0,2) === 'v ')
+					.map(line => line.slice(2))
+					.join('\n')
+			);
+			const faces = linesToArray(
+				objText.split('\n')
+					.filter(line => line.slice(0,2) === 'f ')
+					.map(line => line.slice(2))
+					.join('\n')
+			).flat();
+			return { vertices, faces };
 		}
-
-		const positionAttribute = new THREE.Float32BufferAttribute(positions, 3);
-		const colorAttribute = new THREE.Uint8BufferAttribute(colors, 4);
-		colorAttribute.normalized = true;
-		geometry.setAttribute('position', positionAttribute);
-		geometry.setAttribute('color', colorAttribute);
-
-		const material = new THREE.RawShaderMaterial({
-			uniforms: {
-				time: { value: 1.0 }
-			},
-			vertexShader: document.getElementById('vertexShader').textContent,
-			fragmentShader: document.getElementById('fragmentShader').textContent,
-			side: THREE.DoubleSide,
-			transparent: true
-		});
 		
-		// wireframe
-		const geometry2 = new THREE.EdgesGeometry(geometry);
-		const material2 = new THREE.LineBasicMaterial({
-			color: 0x00bbff, transparent: true, linewidth: 0.5
-		});
-		const wireframe = new THREE.LineSegments( geometry2, material2 );
+		(async () => {
+			const obj = await ObjParser('./icosohedron.obj');
+			const canvas = new MixedCanvas('canvas');
+			const { loop, width, height } = canvas;
 
-		const mesh = new THREE.Mesh( geometry, material );
-		mesh.add(wireframe)
-		canvas.add3d( mesh );
+			const geometry = new THREE.BufferGeometry();
+			const vertexCount = 5 * 3;
 
-		const textOffset = 70;
+			const positions = [];
+			const colors = [];
 
-		canvas.fillStyle = '#777c';
-		canvas.font = "40px Arial";
-		canvas.textAlign = "center";
-		canvas.textBaseline = "middle";
+			const { vertices, faces } = obj;
 
-		const render = () => {
-			canvas.clear();
-			canvas.draw3d();
-			canvas.fillText("Mixed: a 2D canvas", width/2, textOffset);
-			canvas.fillText("...with 3D content!", width/2, height-textOffset);
-		};
+			const shape = faces.map(x => vertices[x-1]);
+			const vColors = vertices.map(x => ([
+				Math.random() * 255,
+				Math.random() * 255,
+				Math.random() * 255,
+				235
+			]));
+			const shapeColors = faces.map(x => vColors[x-1])
 
-		const tick = (time) => {
-			mesh.rotation.x = time / 16000;
-			mesh.rotation.y = time / 8000;
-			mesh.material.uniforms.time.value = time * 0.0005;
-		};
+			for (let vt in shape){
+				positions.push(...shape[vt].map(x=>x*0.2));
+				colors.push( ...shapeColors[vt] );
+			}
 
-		loop(tick, render);
+			const positionAttribute = new THREE.Float32BufferAttribute(positions, 3);
+			const colorAttribute = new THREE.Uint8BufferAttribute(colors, 4);
+			colorAttribute.normalized = true;
+			geometry.setAttribute('position', positionAttribute);
+			geometry.setAttribute('color', colorAttribute);
+
+			const material = new THREE.RawShaderMaterial({
+				uniforms: {
+					time: { value: 1.0 }
+				},
+				vertexShader: document.getElementById('vertexShader').textContent,
+				fragmentShader: document.getElementById('fragmentShader').textContent,
+				side: THREE.DoubleSide,
+				transparent: true
+			});
+
+			// wireframe
+			const geometry2 = new THREE.EdgesGeometry(geometry);
+			const material2 = new THREE.LineBasicMaterial({
+				color: 0x00bbff, transparent: true, linewidth: 0.5
+			});
+			const wireframe = new THREE.LineSegments( geometry2, material2 );
+
+			const mesh = new THREE.Mesh( geometry, material );
+			mesh.add(wireframe)
+			canvas.add3d( mesh );
+
+			const textOffset = 70;
+
+			canvas.fillStyle = '#777c';
+			canvas.font = "40px Arial";
+			canvas.textAlign = "center";
+			canvas.textBaseline = "middle";
+
+			const render = () => {
+				canvas.clear();
+				canvas.draw3d();
+				canvas.fillText("Mixed: a 2D canvas", width/2, textOffset);
+				canvas.fillText("...with 3D content!", width/2, height-textOffset);
+			};
+
+			const tick = (time) => {
+				mesh.rotation.x = time / 16000;
+				mesh.rotation.y = time / 8000;
+				mesh.material.uniforms.time.value = time * 0.0005;
+			};
+
+			loop(tick, render);
+		})();
 	</script>
 
 </html>

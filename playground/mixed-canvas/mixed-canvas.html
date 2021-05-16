@@ -57,17 +57,24 @@
 
 		// see https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
 		const ObjParser  = async (url) => {
-			const objText = await (await fetch('./icosohedron.obj')).text();
+			let objText = await (await fetch(url)).text();
+			objText = objText.replace(/ +/g, ' ');
+
 			const linesToArray = str => str
 				.split('\n').filter(x=>!!x).map(x =>
 					x.trim().split(' ').map(Number)
 				);
-			const vertices = linesToArray(
+			let vertices = linesToArray(
 				objText.split('\n')
 					.filter(line => line.slice(0,2) === 'v ')
 					.map(line => line.slice(2))
 					.join('\n')
 			);
+			const maxVert = vertices.reduce((all, one) => {
+				return Math.max(...[all, ...one.map(Math.abs)])
+			}, 0);
+			vertices = vertices.map(x => x.map(y=>y/maxVert))
+			console.log(maxVert)
 			const faces = linesToArray(
 				objText.split('\n')
 					.filter(line => line.slice(0,2) === 'f ')
@@ -78,7 +85,7 @@
 		}
 		
 		(async () => {
-			const obj = await ObjParser('./icosohedron.obj');
+			const obj = await ObjParser('./teapot.obj');
 			const canvas = new MixedCanvas('canvas');
 			const { loop, width, height } = canvas;
 

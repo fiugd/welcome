@@ -15,6 +15,7 @@
 <!--
 h ← 'Hello World'
 h
+x
 -->
 	</example_code>
 
@@ -117,18 +118,40 @@ h
 		const deps = [
 			...imports
 		];
-		await appendUrls(deps)
-		if(codeFromComment.trim()){
-			const result = apl(codeFromComment.trim());
+		await appendUrls(deps);
+		const run = (aplCode) => {
+			let result, error;
+			try {
+				result = apl(aplCode);
+			} catch(e){
+				error = e;
+			}
+			return { result, error };
+		};
+
+		const displayResults = ({result, error}) => {
+			if(error) {
+				document.body.innerHTML += 
+				`<div style="color:#b14242;">${error.name}:</div>
+				<div style="color:#b14242;">${error.message}</div>
+				`;
+				return
+			}
 			document.body.innerHTML += result;
-			return;
+		};
+
+		if(codeFromComment.trim()){
+			return displayResults(
+				run(codeFromComment.trim())
+			);
 		}
 		const example = document.body.querySelector('example_code');
 		const codeFromExample = Array.from(example.childNodes)
 			.filter(x => x.nodeType === 8)
 			.map(x => x.data).join('\n');
-		const result = apl(codeFromExample);
-		document.body.innerHTML += result;
+		displayResults(
+			run(codeFromExample.trim())
+		);
 	})()
 </script>
 

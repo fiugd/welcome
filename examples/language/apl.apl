@@ -49,19 +49,20 @@ multTable ← (⍳ 10) ∘.× ⍳ 10
 
 ⍝ example-2
 f ← {(⍵,(⍴⍵)⍴0)⍪⍵,⍵}
-sierpinski ← {' #'[(f⍣⍵) 1 1 ⍴ 1]}
-sierpinski 5
+sierpinski ← {' █'[(f⍣⍵) 1 1 ⍴ 1]}
+runsierp ← { sierpinski 5 }
 
 ⍝ example-3
-primes ← (1=+⌿0=A∘.∣A)/A←2↓⍳100
+primes ← { (1=+⌿0=A∘.∣A)/A←2↓⍳100 }
+
 
 ⍝ example-4
 creature ← (3 3 ⍴ ⍳ 9) ∊ 1 2 3 4 7   ⍝ Original creature from demo
 creature ← (3 3 ⍴ ⍳ 9) ∊ 1 3 6 7 8   ⍝ Glider
 board ← ¯1 ⊖ ¯2 ⌽ 5 7 ↑ creature
 life ← {⊃1 ⍵ ∨.∧ 3 4 = +/ +⌿ 1 0 ¯1 ∘.⊖ 1 0 ¯1 ⌽¨ ⊂⍵}
-gen ← {' #'[(life ⍣ ⍵) board]}
-rungen ← {
+gen ← {'░█'[(life ⍣ ⍵) board]}
+runlife ← {
 	(gen 1) (gen 2) (gen 3)
 }
 
@@ -70,7 +71,7 @@ rule←30
 n←50 ⍝ number of rows to compute
 t←⌽rule⊤⍨8⍴2
 runrule ← {
-	' #'[⊃⌽{⍵,⍨⊂t[2⊥¨3,/0,0,⍨↑⍵]}⍣n⊂z,1,z←n⍴0]
+	'░█'[⊃⌽{⍵,⍨⊂t[2⊥¨3,/0,0,⍨↑⍵]}⍣n⊂z,1,z←n⍴0]
 }
 
 ⍝ example-6
@@ -106,7 +107,8 @@ runqueens← {
 
 ⍝ example-7
 mandle← {
-	' #'[9>|⊃{⍺+⍵*2}/9⍴⊂¯3×.7j.5-⍉a∘.+0j1×a←(⍳n+1)÷n←98]
+	'░█'[9>|⊃{⍺+⍵*2}/9⍴⊂¯3×.7j.5-⍉a∘.+0j1×a←(⍳n+1)÷n←98]
 }
 
 runqueens()
+ 

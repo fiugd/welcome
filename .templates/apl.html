@@ -13,8 +13,7 @@
 
 	<example_code style="display:none;">
 <!--
-h ← 'Hello World'
-h
+11 11 ⍴ ⍳ 121
 -->
 	</example_code>
 
@@ -136,10 +135,13 @@ h
 				`;
 				return
 			}
-			document.body.innerHTML += result;
+			document.body.innerHTML += `
+			<div style="white-space: pre;font-family: monospace;">${result}</div>
+			`;
 		};
 
 		if(codeFromComment.trim()){
+			
 			return displayResults(
 				run(codeFromComment.trim())
 			);

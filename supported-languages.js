@@ -20,6 +20,7 @@ import '/index.css';
 
 const state = {
 	merged: [
+		{ title: 'apl.apl' },
 		{ title: 'assemblyscript.as', wasm: true },
 		{ title: 'brainfuck.bf' },
 		{ title: 'clojure.cljs' },
@@ -41,7 +42,6 @@ const state = {
 		{ title: 'wasm.wat', wasm: true }
 	],
 	maybe: [
-		{ title: 'apl.apl', heat: 10 },
 		{ title: 'csharp.cs', heat: 8 },
 		{ title: 'fsharp.fs', heat: 8 },
 		{ title: 'java.java', heat: 3 },

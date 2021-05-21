@@ -13,4 +13,6 @@ what I'd like to explore:
 - basic image creation/re-creation as seen above with neural nets + CA
 - webgl + all of this
 
+https://www.cs.ucf.edu/~dcm/Teaching/COT4810-Spring2011/Literature/CellularAutomata.pdf
+
 */

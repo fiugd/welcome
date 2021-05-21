@@ -1,6 +1,6 @@
 //show-preview
-import { prism, importCSS, consoleHelper } from '../.tools/misc.mjs'
-import '../shared.styl';
+import { prism, importCSS, consoleHelper } from '../../.tools/misc.mjs'
+import '../../shared.styl';
 
 consoleHelper();
 

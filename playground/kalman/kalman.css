@@ -30,6 +30,7 @@ body {
 
 text {
 	fill: var(--dull);
+	font-size: 1.9em;
 }
 
 .line {
@@ -56,4 +57,11 @@ div:nth-child(3) .line,
 div:nth-child(4) .line {
 	stroke: purple;
 }
+div:nth-child(6) {
+	background: #ff000012
+}
+div:nth-child(6) .line {
+	stroke: red;
+}
+
 

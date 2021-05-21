@@ -16,11 +16,11 @@
 
 */
 
-import { consoleHelper } from '../.tools/misc.mjs';
+import { consoleHelper } from '../../.tools/misc.mjs';
 consoleHelper();
 
 const deps = [
-	'../shared.styl',
+	'../../shared.styl',
 	'https://www.unpkg.com/localforage@1.9.0/dist/localforage.min.js'
 ]; 
 

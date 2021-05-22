@@ -1,5 +1,11 @@
 :root {
 	--dull: #525252;
+	--purple-light: #a72aa7;
+	--purple-dark: #271a22;
+	--blue-light: #519aba;
+	--blue-dark: #0c1629;
+	--red-light: red;
+	--red-dark: #ff000012;
 }
 body {
 	display: flex;
@@ -13,6 +19,7 @@ body {
 	right: 5px;
 	top: 2em;
 	bottom: 0;
+	color: #ccc;
 }
 
 .graph {
@@ -26,10 +33,11 @@ body {
 .graph > svg {
 	width: 100%;
 	height: 100%;
+	pointer-events: none;
 }
 
 text {
-	fill: var(--dull);
+	fill: currentColor;
 	font-size: 1.9em;
 }
 
@@ -42,26 +50,43 @@ text {
 .axis path,
 .axis line {
 	fill: none;
-	stroke: var(--dull);
-	color: var(--dull);
+	stroke: currentColor;
+	color: currentColor;
 	shape-rendering: crispEdges;
 }
+
+div .line { stroke: currentColor; }
+
 
 div:nth-child(2),
 div:nth-child(3),
 div:nth-child(4) {
-	background: #271a22;
+	color: var(--purple-light);
+	background: var(--purple-dark);
 }
-div:nth-child(2) .line,
-div:nth-child(3) .line,
-div:nth-child(4) .line {
-	stroke: purple;
+div:nth-child(5) {
+	color: var(--blue-light);
+	background: var(--blue-dark);
 }
 div:nth-child(6) {
-	background: #ff000012
-}
-div:nth-child(6) .line {
-	stroke: red;
+	color: var(--red-light);
+	background: var(--red-dark);
 }
 
+.graph { position: relative; }
+.graph:after { position: absolute; top: 0.5em; left: 1em; font-family: monospace; }
+#reality:after { content: 'reality';}
+#sensor1:after { content: 'sensor 1 - input + noise';}
+#sensor2:after { content: 'sensor 2 - input + noise';}
+#sensor3:after { content: 'sensor 3 - input + noise';}
+#guess:after { content: 'kalman filter';}
+#error:after { content: 'diff between kalman and input';}
+
+.collapse {
+	height: 32px;
+	display: block;
+	overflow: hidden;
+	flex: none;
+}
+.collapse svg { display: none; }
 

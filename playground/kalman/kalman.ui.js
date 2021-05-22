@@ -4,7 +4,7 @@ const setCollapsed = () => sessionStorage.setItem(
 	'kalman-collapse',
 	collapsedEls().map(x => x.id).join(',')
 );
-const getCollapsed = () => sessionStorage.getItem('kalman-collapse').split(',');
+const getCollapsed = () => (sessionStorage.getItem('kalman-collapse')||'').split(',');
 const updateCollapsed = (stored) => graphEls().forEach(x => {
 	console.log(x.id)
 	if(stored.includes(x.id)) return x.classList.add('collapse');

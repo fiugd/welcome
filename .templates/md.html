@@ -511,15 +511,24 @@ useDefault: false
 </script>
 
 <script>
+	//fiug-welcome
 	const doc = document.location.pathname.replace('/::preview::/', '');
 	const storageName = 'scrollpos-'+doc;
 	let container;
-	document.addEventListener("DOMContentLoaded", function (event) {
-		container = document.querySelector('#container')
+
+	window.onload = (event) => {
+		container = document.querySelector('#container');
+		container.style.display = '';
 		const scrollpos = sessionStorage.getItem(storageName);
 		if (!scrollpos) return;
-		container.scrollTo(0, scrollpos);
-	});
+
+		Promise.all(Array.from(document.images)
+			.filter(img => !img.complete)
+			.map(img => new Promise(resolve => { img.onload = img.onerror = resolve; })))
+			.then(() => {
+				container.scrollTo(0, scrollpos);
+			});
+	};
 
 	window.addEventListener("beforeunload", function (e) {
 		sessionStorage.setItem(storageName, container.scrollTop);

@@ -86,6 +86,13 @@ useDefault: false
 		overflow-x: hidden;
 	}
 
+	body.loading #container {
+		visibility: hidden;
+	}
+	body.loading #container.markdown-body input[type=checkbox]:before {
+		visibility: hidden !important;
+	}
+
 	#container.markdown-body img {
 		width: calc(100% + 60px);
 		max-width: calc(100% + 60px);
@@ -202,8 +209,8 @@ useDefault: false
 	}
 </style>
 
-<body>
-	<div id="container" style="visibility:hidden;">
+<body class="loading">
+	<div id="container">
 		<div class="no-preview">No preview available.</div>
 	</div>
 </body>
@@ -534,11 +541,14 @@ useDefault: false
 
 	const onLoadHandler = async () => {
 		container = document.querySelector('#container');
-		if(!container) return;
+		if(!container){
+			document.body.classList.remove('loading');
+			return;
+		}
 		container.addEventListener('scroll', saveScrollPos)
 		await allImagesLoaded();
 		scrollToPrevious();
-		container.style.visibility = '';
+		document.body.classList.remove('loading');
 	};
 
 	window.onload = onLoadHandler;

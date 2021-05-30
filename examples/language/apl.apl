@@ -69,7 +69,7 @@ life ← {gen ¨ ⍳8}
 
 # example-5
 rule←30
-n←50 ⍝ number of rows to compute
+n←40 ⍝ number of rows to compute
 t←⌽rule⊤⍨8⍴2
 runrule ← {
 	'░█'[⊃⌽{⍵,⍨⊂t[2⊥¨3,/0,0,⍨↑⍵]}⍣n⊂z,1,z←n⍴0]
@@ -112,12 +112,12 @@ mandle ← {
 }
 
 # only the last evaluated gets printed
-fibResults()
+#fibResults()
 #table()
 #multTable()
 #sierp()
 #runPrimes()
 #life()
-#runrule()
+runrule()
 #runqueens ()
 #mandle()

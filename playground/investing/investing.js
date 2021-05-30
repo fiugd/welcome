@@ -23,7 +23,7 @@ const Table = (data=[]) => {
 	return new Grid(config).render(el);
 }
 
-function Money(n) {
+function Money(n=0) {
 	return "" + n.toLocaleString().split(".")[0] + "."
 		+ n.toFixed(2).split(".")[1];
 }
@@ -47,13 +47,12 @@ const compute = ([valley, peak, quantity, description]) => {
 		const btcValUrl = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 		const key = 'current-btc-value';
 		const minutes = 5;
-		const stored = JSON.parse(
-			sessionStorage.getItem(key) || '{}'
-		);
+		const storedRaw = sessionStorage.getItem(key);
+		const stored = JSON.parse(storedRaw || '{}');
 		loading = '<br>(refresh at: ' +
 			new Date(stored.expires).toLocaleTimeString() + 
 		')';
-		if(Date.parse(stored.expires||'') < Date.now()){
+		if(!storedRaw || Date.parse(stored.expires||'') < Date.now()){
 			loading = '<br>(loading new in background...)'
 			fetch(btcValUrl)
 				.then(r=>r.json())
@@ -76,6 +75,7 @@ const compute = ([valley, peak, quantity, description]) => {
 		[45363, currentValue, 0.0066079, 'may 16'],
 		[35043, currentValue, 0.0085592, 'may 19'],
 		[35500, currentValue, 0.0084507, 'may 24'],
+		[33000, currentValue, 0.0088382, 'may 29']
 	];
 
 	const situations2 = [

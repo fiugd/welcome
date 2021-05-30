@@ -188,13 +188,17 @@ const style = () => { return `
 				top: 4px;
 				font-size: 0.7em;
 			}
-
-			.other-languages {
+			.notes {
+				width: 100%;
+				text-align: center;
+			}
+			.notes, .other-languages {
 				color: grey;
 				padding: 2em;
 				width: 100%;
 				margin-top: 2em;
 			}
+			.notes > span,
 			.other-languages > span {
 				width: 100%;
 				text-align: center;
@@ -276,3 +280,9 @@ const OtherLanguages = htmlToElement(`
 `)
 document.body.append(OtherLanguages);
 
+document.body.append(htmlToElement(`
+	<div class="notes">
+		<span>See Also</span>
+		<a href="https://codemirror.net/mode/">Codemirror Supported Languages</a>
+	</div>
+`))

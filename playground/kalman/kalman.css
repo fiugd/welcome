@@ -79,7 +79,7 @@ div:nth-child(6) {
 #sensor1:after { content: 'sensor 1 - input + noise';}
 #sensor2:after { content: 'sensor 2 - input + noise';}
 #sensor3:after { content: 'sensor 3 - input + noise';}
-#guess:after { content: 'kalman filter';}
+#guess:after { content: 'kalman filter (sensor 1)';}
 #error:after { content: 'diff between kalman and input';}
 
 .collapse {

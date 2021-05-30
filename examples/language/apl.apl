@@ -112,12 +112,12 @@ mandle ← {
 }
 
 # only the last evaluated gets printed
-#fibResults()
+fibResults()
 #table()
 #multTable()
 #sierp()
 #runPrimes()
 #life()
-runrule()
+#runrule()
 #runqueens ()
 #mandle()

@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Bookmarks</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="kalman.css">
+	</head>
+
+	<style>
+		body {
+			margin: 4em 2em; color: #ccc; font: 12px sans-serif;
+			background: #222; display: flex; justify-content: center;
+		}
+		.container { max-width: 900px; }
+		a { color: #26a69a; }
+		.link { background: #111; padding: 0.5em 1em 1em; }
+		.link + .link { margin-top: 0.5em; }
+		.link .tags { color: #519aba; text-transform: uppercase; }
+		.link > div + div { margin-top: 1em; }
+		.link .date { color: #666; }
+	</style>
+
+	<body>
+	</body>
+
+	<script type="module">
+		const fetchJSON = (url) => fetch(url).then(x=>x.json());
+		const delMarksUrl = './del.icio.us.json';
+		
+		const Link = ({title, tags, description, url, created}) => {
+			return `
+				<div class="link">
+					<div><a href="${url}">${title}</a></div>
+					<div class="desc">${description}</div>
+					${ tags.join('').length > 0
+						? `<div class="tags">${tags.join(' - ')}</div>`
+						: ''
+					}
+					<div class="date">${
+						new Date(created*1000).toLocaleString()
+					}</div>
+				</div>
+			`;
+		}
+		
+		(async () => {
+			const delMarks = await fetchJSON(delMarksUrl);
+			console.log(Object.keys(delMarks[0]))
+			console.log(delMarks[0])
+			window.filt = delMarks.filter(x => true)
+			document.body.innerHTML += `
+				<div class="container">
+					${filt.map(Link).join('\n')}
+				</div>
+			`;
+		})()
+	</script>
+
+</html>

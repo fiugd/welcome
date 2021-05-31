@@ -75,7 +75,7 @@ const compute = ([valley, peak, quantity, description]) => {
 		[45363, currentValue, 0.0066079, 'may 16'],
 		[35043, currentValue, 0.0085592, 'may 19'],
 		[35500, currentValue, 0.0084507, 'may 24'],
-		[33000, currentValue, 0.0088382, 'may 29']
+		[35500, currentValue, 0.0084507, 'may 24']
 	];
 
 	const situations2 = [
@@ -84,7 +84,8 @@ const compute = ([valley, peak, quantity, description]) => {
 		[32752, 38536, 0.04544876, 'May 23-24'],
 		[39600, 40606, 0.04544876, 'May 25-26'],
 		[43398.98, 38240, 0.04544876, 'take a hit on may 22'],
-		[10483.38, currentValue, 0.0095389, 'first BTC buy']
+		[10483.38, currentValue, 0.0095389, 'first BTC buy'],
+		[10483.38, 62941, 0.217, '1st BTC - current cost, sold 4/13']
 	];
 			
 	const addTotals = (arr) => {

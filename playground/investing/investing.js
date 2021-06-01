@@ -75,7 +75,6 @@ const compute = ([valley, peak, quantity, description]) => {
 		[45363, currentValue, 0.0066079, 'may 16'],
 		[35043, currentValue, 0.0085592, 'may 19'],
 		[35500, currentValue, 0.0084507, 'may 24'],
-		[35500, currentValue, 0.0084507, 'may 24']
 	];
 
 	const situations2 = [

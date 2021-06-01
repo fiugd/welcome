@@ -46,7 +46,7 @@
 				</div>
 			`;
 		}
-		
+
 		(async () => {
 			const delMarks = await fetchJSON(delMarksUrl);
 			console.log(Object.keys(delMarks[0]))
@@ -57,7 +57,14 @@
 					${filt.map(Link).join('\n')}
 				</div>
 			`;
-		})()
+			const scroll = localStorage.getItem("bookmarks-scroll");
+			document.documentElement.scrollTop = Number(scroll);
+		})();
+
+		window.addEventListener('scroll', function() {
+			const scroll = document.documentElement.scrollTop;
+			localStorage.setItem("bookmarks-scroll", scroll);
+		})
 	</script>
 
 </html>

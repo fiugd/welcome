@@ -23,7 +23,7 @@ const Table = (data=[]) => {
 	return new Grid(config).render(el);
 }
 
-function Money(n) {
+function Money(n=0) {
 	return "" + n.toLocaleString().split(".")[0] + "."
 		+ n.toFixed(2).split(".")[1];
 }
@@ -53,7 +53,7 @@ const compute = ([valley, peak, quantity, description]) => {
 		loading = '<br>(refresh at: ' +
 			new Date(stored.expires).toLocaleTimeString() + 
 		')';
-		if(Date.parse(stored.expires||'') < Date.now()){
+		if(Date.parse(stored.expires||'0') < Date.now()){
 			loading = '<br>(loading new in background...)'
 			fetch(btcValUrl)
 				.then(r=>r.json())
@@ -74,8 +74,9 @@ const compute = ([valley, peak, quantity, description]) => {
 		[49550, currentValue, 0.0156004, 'may 15'],
 		[48144, currentValue, 0.0062305, 'may 15'],
 		[45363, currentValue, 0.0066079, 'may 16'],
-		[35043, currentValue, 0.0085592, 'may 19'],
-		[35500, currentValue, 0.0084507, 'may 24'],
+		[35043, 37973.59, 0.0085592, 'may 19 - june-2'],
+		[35500, 37973.59, 0.0084507, 'may 24 - june 2'],
+		[33905.26, 36000, 0.00883824, 'may 29 - may 30'],
 	];
 
 	const situations2 = [
@@ -83,7 +84,7 @@ const compute = ([valley, peak, quantity, description]) => {
 		[43398.98, 51000, 0.04544876, 'long term buy/sell'],
 		[32752, 38536, 0.04544876, 'May 23-24'],
 		[39600, 40606, 0.04544876, 'May 25-26'],
-		[43398.98, 38240, 0.04544876, 'take a hit on may 22'],
+		[43398.98, 38240, 0.04544876, 'may 22 hit'],
 		[10483.38, currentValue, 0.0095389, 'first BTC buy']
 	];
 			
@@ -96,13 +97,12 @@ const compute = ([valley, peak, quantity, description]) => {
 		const totalNet = sitReduce((a,o)=>a+Number(o.net));
 		arr.push({
 			rate: Money(totalCost/totalQty),
-			quantity: totalQty,
+			quantity: totalQty.toFixed(8),
 			cost: Money(totalCost),
 			return: Money(totalReturn),
 			net: Money(totalNet),
 			description: 'totals'
 		});
-		console.log(arr)
 		return arr;
 	}
 
@@ -120,7 +120,7 @@ element(`
 		div.gridjs-search input,
 		::-webkit-input-placeholder {
 			color: #ccc;
-			font: 2vw sans-serif;
+			font: 2vw monospace;
 		}
 		::-webkit-search-cancel-button {
 			-webkit-appearance: none;
@@ -128,6 +128,11 @@ element(`
 		::-webkit-input-placeholder {
 			opacity: 0.6;
 		}
+		::-webkit-scrollbar { width: 5px; height: 15px; }
+		::-webkit-scrollbar-corner,
+		::-webkit-scrollbar-track { background: transparent; }
+		::-webkit-scrollbar-thumb { background: #555; }
+		::-webkit-scrollbar-thumb:hover { background: #888; }
 		body {
 			margin: 4em 2em;
 		}

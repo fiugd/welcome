@@ -23,7 +23,7 @@ const Table = (data=[]) => {
 	return new Grid(config).render(el);
 }
 
-function Money(n=0) {
+function Money(n) {
 	return "" + n.toLocaleString().split(".")[0] + "."
 		+ n.toFixed(2).split(".")[1];
 }
@@ -47,12 +47,13 @@ const compute = ([valley, peak, quantity, description]) => {
 		const btcValUrl = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 		const key = 'current-btc-value';
 		const minutes = 5;
-		const storedRaw = sessionStorage.getItem(key);
-		const stored = JSON.parse(storedRaw || '{}');
+		const stored = JSON.parse(
+			sessionStorage.getItem(key) || '{}'
+		);
 		loading = '<br>(refresh at: ' +
 			new Date(stored.expires).toLocaleTimeString() + 
 		')';
-		if(!storedRaw || Date.parse(stored.expires||'') < Date.now()){
+		if(Date.parse(stored.expires||'') < Date.now()){
 			loading = '<br>(loading new in background...)'
 			fetch(btcValUrl)
 				.then(r=>r.json())
@@ -83,8 +84,7 @@ const compute = ([valley, peak, quantity, description]) => {
 		[32752, 38536, 0.04544876, 'May 23-24'],
 		[39600, 40606, 0.04544876, 'May 25-26'],
 		[43398.98, 38240, 0.04544876, 'take a hit on may 22'],
-		[10483.38, currentValue, 0.0095389, 'first BTC buy'],
-		[10483.38, 62941, 0.217, '1st BTC - current cost, sold 4/13']
+		[10483.38, currentValue, 0.0095389, 'first BTC buy']
 	];
 			
 	const addTotals = (arr) => {

@@ -35,16 +35,17 @@ wish list:
 	- k-means
 
 */
-
+document.head.innerHTML += `
+	<link rel="stylesheet" href="./mathematics.css" >
+`;
 import { appendUrls, htmlToElement, importCSS } from '../.tools/misc.mjs';
 import '../shared.styl';
-import './mathematics.css';
-
-const module = {};
 
 const deps = [
 	"https://unpkg.com/plotly.js@1.56.0/dist/plotly.min.js",
 ];
+
+const module = {};
 
 Array.prototype.range = function(a, b, step){
 		var A = [];
@@ -54,15 +55,14 @@ Array.prototype.range = function(a, b, step){
 				while(a+step <= b){
 						A[A.length]= a+= step;
 				}
-		}
-		else {
+		}	else {
 				var s = 'abcdefghijklmnopqrstuvwxyz';
 				if(a === a.toUpperCase()){
 						b = b.toUpperCase();
 						s = s.toUpperCase();
 				}
 				s = s.substring(s.indexOf(a), s.indexOf(b)+ 1);
-				A = s.split('');        
+				A = s.split('');
 		}
 		return A;
 }

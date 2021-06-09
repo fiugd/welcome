@@ -1,0 +1,34 @@
+<html class="dark-enabled">
+	<link rel="stylesheet" href="/colors.css" >
+	<style>
+		body { margin: 3em 2em; color: #ccc; }
+		.container { display: flex; width: 100%; box-sizing: border-box; }
+		iframe { border: 0; height: 18em; width: 50%; flex: 1; }
+		#frameOne {
+			width: 25%;
+			flex: unset;
+			background: rgba(var(--main-theme-highlight-color), 0.75);
+		}
+		#frameTwo { background: rgba(var(--main-theme-highlight-color), 0.5); }
+	</style>
+
+	<body>
+		<div class="container">
+			<iframe id="frameOne" src='child1.html'></iframe>
+			<iframe id="frameTwo" src='child2.html'></iframe>
+		</div>
+		<pre id="desc"></pre>
+	</body>
+
+	<script>
+		const desc = document.querySelector('#desc');
+		const frameOne = document.querySelector('#frameOne');
+		const frameTwo = document.querySelector('#frameTwo');
+
+		desc.innerHTML = `
+			[ ] drag from one frame to another; parent keeps track(?) + messages(?)
+			[ ] hover works as expected
+			[ ] new frames created on the fly
+		`.replace(/^\t+/gm, '')
+	</script>
+</html>

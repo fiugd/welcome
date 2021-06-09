@@ -1,0 +1,46 @@
+<style>
+	body {
+		height: 100vh; width: 100vw; overflow: hidden; color: white;
+		display: flex;
+		flex-direction: column;
+		margin: 0;
+	}
+	.tabs { height: 25px; background: #3334; display: flex; }
+	.tab { padding: 5px; }
+	.tab + .tab { margin-left: 1px; }
+	.tab, .editor.open { background: teal; }
+	.editor { flex: 1; }
+	.drag-hover { background: #008062 !important; filter: hue-rotate(
+294deg
+) brightness(0.75) saturate(0.25);}
+	.dropped { background: blue; }
+	.mouse { position: absolute; bottom: 5px; right: 5px; }
+</style>
+
+<body>
+	<div class="tabs"></div>
+	<div class="editor"></div>
+	<div class="mouse"></div>
+</body>
+
+<script>
+	const tabs = document.querySelector('.tabs');
+	const mouse = document.querySelector('.mouse');
+	const editor = document.querySelector('.editor');
+	document.body.ondragover = (ev) => {
+		document.body.classList.add('drag-hover');
+		ev.preventDefault();
+		mouse.innerHTML = [event.clientX, event.clientY];
+	};
+	document.body.ondrop = (ev) => {
+		ev.preventDefault();
+		editor.classList.add('open');
+		const data = ev.dataTransfer.getData("text");
+		tabs.innerHTML += `<div class="tab">${data}</div>`;
+		document.body.classList.remove('drag-hover');
+		mouse.innerHTML = '';
+	};
+	document.body.ondragleave = (e) => {
+		document.body.classList.remove('drag-hover');
+	};
+</script>

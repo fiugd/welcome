@@ -1,6 +1,7 @@
 <style>
-	body { margin: 3em 2em; }
-	.shiki { padding: 2em; }
+	body { margin: 0; }
+	body.preview { margin: 3em 2em; }
+	.shiki { margin: 0; padding: 2em; height: -webkit-fill-available; width: -webkit-fill-available;}
 </style>
 
 <script type="module">
@@ -10,6 +11,9 @@
 	//import * as shiki from 'https://cdn.skypack.dev/shiki';
 	//shiki.setCDN('https://cdn.skypack.dev/shiki/');
 	//shiki.setOnigasmWASM('https://cdn.skypack.dev/shiki/dist/onigasm.wasm');
+
+	if(location.href.includes('/::preview::/'))
+		document.body.classList.add('preview');
 
 	const fetchJSON = (url) => fetch(url).then(x=>x.json());
 	const postJSON = (url, body) => {
@@ -36,7 +40,8 @@
 
 	(async () => {
 		const theme = 'dark-plus';
-		const highlighter = await shiki.getHighlighter({ theme })
+		const langs = ['js'];
+		const highlighter = await shiki.getHighlighter({ theme, langs })
 		renderExample(highlighter);
 	})();
 </script>

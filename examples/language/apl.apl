@@ -3,7 +3,7 @@
 # atom plugin - https://github.com/Alhadis/language-apl
 # https://codemirror.net/mode/apl/index.html
 # https://tryapl.org/
-# ⍋ << use this symbol for APL icon (grade up)
+# ⍋ << use this symbol for APL icon ? (grade up)
 # https://dfns.dyalog.com/n_keyboards.htm
 # https://github.com/PlanetAPL/node-apl
 # k language which is like apl - https://github.com/JohnEarnest/ok
@@ -31,7 +31,6 @@ fibReplit ← {
 	fib ← ⍵<2:⍵ ⋄ (∇⍵-1)+∇⍵-2
 	fib 7
 }
-
 
 # fibonacci
 fibResults ← {

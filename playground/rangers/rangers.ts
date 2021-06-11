@@ -331,23 +331,40 @@ class MostElements {
 	}
 
 	const parseTometo = (rows) => {
-		return rows.slice(3).map(x => {
+		const parsedRows = rows.slice(3)
+		.filter(x => !x.textContent.includes('Tometo.net Inc. All rights reserved.'))
+		.map(x => {
+			const nodes = Array.from(x.querySelectorAll('td'));
 			const splitted = x.textContent.split(/\n/g).filter(y=>!!y.trim()).map(z=>z.trim())
 			const [ rank, score, nameLevel, other ] = splitted;
 			const [ name, level ] = (nameLevel||'').split('LV.');
-			
+
+			const more = nodes[nodes.length-1].innerHTML.trim().split('<br>').map(x => (x.split(':')[1]||"").trim())
+			const [ specialFeathers, normalFeathers, coin, gem, friendship, maxStage, exp, gameId ] = more;
+
 			const allPics = Array.from(x.querySelectorAll('img')).map(y => y.src)
 			const [userPic, country, ...extra] = allPics;
 			const defense = extra.map(y => y.split('/').pop().split('-thum.png')[0])
 			return {
-				rank, score, name, level, userPic, country, defense
+				rank, score, name, level, userPic, country, defense, maxStage
 			};
 		});
+
+		return parsedRows;
 	};
-	
+
 	const mostUsedRangers = (rankings) => {
 		const used = {};
-		rankings.forEach(user => {
+
+		const cheater = (x) => (
+			x.maxStage!=='444' ||
+			x.score === '1000'
+		);
+		const cheaters = rankings.filter(cheater);
+
+		rankings
+			.filter(x => !cheater(x))
+			.forEach(user => {
 			user.defense.forEach(y => {
 				const { type, number, evo } = y.match(/(?<type>[a-z])(?<number>\d*)(?<evo>[a-z])/).groups;
 				used[number] = used[number] || {};
@@ -359,21 +376,24 @@ class MostElements {
 				user.defense.filter(t => t!==y).forEach(t => {
 					used[number].teammates[t] = used[number].teammates[t] || 0;
 					used[number].teammates[t]++;
-				})
-				//if(number === "1165") console.log({ rank: user.rank });
+				});
 			});
 		});
-		return Object.entries(used)
+		
+		console.error(`Rankings do not include ${cheaters.length} suspected cheaters!`)
+		
+		window.mostUsed = Object.entries(used)
 			.map(([ranger, uses]) => ({ ranger, uses }))
 			.map(x => {
 				const add = (x, y) => (Number(x)||0) + (Number(y)||0);
-				x.uses.total = [x.uses.h, x.uses.u].reduce(add, 0);
+				x.uses.total = [x.uses.h, x.uses.u, x.uses.e].reduce(add, 0);
 				x.uses.teammates = Object.entries(x.uses.teammates)
 					.map(([ranger, uses]) => ({ ranger, uses }))
 					.sort((a,b) => b.uses - a.uses);
 				return x;
 			})
 			.sort((a,b) => b.uses.total - a.uses.total);
+		return mostUsed;
 	};
 
 	await appendUrls(deps);
@@ -557,6 +577,7 @@ class MostElements {
 			.common-pairings .ranger-counts .use-count {
 				display: none;
 			}
+			.hidden { display: none; }
 		</style>
 	`);
 	document.body.append(rangerStyle);
@@ -570,13 +591,26 @@ class MostElements {
 			${mostUsed.map(x => `
 				<div class="ranger-counts" style="background: rgba(110,90,0,${(200-Math.min(...x.uses.ranks))/255});">
 					<div class="icon most-used-icon" style="width:5em">
+						${x.uses.e
+							 ? (() => {
+									const unitCodeSubStr = 'u'+x.ranger+'e';
+									const unit = lericoResources.rangers.find(r => r.unitCode.includes(unitCodeSubStr));
+									return `
+				<div>
+					<img src="${proxy}https://rangers.lerico.net/res/${unit.unitCode}/${unit.unitCode}-thum.png" alt="${unit.unitCode}">
+					<div style="text-align: center;min-height:1.2em;" class="use-count">${(x.uses.h || x.uses.u) ? x.uses.e : ''}</div>
+				</div>
+							`})()
+							: ''
+						}
 						${['h', 'u'].map(u => {
-							const unit = lericoResources.rangers.find(r => r.unitCode.includes('u'+x.ranger+u));
-							if(!unit || !x.uses[u]) return ``;
+							const unitCodeSubStr = 'u'+x.ranger+u;
+							const unit = lericoResources.rangers.find(r => r.unitCode.includes(unitCodeSubStr));
+							if(!unit || !x.uses[u]) return `<pre class="hidden">${unitCodeSubStr}</pre>`;
 							return `
 				<div>
-					<img src="${proxy}https://rangers.lerico.net/res/${unit.unitCode}/${unit.unitCode}-thum.png">
-					<div style="text-align: center;min-height:1.2em;" class="use-count">${(x.uses.h&&x.uses.u) ? x.uses[u] : ''}</div>
+					<img src="${proxy}https://rangers.lerico.net/res/${unit.unitCode}/${unit.unitCode}-thum.png" alt="${unit.unitCode}">
+					<div style="text-align: center;min-height:1.2em;" class="use-count">${([x.uses.h,x.uses.u,x.uses.e].filter(x=>x).length > 1) ? x.uses[u] : ''}</div>
 				</div>
 							`;
 						}).join('\n')}

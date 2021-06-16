@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="iching.css" />
+
+<div class="reading"></div>
+
+
+<script type="module">
+	const readingDiv = document.querySelector('.reading');
+	import seedrandom from 'https://cdn.skypack.dev/seedrandom';
+
+	const fetchJSON = (url) => fetch(url).then(x => x.json());
+	const ichingFetch = fetchJSON('https://unpkg.com/i-ching@0.3.5/lib/data.json');
+	const ichingFetch2 = fetchJSON('https://gist.githubusercontent.com/krry/7e2b3282702685a65ffc717730c73180/raw/679cef0b06a5dda304e5c75b23f00e8f7ecc726d/hexagrams.json');
+
+	const generate = (randomString) => {
+		//console.log(randomString)
+		const prng = new seedrandom(randomString, { entropy: true });
+		const random = new Array(6).fill()
+			.map(prng)
+			.map(x => x>0.5?1:0)
+		return random.join('');
+	};
+
+	const draw = ([randomString, iching, iching2]) => {
+		const random = generate(randomString);
+		const reading = iching.hexagrams.find(x => x.binary === random);
+		const reading2 = iching2[`0b${random}`];
+		//console.log(reading)
+		const top = reading && iching.trigrams.find(x => x.number === reading.topTrigram);
+		const bottom = reading && iching.trigrams.find(x => x.number === reading.bottomTrigram);
+		//console.log(top)
+		readingDiv.innerHTML = reading
+			? `
+				<div class="hexagram">
+					<div class="top character threedee">${top.character}</div>
+					<div class="bottom character threedee">${bottom.character}</div>
+					<div class="overlay">
+						<div>HEAVEN</div>
+						<div>HUMANS</div>
+						<div>EARTH</div>
+					</div>
+				</div>
+ 
+				<div class="chinese-pinyin">${reading.chineseName} ${reading.pinyinName}</div>
+				<div class=" ">${top.images} OVER ${bottom.images}</div>
+				<div class="names">${reading.names.join(', ')}</div>
+				<div class="images"><p>IMAGES:<p>${reading2.images}</div>
+				<div class="judgement left"><p>JUDGEMENT:<p>${reading2.judgement}</div>
+				<div class="lines left"><p>LINES:${reading2.lines.reverse().map((line,i) => `
+					<div class="line">${line.position}: ${line.meaning}</div>
+				`).join('\n')}</div>
+				<a href="https://www.youtube.com/results?search_query=iching+hexagram+${reading.number}"
+					target="_new"
+				>
+					Youtube Search: i-ching hexagram ${reading.number}
+				</a>
+			`
+			: `error: ${random}`;
+	};
+
+	const userInput = new Promise((resolve) => {
+		let randomString = '';
+		alert(`Move your mouse (or your finger on screen) around for 5 seconds to generate randomness.`);
+		const mouseMoveHandler = (e) => {
+			randomString += `${e.offsetX||''}${e.offsetY||''}${e.clientX||''}${e.clientY||''}`;
+		};
+		document.body.addEventListener('mousemove', mouseMoveHandler);
+		setTimeout(() => {
+			document.body.removeEventListener('mousemove', mouseMoveHandler);
+			resolve(randomString);
+		}, 5000);
+	});
+
+	const waiting = [userInput, ichingFetch, ichingFetch2];
+	Promise.all(waiting).then(draw);
+
+</script>

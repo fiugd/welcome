@@ -1,4 +1,3 @@
-//show-preview
 import { importCSS, consoleHelper } from '../.tools/misc.mjs'
 import '../shared.styl';
 consoleHelper();

@@ -1,4 +1,3 @@
-//show-preview
 import { importCSS, prism, htmlToElement } from '../.tools/misc.mjs';
 import '../shared.styl';
 

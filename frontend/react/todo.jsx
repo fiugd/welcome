@@ -1,4 +1,3 @@
-//show-preview
 import './todo.styl';
 
 import { Header } from './todo-header.jsx';

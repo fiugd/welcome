@@ -1,5 +1,3 @@
-//show-preview
-
 /*
 	libraries for aggregating, reducing, manipulating data:
 

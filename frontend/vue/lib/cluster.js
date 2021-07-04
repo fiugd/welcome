@@ -1,4 +1,3 @@
-//show-preview
 /*
 	https://github.com/seanmtracey/quick-cluster-counts/blob/master/index.js
 */

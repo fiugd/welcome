@@ -1,4 +1,3 @@
-//show-preview
 import { Grid } from 'https://cdn.skypack.dev/gridjs';
 const btcValUrl = 'https://api.coindesk.com/v1/bpi/currentprice.json';
 
@@ -177,7 +176,3 @@ const addTotals = (arr) => {
 	element(`<h4>Hypothetical</h4>`);
 	Table(situations2.map(compute).map(removeComplete));
 })();
-
-
-
-

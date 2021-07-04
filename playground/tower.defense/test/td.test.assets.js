@@ -1,4 +1,3 @@
-//show-preview
 import {htmlToElement} from '../../../.tools/misc.mjs'
 import {loadAssets} from '../td.assets.js';
 

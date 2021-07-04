@@ -9,26 +9,33 @@
 		</head>
 
 		<style>
-				body {
-						margin: 0px;
-						height: calc(100vh - 40px);
-						overflow: hidden;
-						color: #ccc;
-						font-family: sans-serif;
-						background: #1a1a1a;
-						display: flex;
-						flex-direction: column;
-						justify-content: center;
-						align-items: center;
-						margin-top: 11em;
-				}
+			body {
+				margin: 0px;
+				height: calc(100vh - 40px);
+				overflow: hidden;
+				color: #ccc;
+				font-family: sans-serif;
+				background: #1a1a1a;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin-top: -10em;
+			}
+			input[type="color"]{
+				width: 231px;
+				height: 100px;
+				border: 0;
+				outline: 0;
+			}
+			.hidden { visibility: hidden; }
 		</style>
 
 		<body>
 				<span>highlight color</span>
-				<span>looding...</span>
+				<span class="loading">loading...</span>
 				<input type="color" style="display:none;"/>
-				<span class="loadFail" style="display:none;">
+				<span class="loadFail hidden">
 						Unable to message parent window.  Can't change it's color.
 				</spam>
 		</body>
@@ -39,6 +46,7 @@
 						document.querySelector('.loadFail').style.display = 'block';
 						return;
 			}
+				const loading = document.querySelector('.loading');
 				const colorInput = document.querySelector('input[type="color"]');
 				const waitForEvent = (eventName) => new Promise((resolve) =>
 						window.addEventListener(eventName, (event) => resolve(event))
@@ -46,7 +54,7 @@
 
 				await waitForEvent("DOMContentLoaded");
 
-				parent.postMessage('colorRequest');
+				top.postMessage('colorRequest');
 
 				const hex2rgb= c=> c.substr(1).match(/../g).map(x=>+`0x${x}`).join(', ');
 				const rgbToHex = (...args) => '#' + args
@@ -62,11 +70,12 @@
 						} catch(e){}
 
 						if(colors && colors.highlight){
-								const hexColor = rgbToHex(...colors.highlight.split(','));
-								console.log(hexColor);
-								colorInput.value = hexColor;
-								colorInput.style.display = "block";
-								return;
+							loading.classList.add('hidden');
+							const hexColor = rgbToHex(...colors.highlight.split(','));
+							console.log(hexColor);
+							colorInput.value = hexColor;
+							colorInput.style.display = "block";
+							return;
 						}
 				};
 				window.addEventListener('message', messageListener);
@@ -88,7 +97,7 @@
 
 				function colorChangeMessageRaw(color){
 						const highlight = hex2rgb(color);
-						parent.postMessage({colorChangeRequest: { highlight }});
+						top.postMessage({colorChangeRequest: { highlight }});
 				}
 				const colorChangeMessage = debounce(colorChangeMessageRaw, 300);
 

@@ -1,4 +1,3 @@
-//show-preview
 // Demo code (the actual new parser character stream implementation)
 
 function StringStream(string) {

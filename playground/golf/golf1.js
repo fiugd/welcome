@@ -1,4 +1,3 @@
-//show-preview
 import { prism, importCSS, consoleHelper } from '../../.tools/misc.mjs'
 import { createGraph } from '../../.tools/graph.mjs'
 import '../../shared.styl';
@@ -112,4 +111,3 @@ consoleHelper();
 	console.info(`INPUT:\n\t[  [${input.join('],  [')}]  ]`);
 	console.info('ANSWER:\n\t[  [' + maxCompat(input).join('],  [') + ']  ]');
 })();
-

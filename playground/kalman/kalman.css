@@ -17,7 +17,7 @@ body {
 	position: absolute;
 	left: 0;
 	right: 5px;
-	top: 2em;
+	top: 0;
 	bottom: 0;
 	color: #ccc;
 }
@@ -89,4 +89,3 @@ div:nth-child(6) {
 	flex: none;
 }
 .collapse svg { display: none; }
-

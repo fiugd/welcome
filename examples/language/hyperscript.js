@@ -1,5 +1,3 @@
-//show-preview
-
 const App = () => ({ name, type, expandable, ...rest }) => (
 	h(TimelineItem
 	, { label: h(TimeLineItemLabel, { name })

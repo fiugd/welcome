@@ -1,5 +1,3 @@
-//show-preview
-
 /*
 	languages grouped by paradigm: 
 	https://www.info.ucl.ac.be/~pvr/paradigmsDIAGRAMeng108.jpg

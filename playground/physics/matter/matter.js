@@ -1,4 +1,3 @@
-//show-preview
 import Matter from 'https://cdn.skypack.dev/matter-js';
 
 document.head.innerHTML += `<style>

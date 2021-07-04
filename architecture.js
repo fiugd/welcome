@@ -1,4 +1,3 @@
-//show-preview
 import { prism, importCSS, consoleHelper, htmlToElement } from './.tools/misc.mjs'
 import { createGraph } from './.tools/graph.mjs'
 import './shared.styl';

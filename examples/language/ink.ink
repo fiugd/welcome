@@ -27,4 +27,4 @@ fibo := n => each(
 	n => out(fibMemo(n) + ' ')
 )
 
-fibo(9), log('\n')
+fibo(12), log('\n')

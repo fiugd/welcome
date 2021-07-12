@@ -1,25 +1,5 @@
-<!--
-
-https://github.com/thesephist/ink/blob/master/SPEC.md
-
-https://github.com/thesephist/ink
-
-https://blog.gopheracademy.com/advent-2018/llvm-ir-and-go/
-https://dev.to/enbis/generate-and-run-webassembly-code-using-go-4fbp
-
-ideas on how to get this to work:
-
-1) use go on server compile the interpreter to llvm ir -> wasm or directly to wasm
-
-2) run ink code in browser using go template
-
-
-https://play.dotink.co/
-
--->
-
 <!doctype html>
-<html lang="en" id="html">
+<html lang="en">
 	<head>
 		<title></title>
 		<meta charset="utf-8">
@@ -37,9 +17,14 @@ https://play.dotink.co/
 			font-family: monospace;
 		}
 	</style>
-	<body></body>
-</html>
 
+	<script type="text/ink" id="source">
+	{{template_input}}
+	</script>
+
+	<body></body>
+
+</html>
 
 <script>
 (() => {
@@ -9071,15 +9056,20 @@ window.run = (code, stdout) => {
 </script>
 
 <script>
-const someInk = `
-{{template_input}}
-`;
-
-run(someInk, (text) => {
-	//console.log(text);
-	document.body.innerHTML += `
-		<div>${text}</div>
-	`;
-});
-
+	let source;
+	try {
+		const templateInput = document.querySelector('#source').textContent;
+		source = templateInput.includes('{{template_'+'input}}')
+			? 'log("no source input")'
+			: templateInput
+	} catch(e){
+		`log(${error.message})`
+	}
+	const updater = (text) => {
+		//console.log(text);
+		document.body.innerHTML += `
+			<div>${text}</div>
+		`;
+	};
+	run(source, updater);
 </script>

@@ -25,6 +25,7 @@ const state = {
 		{ title: 'cpp.cpp'},
 		{ title: 'forth.fth', wasm: true },
 		{ title: 'golang.go' },
+		{ title: 'ink.ink' },
 		{ title: 'javascript.js' },
 		{ title: 'julia.jl', wasm: true },
 		{ title: 'lisp.lisp' },
@@ -37,7 +38,7 @@ const state = {
 		{ title: 'scheme.scm' },
 		{ title: 'sql.sql', wasm: true },
 		{ title: 'typescript.ts' },
-		{ title: 'wasm.wat', wasm: true }
+		{ title: 'wasm.wat', wasm: true },
 	],
 	maybe: [
 		{ title: 'csharp.cs', heat: 8 },
@@ -57,7 +58,6 @@ const state = {
 		{ title: 'elm.elm' },
 		{ title: 'erlang.erl' },
 		{ title: 'haskell.hs' },
-		{ title: 'ink.ink', heat: 10 },
 		{ title: 'nim.nim' },
 		{ title: 'pony.pony' },
 		{ title: 'rlang.r' },

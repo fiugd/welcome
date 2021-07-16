@@ -35,10 +35,10 @@ wish list:
 
 */
 document.head.innerHTML += `
-	<link rel="stylesheet" href="./mathematics.css" >
+	<link rel="stylesheet" href="mathematics.css" >
 `;
-import { appendUrls, htmlToElement, importCSS } from '../.tools/misc.mjs';
-import '../shared.styl';
+import { appendUrls, htmlToElement, importCSS } from '../../.tools/misc.mjs';
+import '../../shared.styl';
 
 const deps = [
 	"https://unpkg.com/plotly.js@1.56.0/dist/plotly.min.js",

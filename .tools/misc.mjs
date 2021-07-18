@@ -170,6 +170,45 @@ export class Stepper {
 	}
 }
 
+// modded from https://www.sitepoint.com/cache-fetched-ajax-requests/
+const cachedFetch = (options) => (url, fetchOpts) => {
+	let expiry = 5 * 60 // 5 min default
+	if (typeof options === 'number') {
+		expiry = options
+		options = undefined
+	} else if (typeof options === 'object') {
+		expiry = options.seconds || expiry
+	}
+	let cacheKey = url
+	let cached = localStorage.getItem(cacheKey)
+	let whenCached = localStorage.getItem(cacheKey + ':ts')
+	if (cached !== null && whenCached !== null) {
+		let age = (Date.now() - whenCached) / 1000
+		if (age < expiry) {
+			let response = new Response(new Blob([cached]))
+			return Promise.resolve(response)
+		} else {
+			sessionStorage.removeItem(cacheKey)
+			sessionStorage.removeItem(cacheKey + ':ts')
+		}
+	} 
+
+	return fetch(url, fetchOpts)
+		.then(response => {
+			if (response.status !== 200) return response;
+			let ct = response.headers.get('Content-Type');
+			const isJson =ct && (ct.match(/application\/json/i) || ct.match(/text\//i));
+			if (isJson) {
+				response.clone().text()
+					.then(content => {
+						sessionStorage.setItem(cacheKey, content)
+						sessionStorage.setItem(cacheKey+':ts', Date.now())
+					});
+			}
+			return response
+		});
+}
+
 
 export {
 	delay,
@@ -177,6 +216,7 @@ export {
 	htmlToElement,
 	prism,
 	consoleHelper,
+	cachedFetch,
 
 	//DEPRECATE exporting these?
 	appendUrls,

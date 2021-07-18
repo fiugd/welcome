@@ -27,44 +27,6 @@
 	<body>
 	</body>
 
-	<script type="module">
-		const fetchJSON = (url) => fetch(url).then(x=>x.json());
-		const delMarksUrl = './del.icio.us.json';
-		
-		const Link = ({title, tags, description, url, created}) => {
-			return `
-				<div class="link">
-					<div><a href="${url}">${title}</a></div>
-					<div class="desc">${description}</div>
-					${ tags.join('').length > 0
-						? `<div class="tags">${tags.join(' - ')}</div>`
-						: ''
-					}
-					<div class="date">${
-						new Date(created*1000).toLocaleString()
-					}</div>
-				</div>
-			`;
-		}
-
-		(async () => {
-			const delMarks = await fetchJSON(delMarksUrl);
-			console.log(Object.keys(delMarks[0]))
-			console.log(delMarks[0])
-			window.filt = delMarks.filter(x => true)
-			document.body.innerHTML += `
-				<div class="container">
-					${filt.map(Link).join('\n')}
-				</div>
-			`;
-			const scroll = localStorage.getItem("bookmarks-scroll");
-			document.documentElement.scrollTop = Number(scroll);
-		})();
-
-		window.addEventListener('scroll', function() {
-			const scroll = document.documentElement.scrollTop;
-			localStorage.setItem("bookmarks-scroll", scroll);
-		})
-	</script>
+	<script type="module" src="bookmarks.js"></script>
 
 </html>

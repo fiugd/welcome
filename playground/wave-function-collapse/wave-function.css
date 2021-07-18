@@ -1,0 +1,14 @@
+body {
+	margin: 2em;
+	color: #ccc;
+	font: 12px sans-serif;
+	background: #222;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+.container { width: 90%; }
+img,canvas { image-rendering: pixelated; }
+a { color: #26a69a; }
+img.input{ width: 8em; margin-top: 1em; margin-bottom: 1em;}
+img.output { width: 100%; }

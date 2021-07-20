@@ -137,6 +137,10 @@ const lcg = (() => {
 (async () => {
 	// https://github.com/kchapelier/wavefunctioncollapse/tree/master/example
 	// https://github.com/mxgmn/WaveFunctionCollapse
+
+	// I want to be able to animate this
+	// http://www.kchapelier.com/wfc-example/simple-tiled-model-animated.html
+
 	// ["OverlappingModel","SimpleTiledModel"]
 
 	const imgData = await imageDataFromUrl(

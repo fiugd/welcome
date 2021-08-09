@@ -17,6 +17,9 @@ https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-a
 https://www.strathweb.com/2019/06/building-a-c-interactive-shell-in-a-browser-with-blazor-webassembly-and-roslyn/
 https://csharpinteractive.azurewebsites.net/
 
+maybe a better version of "does everything"
+https://github.com/BlazorComponents/CompileBlazorInBlazor
+
 */
 
 using System;

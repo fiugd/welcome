@@ -42,12 +42,13 @@ https://codemirror.net/mode/stylus/index.html
 
 <script type="module">
 		import {
-				html, Component, render, useState, useCallback, h
+				html, Component, render, useState, useCallback, useEffect, h
 		} from '/shared/vendor/preact.standalone.module.js';
 		window.Component = Component;
 		window.render = render;
 		window.useState = useState;
 		window.useCallback = useCallback;
+		window.useEffect = useEffect;
 		window.React = { createElement: h, createClass: h };
 		window.h = h;
 </script>

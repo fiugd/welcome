@@ -10,6 +10,9 @@
 		
 	smalltalk:
 	https://amber-lang.net/
+	
+	imba:
+	https://imba.io/try/
 */
 import { importCSS, prism, htmlToElement } from './.tools/misc.mjs';
 import './shared.styl';

@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<title>fiug.dev welcome playground</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+
+		<meta name="color-scheme" content="dark light">
+	</head>
+
+	<style>
+		li { list-style: none; padding: 0.5em 1em;}
+	</style>
+
+	<body>
+		<p>some experiments:</p>
+	</body>
+
+	<script>
+		const experiments = [
+			['playground/bookmarks/bookmarks', 'bookmarks'],
+			['playground/css-3d', 'css-3d'],
+			//['playground/css-doodle', 'css-doodle'],
+			['playground/encrypt-web-worker', 'encrypt-web-worker'],
+			['playground/iching/iching', 'iching'],
+			['playground/kalman/kalman', 'kalman'],
+			['playground/mixed-canvas/mixed-canvas', 'mixed canvas'],
+			['playground/rangers-advent/rangers.advent', 'rangers-advent'],
+			['playground/rss-feed/rss-feed', 'rss-feed'],
+			['playground/languages/shiki/shiki', 'shiki'],
+			['playground/tower.defense/tower.defense', 'tower defense'],
+			['playground/wave-function-collapse/wave-function', 'wave function collapse'],
+			['playground/webgl-quad/webgl-quad', 'webgl-quad'],
+		];
+
+		experiments.forEach(exp => {
+			const element = document.createElement('div');
+			exp = Array.isArray(exp)
+				? exp
+				: [exp,exp]
+			element.innerHTML = `
+				<li>
+					<a href="./${exp[0]}.html">${exp[1]}</a>
+				</li>
+			`;
+			document.body.append(element);
+		});
+
+	</script>
+</html>

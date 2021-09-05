@@ -1,47 +1,61 @@
-<style>
-	body { margin: 0; }
-	body.preview { margin: 3em 2em; }
-	.shiki { margin: 0; padding: 2em; height: -webkit-fill-available; width: -webkit-fill-available;}
-</style>
+<!doctype html>
+<html class="dark-enabled">
+	<head>
+		<title>Shiki: language highlighter</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="bookmarks.css">
+	</head>
 
-<script type="module">
-	import * as shiki from 'https://unpkg.com/shiki@0.9.4/dist/index.browser.mjs';
-	shiki.setCDN('https://unpkg.com/shiki@0.9.4/');
+	<style>
+		body { margin: 0; background-color: #1E1E1E; }
+		body.preview { margin: 3em 0.1em; }
+		.shiki { margin: 0; padding: 1em; height: -webkit-fill-available; width: -webkit-fill-available;}
+	</style>
 
-	//import * as shiki from 'https://cdn.skypack.dev/shiki';
-	//shiki.setCDN('https://cdn.skypack.dev/shiki/');
-	//shiki.setOnigasmWASM('https://cdn.skypack.dev/shiki/dist/onigasm.wasm');
+	<script type="module">
+		import * as shiki from 'https://unpkg.com/shiki@0.9.4/dist/index.browser.mjs';
+		shiki.setCDN('https://unpkg.com/shiki@0.9.4/');
 
-	if(location.href.includes('/::preview::/'))
-		document.body.classList.add('preview');
+		//import * as shiki from 'https://cdn.skypack.dev/shiki';
+		//shiki.setCDN('https://cdn.skypack.dev/shiki/');
+		//shiki.setOnigasmWASM('https://cdn.skypack.dev/shiki/dist/onigasm.wasm');
 
-	const fetchJSON = (url) => fetch(url).then(x=>x.json());
-	const postJSON = (url, body) => {
-		const opts = {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(body)
-		}
-		return fetch(url, opts).then(x=>x.json());
-	};
+		if(location.href.includes('/::preview::/'))
+			document.body.classList.add('preview');
 
-	const exampleCode = 
-		`const fetchJSON = ${fetchJSON.toString()};\n` +
-		`const postJSON = ${postJSON.toString().replace(/^\t/gm, '')};`;
+		const fetchJSON = (url) => fetch(url).then(x=>x.json());
+		const postJSON = (url, body) => {
+			const opts = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(body)
+			}
+			return fetch(url, opts).then(x=>x.json());
+		};
 
-	const renderExample = (highlighter) => {
-		document.body.innerHTML += highlighter.codeToHtml(
-			exampleCode,
-			'js'
-		);
-	};
+		const exampleCode = 
+			`const fetchJSON = ${fetchJSON.toString()};\n` +
+			`const postJSON = ${postJSON.toString().replace(/^\t/gm, '')};`;
 
-	(async () => {
-		const theme = 'dark-plus';
-		const langs = ['js'];
-		const highlighter = await shiki.getHighlighter({ theme, langs })
-		renderExample(highlighter);
-	})();
-</script>
+		const renderExample = (highlighter) => {
+			document.body.innerHTML += highlighter.codeToHtml(
+				exampleCode,
+				'js'
+			);
+		};
+
+		(async () => {
+			const theme = 'dark-plus';
+			const langs = ['js'];
+			const highlighter = await shiki.getHighlighter({ theme, langs })
+			renderExample(highlighter);
+		})();
+	</script>
+
+</html>

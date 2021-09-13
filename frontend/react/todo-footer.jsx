@@ -1,4 +1,4 @@
-export const Footer = ({ filterTodos, active, counts={} }) => {
+const Footer = ({ filterTodos, active, counts={} }) => {
 	const buttons = ['all', 'active', 'completed'];
 	return (
 		<div class="todo-footer">
@@ -16,3 +16,5 @@ export const Footer = ({ filterTodos, active, counts={} }) => {
 		</div>
 	);
 };
+
+export { Footer };

@@ -1,4 +1,4 @@
-export const getState = ({
+const getState = ({
 	useState, useCallback
 }) =>
 function useStore({ filter }={}) {
@@ -148,3 +148,5 @@ function useStore({ filter }={}) {
 		filterTodos
 	};
 }
+
+export { getState };

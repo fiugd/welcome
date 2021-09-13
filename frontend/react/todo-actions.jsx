@@ -60,7 +60,7 @@ const DownloadButton = ({ useStore }) => {
 			title="Download all"
 			onClick={clickHandler}
 		>
-			⭳
+			ꜜ
 		</div>
 	);
 };
@@ -121,12 +121,12 @@ const UploadButton = ({ replace }) => {
 		<div className="icon" title="Upload Todo's"
 			onClick={upload}
 		>
-			⭱
+			ꜛ
 		</div>
 	);
 };
 
-export const Actions = ({ replaceAll, useStore }) => {
+const Actions = ({ replaceAll, useStore }) => {
 	const replace = (event, todos) => {
 			replaceAll(todos);
 			event.preventDefault();
@@ -139,3 +139,5 @@ export const Actions = ({ replaceAll, useStore }) => {
 		</div>
 	);
 };
+
+export { Actions };

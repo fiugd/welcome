@@ -11,7 +11,7 @@ const extractParams = (s) => {
 
 const ignoreParams = (s) =>  (s||'').replace(paramsPattern, '').trim();
 
-export const Body = ({ todos=[], active, addTodo, searchTodo, searchTerm, checkItem, reorder }) => {
+const Body = ({ todos=[], active, addTodo, searchTodo, searchTerm, checkItem, reorder }) => {
 	const isSearchView = ['all', 'completed'].includes(active)
 	
 	const drop = (e) => {
@@ -136,3 +136,5 @@ export const Body = ({ todos=[], active, addTodo, searchTodo, searchTerm, checkI
 		</div>
 	);
 };
+
+export { Body };

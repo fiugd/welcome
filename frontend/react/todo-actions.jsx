@@ -60,7 +60,22 @@ const DownloadButton = ({ useStore }) => {
 			title="Download all"
 			onClick={clickHandler}
 		>
-			ꜜ
+			<svg version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 20 20"
+				width="20"
+				height="20"
+			>
+				<path d="
+						M 3 0
+						L 10 16
+						L 17 0
+					"
+					stroke-width="5"
+					stroke="currentColor"
+					fill="transparent"
+				></path>
+			</svg>
 		</div>
 	);
 };
@@ -121,7 +136,22 @@ const UploadButton = ({ replace }) => {
 		<div className="icon" title="Upload Todo's"
 			onClick={upload}
 		>
-			ꜛ
+			<svg version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				viewBox="0 0 20 20"
+				width="20"
+				height="20"
+			>
+				<path d="
+						M 3 20
+						L 10 4
+						L 17 20
+					"
+					stroke-width="5"
+					stroke="currentColor"
+					fill="transparent"
+				></path>
+			</svg>
 		</div>
 	);
 };

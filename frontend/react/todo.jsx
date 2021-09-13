@@ -19,7 +19,7 @@ const App = () => {
 	return (
 		<div class="app">
 			<div class="container">
-				<Header name="⚡ todo ⚡"/>
+				<Header name="TODO"/>
 				<Actions
 					{ ...actions }
 					useStore={useStore}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>pokemon evo search</title>
+		<meta name="description" content="color picker">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="color-scheme" content="dark">
+	</head>
+
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			height: 70vh;
+			margin: 1em;
+		}
+		body { font-size: 18px; }
+		input { font-size: 1em; }
+		body div {
+			width: 100%;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		}
+		body div#labels {
+			margin-bottom: 1.5em;
+		}
+		body img {
+			width: auto;
+			flex: 1;
+			background: #333;
+			image-rendering: pixelated;
+		}
+		img + img {
+			margin-left: 0.5em;
+		}
+		div > pre {
+			text-transform: capitalize;
+			flex: 1;
+			text-align: center;
+		}
+		#search { padding: 0.25em; }
+	</style>
+
+	<body>
+		<div id="images">
+			<img id="from-image" src=""></img>
+			<img id="base-image" src=""></img>
+			<img id="to-image" src=""></img>
+		</div>
+		<div id="labels">
+			<pre id="from-text"></pre>
+			<pre id="base-text"></pre>
+			<pre id="to-text"></pre>
+		</div>
+		<input id="search" type="text" value="Vivillon"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	</body>
+
+	<script type="module">
+		import { findPokemon } from './pokedex.js';
+		const imageLink = (number='') => 
+			number+''
+			? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`
+			: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+		const fromImage = document.getElementById('from-image');
+		const baseImage = document.getElementById('base-image');
+		const toImage = document.getElementById('to-image');
+		const fromText = document.getElementById('from-text');
+		const baseText = document.getElementById('base-text');
+		const toText = document.getElementById('to-text');
+		const search = document.getElementById('search');
+
+		const searchAndShow = () => {
+			const { raw, error } = findPokemon(search.value.toLowerCase());
+			if(error){
+				fromImage.src = imageLink('');
+				toImage.src = imageLink('');
+				baseImage.src = imageLink('');
+				fromText.textContent = '';
+				toText.textContent = '';
+				baseText.textContent = '';
+				return;
+			}
+			fromImage.src = imageLink(raw.from.id);
+			toImage.src = imageLink(raw.to.id);
+			baseImage.src = imageLink(raw.base.id);
+			fromText.textContent = raw.from.identifier;
+			toText.textContent = raw.to.identifier;
+			baseText.textContent = raw.base.identifier;
+		};
+		searchAndShow();
+		search.oninput = searchAndShow;
+	</script>
+
+</html>

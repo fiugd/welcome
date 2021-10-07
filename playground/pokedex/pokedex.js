@@ -1,6 +1,9 @@
 /*
 also see: https://www.kaggle.com/vishalsubbiah/pokemon-images-and-types?select=pokemon.csv
 - https://www.kaggle.com/vishalsubbiah/pokemon-images-and-types/download/4ocbGRjoCrLyviBwrIMR%2Fversions%2FubVz4l5HZPsv3u2s65yv%2Ffiles%2Fpokemon.csv?datasetVersionNumber=3
+
+also see: https://pokeapi.co/
+
 */
 
 const POKE_SEARCH_STRING = 'curs';
@@ -34,7 +37,7 @@ for(var i=0, len=Object.keys(dexByNumber).length; i<len; i++){
 	if(!poke.evolves_from_species_id) continue;
 
 	if(!dexByNumber[poke.evolves_from_species_id]){
-		console.log(poke.evolves_from_species_id)
+		console.log(poke.evolves_from_species_id);
 		continue;
 	}
 	dexByNumber[poke.evolves_from_species_id].evolves_to_species_id = poke.id;
@@ -56,16 +59,28 @@ const findPokemon = (name) => {
 	const it = {
 		from: (dexByNumber[found.evolves_from_species_id] || {}).identifier,
 		name: found.identifier,
-		to: (dexByNumber[found.evolves_to_species_id] || {}).identifier
+		to: (dexByNumber[found.evolves_to_species_id] || {}).identifier,
+		raw: {
+			from: dexByNumber[found.evolves_from_species_id] || {},
+			base: found || {},
+			to: dexByNumber[found.evolves_to_species_id] || {},
+		}
 	};
-
-	if(it.from) it.from = imageLink(it.from);
-	if(it.to) it.to = imageLink(it.to);
-	it.name = imageLink(it.name)
 
 	return it;
 };
 
-const {clearScreen, cursorHide} = ansiEscapes;
-console.log(clearScreen+cursorHide);
-console.log(JSON.stringify(findPokemon(POKE_SEARCH_STRING), null, 2));
+if(typeof window === "undefined"){
+	const {clearScreen, cursorHide} = ansiEscapes;
+	console.log(clearScreen+cursorHide);
+	const it = findPokemon(POKE_SEARCH_STRING);
+
+	if(it.from) it.from = imageLink(it.from);
+	if(it.to) it.to = imageLink(it.to);
+	it.name = imageLink(it.name)
+	delete it.raw;
+
+	console.log(JSON.stringify(it, null, 2));
+}
+
+export { findPokemon };

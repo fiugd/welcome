@@ -100,9 +100,9 @@
 			fromImage.src = imageLink(raw.from.id);
 			toImage.src = imageLink(raw.to.id);
 			baseImage.src = imageLink(raw.base.id);
-			fromText.textContent = raw.from.identifier;
-			toText.textContent = raw.to.identifier;
-			baseText.textContent = raw.base.identifier;
+			fromText.textContent = `${raw.from.identifier} [${raw.from.id}]`;
+			toText.textContent = `${raw.to.identifier} [${raw.to.id}]`;
+			baseText.textContent = `${raw.base.identifier} [${raw.base.id}]`;;
 		};
 		searchAndShow();
 		search.oninput = searchAndShow;

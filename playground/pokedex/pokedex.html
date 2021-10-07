@@ -17,9 +17,13 @@
 			align-items: center;
 			height: 70vh;
 			font-size: 18px;
-			max-width: 800px;
-			margin: auto;
+			margin: 1em;
 			font-size: 18px;
+		}
+		.container {
+			flex-direction: column;
+			justify-content: center;
+			max-width: 800px;
 		}
 		input { font-size: 1em; }
 		body div {
@@ -29,12 +33,15 @@
 			align-items: center;
 		}
 		body div#labels {
+			margin-top: -2.75em;
 			margin-bottom: 1.5em;
 		}
 		body img {
 			width: auto;
 			flex: 1;
-			background: #333;
+			background: #1a1a1a;
+			border-radius: 15px;
+			border: 1px solid #333;
 			image-rendering: pixelated;
 		}
 		img + img {
@@ -49,17 +56,19 @@
 	</style>
 
 	<body>
-		<div id="images">
-			<img id="from-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
-			<img id="base-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
-			<img id="to-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
+		<div class="container">
+			<div id="images">
+				<img id="from-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
+				<img id="base-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
+				<img id="to-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="></img>
+			</div>
+			<div id="labels">
+				<pre id="from-text">&nbsp;</pre>
+				<pre id="base-text">&nbsp;</pre>
+				<pre id="to-text">&nbsp;</pre>
+			</div>
+			<input id="search" type="text" value="Vivillon"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		</div>
-		<div id="labels">
-			<pre id="from-text"></pre>
-			<pre id="base-text"></pre>
-			<pre id="to-text"></pre>
-		</div>
-		<input id="search" type="text" value="Vivillon"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 	</body>
 
 	<script type="module">

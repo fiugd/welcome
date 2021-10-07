@@ -67,7 +67,7 @@
 				<pre id="base-text">&nbsp;</pre>
 				<pre id="to-text">&nbsp;</pre>
 			</div>
-			<input id="search" type="text" value="Vivillon"  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+			<input id="search" type="text" value="foo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		</div>
 	</body>
 
@@ -77,6 +77,7 @@
 			number+''
 			? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`
 			: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+		const imageText = (x) => x.identifier ? `${x.identifier} [${x.id}]` : '';
 
 		const fromImage = document.getElementById('from-image');
 		const baseImage = document.getElementById('base-image');
@@ -100,12 +101,16 @@
 			fromImage.src = imageLink(raw.from.id);
 			toImage.src = imageLink(raw.to.id);
 			baseImage.src = imageLink(raw.base.id);
-			fromText.textContent = `${raw.from.identifier} [${raw.from.id}]`;
-			toText.textContent = `${raw.to.identifier} [${raw.to.id}]`;
-			baseText.textContent = `${raw.base.identifier} [${raw.base.id}]`;;
+			fromText.textContent = imageText(raw.from);
+			toText.textContent = imageText(raw.to);
+			baseText.textContent = imageText(raw.base);
 		};
 		searchAndShow();
 		search.oninput = searchAndShow;
+		search.onclick = function() {
+			search.selectionStart = 0;
+			search.selectionEnd = search.value.length;
+		}
 	</script>
 
 </html>

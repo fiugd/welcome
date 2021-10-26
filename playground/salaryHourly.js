@@ -96,6 +96,7 @@ const results = [
 	new Salary({ yearly: 145 }),
 	new Salary({ yearly: 150 }),
 	new Salary({ hourly: 80  }),
+	new Salary({ hourly: 85  }),
 	new Salary({ yearly: 200 }),
 	new Salary({ yearly: 500 }),
 ];

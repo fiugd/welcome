@@ -37,9 +37,6 @@ export interface HWBColor extends ColorBase {
 
 export interface NullColor extends ColorBase {
   colorSpace: 'null';
-  h: number;
-  w: number;
-  b: number;
 }
 
 export type ColorObject = RGBColor | HSLColor | HWBColor | NullColor;
@@ -113,13 +110,13 @@ export function toString(color: ColorObject): string | undefined {
 	if (!isValid(color)) return undefined;
 	const { config, colorSpace } = color
 	const { useComma, useDegrees, useDivision, usePercentage } = config ?? DEFAULT_CONFIG
-	const formatValues = (arr: number[]):string[] => usePercentage
+	const formatValues = (arr: number[]): string[] => usePercentage
 		? arr.map(x => `${x}%`)
 		: arr.map(x => `${x}`)
 	const formatAlpha = (alpha: number): string => alpha >= 0
 		? (useDivision ? ' / ' : ', ') + `${alpha}`.replace('0.', '.')
-		: '';
-	const formatString = (values: string[]) => {
+		: ''
+	const formatString = (values: string[]): string => {
 		const alpha = formatAlpha(color.a)
 		return `${colorSpace}${alpha ? 'a' : ''}(${values.join(useComma ? ', ' : ' ')}${alpha})`
 	}

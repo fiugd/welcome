@@ -1,0 +1,49 @@
+<head>
+	<meta name="color-scheme" content="dark light">
+</head>
+
+<style>
+	body { font: 14px sans-serif; }
+	.test+.test { margin-top: 1em; }
+	.status { min-width: 4em; display: inline-block; text-align: center; text-transform: uppercase; }
+	.status.fail { background: red; }
+	.status.pass { background: green; }
+	
+</style>
+
+<script type="module">
+	import parse from './colorLib.js';
+	import { toString } from './colorLib.js';
+
+	const log = (x) => document.body.insertAdjacentHTML(
+		'beforeend', `<pre>${x}</pre>`
+	);
+	const tests = [
+		{ input: `#FEB`, expect: 'rgb 255 238 187 1' },
+		{ input: '#FEBA', expect: 'rgb 255 238 187 0.67' },
+		{ input: '#FFEEBBAA', expect: 'rgb 255 238 187 0.67' },
+		{ input: 'hsl(360, 100%, 50%)', expect: 'hsl 0 100 50 1' },
+		{ input: 'hsl(360 100% 50%)', expect: 'hsl 0 100 50 1' },
+		{ input: 'hwb(60, 3%, 60%)', expect: 'hwb 60 3 60 1' },
+		{ input: `rgba(200, 60, 60, 0.3)`, expect: 'rgb 200 60 60 0.3' },
+		{ input: `rgba(200, 200, 200)`, expect: 'rgb 200 200 200 1' },
+		{ input: `rgba(50%, 50%, 50%)`, expect: 'rgb 127 127 127 1' },
+		{ input: `rgba(50%, 50%, 50%, .4)`, expect: 'rgb 127 127 127 0.4' },
+		{ input: `hsl(360, 100%, 50%)`, expect: 'hsl 0 100 50 1' },
+		{ input: `hsl(360 100% 50%)`, expect: 'hsl 0 100 50 1' },
+		{ input: `hsl(360, 60%, 50%, 0.4)`, expect: 'hsl 0 60 50 0.4' },
+		{ input: `hsl(360 60% 50% / 0.4)`, expect: 'hsl 0 60 50 0.4' },
+		{ input: `hwb(60, 3%, 60%)`, expect: 'hwb 60 3 60 1' },
+		{ input: `hwb(60, 3%, 60%, 0.6)`, expect: 'hwb 60 3 60 0.6' },
+		{ input: `hwb(360 60% 50% / 0.4)`, expect: 'hwb 0 60 50 0.4' },
+		{ input: `hwb(120deg, 20%, 20%)`, expect: 'hwb 120 20 20 1' },
+	];
+	for(var {input, expect} of tests){
+		try {
+			const result = parse(input);
+			log(`${input} \n   out: ${toString(result)} \nexpect: ${expect}\n`);
+		} catch(e){
+			log(JSON.stringify({ error: e.message }, null, 2));
+		}
+	}
+</script>

@@ -1,0 +1,21 @@
+Color {
+  Color       = "rgb"  "(" Params ")"
+              | "rgba" "(" Params ")"
+              | "hsl"  "(" Params ")"
+              | "hsla" "(" Params ")"
+              | "hwb"  "(" Params ")"
+              | "hwba" "(" Params ")"
+              | "#"    ""  HexColor ""
+
+  int         = digit+
+  float       = ("" "." digit+) | (digit+ "." digit+)
+  percent     = (float | int) "%"
+  degrees     = (float | int) "deg"
+  Value       = percent | degrees | float | int
+
+  Params      = ParamsSpace | ParamsComma
+  ParamsComma = NonemptyListOf<Value, ",">
+  ParamsSpace = Value Value Value Slashed?
+  Slashed     = "/"? float
+  HexColor    = hexDigit+
+}

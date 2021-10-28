@@ -8,38 +8,29 @@ export interface inputConfig {
   isHex: boolean
 }
 
-export interface ColorBase {
+export interface ColorObject {
   colorSpace: ColorSpace
   config?: inputConfig
   a: number;
 }
 
-export interface RGBColor extends ColorBase {
-  colorSpace: 'rgb';
+export interface RGBColor extends ColorObject {
   r: number;
   g: number;
   b: number;
 }
 
-export interface HSLColor extends ColorBase {
-  colorSpace: 'hsl';
+export interface HSLColor extends ColorObject {
   h: number;
   s: number;
   l: number;
 }
 
-export interface HWBColor extends ColorBase {
-  colorSpace: 'hwb';
+export interface HWBColor extends ColorObject {
   h: number;
   w: number;
   b: number;
 }
-
-export interface NullColor extends ColorBase {
-  colorSpace: 'null';
-}
-
-export type ColorObject = RGBColor | HSLColor | HWBColor | NullColor;
 
 const cylindrical = (prefix: string) => new RegExp(`^${prefix}a?\\(\\s*([+-]?(?:\\d{0,3}\\.)?\\d+)(?:deg)?\\s*,?\\s*([+-]?[\\d\\.]+)%\\s*,?\\s*([+-]?[\\d\\.]+)%\\s*(?:[,|\\\\/]\\s*([+-]?[\\d\\.]+)\\s*)?\\)$`)
 const rgba = /^rgba?\(\s*([+-]?(?:\d{0,3}\.)?\d+)\s*,?\s*([+-]?[\d\.]+)\s*,?\s*([+-]?[\d\.]+)\s*(?:[,|\/]\s*([+-]?[\d\.]+)\s*)?\)$/
@@ -115,22 +106,20 @@ export function toString(color: ColorObject): string | undefined {
 		: arr.map(x => `${x}`)
 	const formatAlpha = (alpha: number): string => alpha >= 0
 		? (useDivision ? ' / ' : ', ') + `${alpha}`.replace('0.', '.')
-		: ''
+		: '';
 	const formatString = (values: string[]): string => {
 		const alpha = formatAlpha(color.a)
 		return `${colorSpace}${alpha ? 'a' : ''}(${values.join(useComma ? ', ' : ' ')}${alpha})`
 	}
 	if (colorSpace === 'hsl' || colorSpace === 'hwb') {
+		const col = color as HSLColor & HWBColor
 		return formatString([
-			`${color.h}${useDegrees ? 'deg' : ''}`,
-			...formatValues(colorSpace === 'hsl'
-				? [color.s, color.l]
-				: [color.w, color.b]
-			)
+			`${col.h}${useDegrees ? 'deg' : ''}`,
+			...formatValues([col.s ?? col.w, col.l ?? col.w])
 		])
 	}
 	if (colorSpace === 'rgb') {
-		const { r, g, b, a } = color
+		const { r, g, b, a } = color as RGBColor
 		if (config?.isHex) {
 			const rgba = [r, g, b, Math.floor(a*255)]
 			const hexArray = rgba.map((v) => v.toString(16).padStart(2, '0'))

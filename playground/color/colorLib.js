@@ -55,6 +55,7 @@ function clamp(num, min, max) {
     return Math.min(Math.max(min, num), max);
 }
 export function toString(color) {
+    var _a, _b;
     if (!isValid(color))
         return undefined;
     const { config, colorSpace } = color;
@@ -70,11 +71,10 @@ export function toString(color) {
         return `${colorSpace}${alpha ? 'a' : ''}(${values.join(useComma ? ', ' : ' ')}${alpha})`;
     };
     if (colorSpace === 'hsl' || colorSpace === 'hwb') {
+        const col = color;
         return formatString([
-            `${color.h}${useDegrees ? 'deg' : ''}`,
-            ...formatValues(colorSpace === 'hsl'
-                ? [color.s, color.l]
-                : [color.w, color.b])
+            `${col.h}${useDegrees ? 'deg' : ''}`,
+            ...formatValues([(_a = col.s) !== null && _a !== void 0 ? _a : col.w, (_b = col.l) !== null && _b !== void 0 ? _b : col.w])
         ]);
     }
     if (colorSpace === 'rgb') {

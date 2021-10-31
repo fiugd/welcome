@@ -8,10 +8,18 @@
 	.status { min-width: 4em; display: inline-block; text-align: center; text-transform: uppercase; }
 	.status.fail { background: red; }
 	.status.pass { background: green; }
-	
 </style>
 
 <script type="module">
+	/*
+		also see PEG.js
+		https://pegjs.org/documentation
+
+		Codemirror has a syntax highlighter for it
+		https://codemirror.net/mode/pegjs/index.html
+	*/
+
+
 	import 'https://unpkg.com/ohm-js@latest/dist/ohm.min.js';
 	import colorSemantics from './color.semantics.js';
 	const grammarSrc = await (fetch('./color.ohm')).then(x => x.text());

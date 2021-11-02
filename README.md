@@ -5,4 +5,3 @@ Please visit  or read more at [blog.fiug.dev](https://blog.fiug.dev)
 Some experiments from this site are live at [https://welcome.fiug.dev/](https://welcome.fiug.dev/)
 
 ![image](https://user-images.githubusercontent.com/1816471/124349417-de02eb80-dbbc-11eb-8e67-3725e6654f4d.png)
-

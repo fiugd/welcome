@@ -6,6 +6,8 @@ also see: https://pokeapi.co/
 
 */
 
+export { random } from 'https://cdn.skypack.dev/lodash';;
+
 const POKE_SEARCH_STRING = 'curs';
 
 import Papa from 'https://cdn.skypack.dev/papaparse';
@@ -43,12 +45,7 @@ for(var i=0, len=Object.keys(dexByNumber).length; i<len; i++){
 	dexByNumber[poke.evolves_from_species_id].evolves_to_species_id = poke.id;
 }
 
-const findPokemon = (name) => {
-	let found = Object.keys(dexByNumber)
-		.find(x => dexByNumber[x]?.identifier?.startsWith(name));
-	if(!found) return { error: `did not find: ${name}` };
-	found = dexByNumber[found];
-
+const getEvoTree = (found) => {
 	if(found.evolves_to_species_id && !found.evolves_from_species_id){
 		found = dexByNumber[found.evolves_to_species_id]
 	}
@@ -69,6 +66,27 @@ const findPokemon = (name) => {
 
 	return it;
 };
+
+const findPokemonByNumber = (number) => {
+	const found = dexByNumber[number] || {};
+	return found;
+};
+
+const findPokemonByName = (name) => {
+	let found = Object.keys(dexByNumber)
+		.find(x => dexByNumber[x]?.identifier?.includes(name));
+	found = dexByNumber[found]
+	return found;
+};
+
+const findPokemon = (query) => {
+	const isNumber = (Number(query)+'').trim() === (query+'').trim();
+	const found = isNumber
+		? findPokemonByNumber(query)
+		: findPokemonByName(query);
+	if(!found) return { error: `did not find: ${name}` };
+	return getEvoTree(found);
+}
 
 if(typeof window === "undefined"){
 	const {clearScreen, cursorHide} = ansiEscapes;

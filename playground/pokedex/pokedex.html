@@ -7,25 +7,28 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="color-scheme" content="dark">
+
+		<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	</head>
 
 	<style>
 		:root {
-			--fg-1: #ccc;
-			--fg-2: #898;
+			--fg-1: #ccd;
+			--fg-2: #889;
 
 			--bg-1: #1a1a20;
-			--bg-2: #242728;
+			--bg-2: #242738;
 		}
 		html, input {
 			font-size: calc(0.5em + 1vmin);
-			font-family: sans-serif;
+			font-family: 'Roboto', sans-serif;;
 			color: var(--fg-1);
 		}
 		input {
 			border: 0; border-radius: 0.25em;
 			padding: 0.5em 0.75em;
 			background: var(--bg-1);
+			letter-spacing: 0.05em;
 		}
 		body {
 			display: flex;
@@ -76,13 +79,14 @@
 			padding: 0.4em 1em;
 		}
 		.label-name {
-			border-radius: 0 0 10px;
+			border-radius: 0 0 10px 0;
 			background: var(--bg-2);
 			flex: 1;
 		}
 		.label-number {
 			color: var(--fg-2);
 			background: var(--bg-1);
+			letter-spacing: 0.15em;
 		}
 	</style>
 

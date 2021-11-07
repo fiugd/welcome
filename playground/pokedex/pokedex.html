@@ -10,44 +10,45 @@
 	</head>
 
 	<style>
+		:root {
+			--fg-1: #ccc;
+			--fg-2: #898;
+
+			--bg-1: #1a1a20;
+			--bg-2: #242728;
+		}
 		html, input {
 			font-size: calc(0.5em + 1vmin);
 			font-family: sans-serif;
-			color: #ccc;
+			color: var(--fg-1);
 		}
-		input { border: 0; border-radius: 0.25em; padding: 0.5em 0.75em; }
+		input {
+			border: 0; border-radius: 0.25em;
+			padding: 0.5em 0.75em;
+			background: var(--bg-1);
+		}
 		body {
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			align-items: center;
 			height: 70vh;
 			margin: 1em;
 		}
 		.container {
-			flex-direction: column;
-			justify-content: center;
 			width: 100%;
 			max-width: 800px;
 		}
 		.container > div {
-			width: 100%;
 			display: flex;
 			justify-content: space-around;
-			align-items: center;
 		}
 		.container > div + div {
 			margin-top: 1em;
 		}
-		#labels {
-			margin-top: -2.75em;
-			margin-bottom: 1.5em;
-			pointer-events: none;
-		}
 		#images > div {
 			width: auto;
 			flex: 1;
-			background: #1a1a1a;
+			background: var(--bg-1);
 			border-radius: 10px;
 			position: relative;
 			overflow: hidden;
@@ -76,12 +77,12 @@
 		}
 		.label-name {
 			border-radius: 0 0 10px;
-			background: #242728;
+			background: var(--bg-2);
 			flex: 1;
 		}
 		.label-number {
-			color: #888;
-			background: #1a1a1a;
+			color: var(--fg-2);
+			background: var(--bg-1);
 		}
 	</style>
 
@@ -109,9 +110,11 @@
 
 	<script type="module">
 		import { findPokemon, random } from './pokedex.js';
+
+		let showShiny = false;
 		const imageLink = (number='') => 
 			number+''
-			? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`
+			? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${showShiny ? 'shiny/': ''}${number}.png`
 			: 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 		const imageText = (x) => x.identifier
 			? `

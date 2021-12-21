@@ -11,7 +11,7 @@ References
 ----------
 
 [model thinkers](https://modelthinkers.com/) - this site does so much to illustrate where I wanted to go with this
-
+[trilemma](https://en.m.wikipedia.org/wiki/Trilemma) - like a dilemma but with three poles, eg. Good, Fast, Cheap: pick two
 
 
 Example: Political Identity Modelling
@@ -43,7 +43,8 @@ Example: Political Identity Modelling
   </svg>
 
 Thoughts
-========
+--------
+
 The addition of an extra dimension makes it possible to make a finer point about political identity.  Something is gained; probably more than what is mentioned here.
 
 Some clarity and simplicity is lost in adding this dimension.  Something is lost; probably more than what is mentioned.
@@ -58,8 +59,6 @@ Some clarity and simplicity is lost in adding this dimension.  Something is lost
 
 Misc: other models
 ------------------
-
-https://en.m.wikipedia.org/wiki/Trilemma
 
 ### Dungeons and Dragons
   <svg

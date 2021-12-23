@@ -81,26 +81,14 @@
 		<css-doodle class="doodle loading"></css-doodle>
 	</body>
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.22.0/css-doodle.min.js"></script>
 	<script>
-		(async () => {
-			const appendScript = (url) => {
-				return new Promise((resolve, reject) => {
-					var script = document.createElement('script');
-					script.crossOrigin = "anonymous";
-					script.onload = resolve;
-					script.src = url;
-					document.head.appendChild(script);
-				});
-			};
+		const doodleCSS = document.querySelector('#doodle-src');
+		const doodleDOM = document.querySelector('css-doodle');
+		doodleDOM.innerHTML = doodleCSS.innerHTML;
+		doodleDOM.setAttribute('grid', doodleCSS.getAttribute('grid'));
 
-			const doodleCSS = document.querySelector('#doodle-src');
-			const doodleDOM = document.querySelector('css-doodle');
-			doodleDOM.innerHTML = doodleCSS.innerHTML;
-			doodleDOM.setAttribute('grid', doodleCSS.getAttribute('grid'));
-
-			await appendScript('/shared/vendor/css-doodle.0.6.1.min.js');
-			doodleDOM.classList.remove('loading');
-		})();
+		doodleDOM.classList.remove('loading');
 	</script>
 
 </html>

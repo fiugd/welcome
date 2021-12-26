@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Are+You+Serious&family=Monoton&family=Orbitron&display=swap');
+
+.orbitron { font-family: 'Orbitron', sans-serif; }
+.monoton { font-family: 'Monoton', cursive; }
+.serious { font-family: 'Are You Serious', cursive; }
+
+:root {
+	--header-face: #ccffbb;
+	--header-body: #336622;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1em;
+	font-size: 2vw;
+}
+.header {
+	font-size: 8em;
+	position: relative;
+	height: 1.6em;
+	width: 50%;
+}
+.header > * {
+	position: absolute;
+	left: 0;
+}
+.header :last-child {
+	left: 1em;
+	bottom: 0;
+	top: unset;
+}
+.three-dee {
+	color: var(--header-face);
+	text-shadow:
+		0 1px 0 var(--header-body), 0 2px 0 var(--header-body),
+		0 3px 0 var(--header-body), 0 4px 0 var(--header-body),
+		0 5px 0 var(--header-body), 0 6px 0 var(--header-body),
+		0 7px 0 var(--header-body), 0 8px 0 var(--header-body),
+		0 9px 0 var(--header-body), 0 10px 0 var(--header-body),
+		0 11px 0 var(--header-body), 0 12px 0 var(--header-body),
+		0 20px 30px rgba(0, 0, 0, 0.5);
+}
+.rainbow-text {
+	background-image: linear-gradient(to bottom, red, orange);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	padding-left: 0.2em;
+}
+.wrapper {
+	max-width: 600px;
+	width: 70%;
+	perspective: 700px;
+	margin-top: -6em;
+}
+.board {
+	background: black;
+	padding: 0.2em;
+	grid-gap: 0.2em;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	transform-style: preserve-3d;
+	transform: rotateX(45deg);
+	color: #aaa;
+}
+.board > div {
+	background-color: #333;
+	aspect-ratio: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.board div.selected {
+	color: #00e1f9;
+}
+.piece {
+	font-size: 10em;
+	position: absolute;
+	pointer-events: none;
+}
+.board > div.selected,
+.board > div:hover,
+.controls > pre:hover
+{
+	color: white;
+	background: linear-gradient(180deg, #333 0%, rgba(128,214,204,1) 100%);
+}
+
+.controls {
+	width: 80%;
+	max-width: 600px;
+	grid-gap: 0.2em;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	margin-top: 2em;
+}
+.controls > pre {
+	text-align: center;
+	padding: 0.5em;
+	font-size: 1.5em;
+	cursor: pointer;
+	background: #333;
+	margin: 0;
+}

@@ -44,13 +44,91 @@ const state = {
 	selected: document.querySelector('.board .selected')
 };
 
+const characters = [{
+	image: "♚",
+	name: "white king"
+}, {
+	image: "♛",
+	name: "white queen"
+}, {
+	image: "♜",
+	name: "white rook"
+}, {
+	image: "♝",
+	name: "white bishop"
+}, {
+	image: "♞",
+	name: "white knight"
+}, {
+	image: "♟︎",
+	name: "white pawn"
+}, {
+	image: "♚",
+	name: "black king"
+}, {
+	image: "♛",
+	name: "black queen"
+}, {
+	image: "♜",
+	name: "black rook"
+}, {
+	image: "♝",
+	name: "black bishop"
+}, {
+	image: "♞",
+	name: "black knight"
+}, {
+	image: "♟︎",
+	name: "black pawn"
+}];
+
+const positions = [
+	'black king', 'black rook', 'black queen', 'black bishop',
+	'black pawn', 'black pawn', 'black pawn', '',
+	'white pawn', '', '', 'black pawn',
+	'', 'white pawn', 'white pawn', 'white pawn',
+	'white rook', 'white bishop', 'white queen', 'white king',
+];
+
+const boardOpts = {
+	width: 4,
+	height: 5,
+	characters,
+	positions
+};
+
+const renderBoard = (opts, b, c) => {
+	b.style.gridTemplateColumns = (new Array(opts.width))
+		.fill()
+		.map(x => '1fr')
+		.join(' ');
+	b.innerHTML =  (new Array(opts.width * opts.height))
+		.fill()
+		.map((x, i) => {
+		if(!positions[i]) return '<div></div>';
+		const character = opts.characters.find(c => c.name === positions[i])
+		const color = character.name.includes('white') ? 'white' : 'black';
+		return `<div>
+			<div class="piece ${color}">${character.image}</div>
+		</div>`
+		})
+		.join('\n');
+	c.innerHTML = opts.characters
+		. map(x => `<pre
+			data-piece="${x.image}"
+			class="${x.name.includes('white') ? 'white' : 'black'}"
+			>${x.image}</pre>`)
+		.join('\n')
+}
+renderBoard(boardOpts, board, controls);
 
 controls.onclick = (e) => {
 	if(e.target.tagName !== 'PRE') return;
 	const piece = e.target.dataset.piece;
 	if(!state.selected) return;
+	const color = e.target.classList.contains('white') ? 'white' : 'black';
 	state.selected.innerHTML = `
-		<div class="piece">${piece}</div>
+		<div class="piece ${color}">${piece}</div>
 	`;
 };
 

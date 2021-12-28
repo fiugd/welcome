@@ -1,3 +1,5 @@
+import { animate, load } from './piskel.js';
+
 /*
 
 the idea here is that certain "players" in game are those which help create the game
@@ -87,7 +89,7 @@ const positions = [
 	'black pawn', 'black pawn', 'black pawn', '',
 	'white pawn', '', '', 'black pawn',
 	'', 'white pawn', 'white pawn', 'white pawn',
-	'white rook', 'white bishop', 'white queen', 'white king',
+	'', '', 'white queen', 'white king',
 ];
 
 const boardOpts = {
@@ -105,10 +107,11 @@ const renderBoard = (opts, b, c) => {
 	b.innerHTML =  (new Array(opts.width * opts.height))
 		.fill()
 		.map((x, i) => {
-		if(!positions[i]) return '<div></div>';
+		const id = `piece-${i}`;
+		if(!positions[i]) return `<div id="${id}" class="piece-container"></div>`;
 		const character = opts.characters.find(c => c.name === positions[i])
 		const color = character.name.includes('white') ? 'white' : 'black';
-		return `<div>
+		return `<div id="${id}" class="piece-container">
 			<div class="piece ${color}">${character.image}</div>
 		</div>`
 		})
@@ -143,3 +146,10 @@ board.onclick = (e) => {
 	e.target.classList = 'selected';
 	state.selected = e.target;
 };
+
+(async () => {
+	const pisk = await load('./assets/castle.piskel');
+
+	animate(pisk, document.getElementById('piece-17'));
+	animate(pisk, document.getElementById('piece-16'));
+})();

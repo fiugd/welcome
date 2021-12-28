@@ -85,7 +85,7 @@ const characters = [{
 }];
 
 const positions = [
-	'black king', 'black rook', 'black queen', 'black bishop',
+	'black king', '', 'black queen', 'black bishop',
 	'black pawn', 'black pawn', 'black pawn', '',
 	'white pawn', '', '', 'black pawn',
 	'', 'white pawn', 'white pawn', 'white pawn',
@@ -149,7 +149,10 @@ board.onclick = (e) => {
 
 (async () => {
 	const pisk = await load('./assets/castle.piskel');
+	const castleFront = await load('./assets/castle-front.piskel');
+
+	//animate(castleFront, document.getElementById('piece-1'));
 
 	animate(pisk, document.getElementById('piece-17'));
-	animate(pisk, document.getElementById('piece-16'));
+	animate(castleFront, document.getElementById('piece-12'));
 })();

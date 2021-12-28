@@ -89,7 +89,7 @@ const positions = [
 	'black pawn', 'black pawn', 'black pawn', '',
 	'white pawn', '', '', 'black pawn',
 	'', 'white pawn', 'white pawn', 'white pawn',
-	'', '', 'white queen', 'white king',
+	'white king', '', 'white queen', '',
 ];
 
 const boardOpts = {
@@ -151,7 +151,7 @@ board.onclick = (e) => {
 	const pisk = await load('./assets/castle.piskel');
 	const castleFront = await load('./assets/castle-front.piskel');
 
-	//animate(castleFront, document.getElementById('piece-1'));
+	animate(pisk, document.getElementById('piece-19'));
 
 	animate(pisk, document.getElementById('piece-17'));
 	animate(castleFront, document.getElementById('piece-12'));

@@ -18,14 +18,32 @@ const processChunk = o => c => {
 
 const load = async (url) => {
 	const parsed = await fetch(url).then(x => x.json());
-	console.log(parsed)
 	const {piskel} = parsed;
+	const { width, height } = piskel;
+
 	piskel.layers = piskel.layers.map((x) => JSON.parse(x))
 	const { layers } = piskel;
 	piskel.images = layers.reduce(
 		(a, o) => [ ...a, ...o.chunks.map(processChunk(o)) ],
 		[]
 	);
+	
+	const {frameCount} = piskel.images[0];
+	var c = document.createElement('canvas');
+	c.setAttribute('width', width * frameCount);
+	c.setAttribute('height', height);
+	const ctx = c.getContext('2d');
+	piskel.images.forEach(x => {
+		ctx.save();
+		ctx.drawImage(x.imageEl, 0, 0);
+		ctx.restore();
+	})
+	piskel.all = {
+		img: c.toDataURL('image/png'),
+		width: c.width,
+		height: c.height,
+		frames: frameCount
+	};
 
 	return piskel;
 };

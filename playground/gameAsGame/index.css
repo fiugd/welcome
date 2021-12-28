@@ -18,15 +18,21 @@ body {
 	font-size: 2vmin;
 }
 @media only screen and (min-width: 650px) {
-  body {
-    font-size: 15px;
-  }
+	body {
+		font-size: 15px;
+	}
+	body .header {
+		height: 1.6em;
+		margin-bottom: 0.3em;
+	}
 }
 .header {
 	font-size: 8em;
 	position: relative;
 	height: 1.6em;
 	width: 50%;
+	margin-top: -0.3em;
+	margin-bottom: 0em;
 }
 .header > * {
 	position: absolute;

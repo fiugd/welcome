@@ -29,15 +29,16 @@ const load = async (url) => {
 	);
 	
 	const {frameCount} = piskel.images[0];
-	var c = document.createElement('canvas');
+	const c = document.createElement('canvas');
+	const ctx = c.getContext('2d');
 	c.setAttribute('width', width * frameCount);
 	c.setAttribute('height', height);
-	const ctx = c.getContext('2d');
-	piskel.images.forEach(x => {
-		ctx.save();
+
+	for(var x of piskel.images){
+		//ctx.save(); 
 		ctx.drawImage(x.imageEl, 0, 0);
-		ctx.restore();
-	})
+		//ctx.restore();
+	}
 	piskel.all = {
 		img: c.toDataURL('image/png'),
 		width: c.width,

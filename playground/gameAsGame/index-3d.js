@@ -1,5 +1,5 @@
-import TextureAnimator from './modules/textureAnimate.js';
 import { animate, load } from './piskel.js';
+import TextureAnimator from './modules/textureAnimate.js';
 
 const {
 	Scene,
@@ -96,7 +96,6 @@ const addChar = (x,y, mat) => {
 	if(typeof mat  === "string"){
 		material = new MeshBasicMaterial( { color: mat } )
 	}
-	
 	const yScale = 1.3;
 	const char = new Mesh(
 		new BoxGeometry( 1, 0, yScale ),
@@ -106,7 +105,6 @@ const addChar = (x,y, mat) => {
 	char.position.z = yScale/2;
 	char.position.x = 0.5 - cubeDims.x/2;
 	char.position.y = -1*(yScale/1.4) + cubeDims.y/2;
-
 	char.position.x += (x-1);
 	char.position.y -= (y-1);
 	group.add(char);
@@ -130,7 +128,7 @@ function dummyChars(){
 function someChars(){
 	addChar(1,2, "red");
 	addChar(1,3);
-	addChar(3,3, "yellow");
+	//addChar(3,3, "yellow");
 	addChar(1,1, "orange");
 	addChar(4,5, "blue");
 	addChar(4,4, "indigo");
@@ -146,34 +144,30 @@ group.rotation.x = -0.9;
 
 const charAnimations = [];
 const render = function () {
-	requestAnimationFrame( render );
 	//group.rotation.x += 0.01;
 	//group.rotation.y += 0.01;
 	renderer.render(scene, camera);
 	update();
+	requestAnimationFrame( render );
 };
 
 var clock = new THREE.Clock();
 function update(){
 	var delta = clock.getDelta();
-	charAnimations.forEach(annie => {
-		annie.update(1000 * delta);
-	});
+	//console.log(charAnimations.length)
+	for(var x of charAnimations){
+		if(!x.update) {
+			console.log(x);
+			continue;
+		}
+		x.update(1000 * delta);
+	};
 }
-
-/*
-	https://stemkoski.github.io/Three.js/Texture-Animation.html
-	^^ animate a texture
-
-*/
-
-render();
 
 window.addEventListener(
 	'resize', () => {
 		camera.aspect = window.innerWidth / (window.innerHeight/2);
 		autoZoom(camera);
-
 		camera.updateProjectionMatrix();
 		renderer.setSize( window.innerWidth, window.innerHeight/2 );
 	}
@@ -181,17 +175,21 @@ window.addEventListener(
 
 const placeChar = async (x, y, url) => {
 	const piskel = await load(url);
-	const texture = new TextureLoader().load(piskel.all.img);
-	texture.repeat.set(
-		1/piskel.all.frames,
-		1
-	);
+	const texture = await new Promise((resolve) => {
+		new TextureLoader().load(piskel.all.img, resolve);
+	});
+	texture.repeat.set( 1/piskel.all.frames, 1);
+
 	// texture, #horiz, #vert, #total, duration.
-	charAnimations.push(new TextureAnimator(
+	const animator = new TextureAnimator(
 		texture,
 		piskel.all.frames, 1, piskel.all.frames,
 		40*piskel.fps
-	));
+	);
+	//if(!animator){
+		//console.log(animator)
+	//}
+	charAnimations.push(animator);
 
 	const material = new MeshBasicMaterial({
 			map: texture,
@@ -203,5 +201,8 @@ const placeChar = async (x, y, url) => {
 	addChar(x,y, material);
 };
 
-await placeChar(3,3, './assets/castle-front.piskel');
-await placeChar(2,5, './assets/castle.piskel');
+(async () => {
+	await placeChar(3,3, './assets/castle-front.piskel');
+	await placeChar(2,5, './assets/castle.piskel');
+	render();
+})();

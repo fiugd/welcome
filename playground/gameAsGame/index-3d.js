@@ -63,8 +63,8 @@ void main() {
 	`,
 	fragmentShader: `
 varying vec2 vUv;
-vec4 colorA = vec4(0.1,0.1,0.1, 1.0);
-vec4 colorB = vec4(0.35,0.35,0.35, 1.0);
+vec4 colorA = vec4(0.3,0.3,0.3, 1.0);
+vec4 colorB = vec4(0.45,0.45,0.45, 1.0);
 
 void main() {
 	vec2 center = vec2(
@@ -119,7 +119,7 @@ const placeChar = async (x, y, url) => {
 	const animator = new TextureAnimator(
 		texture,
 		frames, 1, frames,
-		40*piskel.fps
+		1000/piskel.fps
 	);
 	charAnimations.push(animator);
 
@@ -198,6 +198,7 @@ window.addEventListener(
 
 await placeChar(3,3, './assets/castle-front.piskel');
 await placeChar(1,1, './assets/king-front.piskel');
+await placeChar(2,2, './assets/queen-front.piskel');
 await placeChar(1,3, './assets/castle-front.piskel');
 await placeChar(3,2, './assets/castle-front.piskel');
 

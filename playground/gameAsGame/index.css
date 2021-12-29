@@ -16,6 +16,12 @@ body {
 	align-items: center;
 	margin-top: 1em;
 	font-size: 2vmin;
+	background: linear-gradient(
+		0deg,
+		#002,
+		#014f66
+	);
+}
 }
 body > canvas {
 	image-rendering: pixelated;

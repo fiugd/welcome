@@ -197,7 +197,7 @@ window.addEventListener(
 );
 
 await placeChar(3,3, './assets/castle-front.piskel');
-await placeChar(1,1, './assets/castle-front.piskel');
+await placeChar(1,1, './assets/king-front.piskel');
 await placeChar(1,3, './assets/castle-front.piskel');
 await placeChar(3,2, './assets/castle-front.piskel');
 

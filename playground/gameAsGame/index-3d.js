@@ -13,7 +13,7 @@ const {
 } = THREE;
 
 const autoZoom = (camera) => {
-	camera.position.z = 20 + (window.innerWidth < 650
+	camera.position.z = 22 + (window.innerWidth < 650
 		? Math.floor(4500 / window.innerWidth)
 		: 0);
 };
@@ -21,9 +21,10 @@ const autoZoom = (camera) => {
 
 const setup = () => {
 	var scene = new Scene();
+	const height = window.innerHeight/2;
 	var camera = new PerspectiveCamera(
 		10,
-		window.innerWidth/(window.innerHeight/2),
+		window.innerWidth/height,
 		0.1,
 		1000
 	);
@@ -33,7 +34,7 @@ const setup = () => {
 		antialias:false,
 		alpha: true
 	});
-	renderer.setSize( window.innerWidth, window.innerHeight/2 );
+	renderer.setSize( window.innerWidth, height );
 	document.body.appendChild( renderer.domElement );
 
 	return {
@@ -44,6 +45,9 @@ const setup = () => {
 };
 
 const { renderer, camera, scene } = setup();
+
+const group = new THREE.Group();
+scene.add(group);
 
 const cubeDims = {
 	x: 4,
@@ -60,7 +64,7 @@ void main() {
 	fragmentShader: `
 varying vec2 vUv;
 vec4 colorA = vec4(0.1,0.1,0.1, 1.0);
-vec4 colorB = vec4(0.3,0.3,0.3, 1.0);
+vec4 colorB = vec4(0.35,0.35,0.35, 1.0);
 
 void main() {
 	vec2 center = vec2(
@@ -74,18 +78,11 @@ void main() {
 }
 	`
 } );
-
-const group = new THREE.Group();
-scene.add(group);
-
-const cube = new Mesh(
+const board = new Mesh(
 	new BoxGeometry( cubeDims.x, cubeDims.y, 0),
 	shaderMat
-	//new MeshBasicMaterial( { color: "grey" } )
 );
-group.add(cube);
-
-//scene.add( cube );
+group.add(board);
 
 const addChar = (x,y, mat) => {
 	let material;
@@ -111,7 +108,30 @@ const addChar = (x,y, mat) => {
 
 	return char;
 };
+const placeChar = async (x, y, url) => {
+	const piskel = await load(url);
+	const { canvas, frames } = piskel.all;
+	const texture = new THREE.Texture(canvas);
+	texture.needsUpdate = true;
+	//texture.repeat.set( 1/frames, 1);
 
+	// texture, #horiz, #vert, #total, duration.
+	const animator = new TextureAnimator(
+		texture,
+		frames, 1, frames,
+		40*piskel.fps
+	);
+	charAnimations.push(animator);
+
+	const material = new MeshBasicMaterial({
+		map: texture,
+		transparent: true
+	});
+	material.map.anisotropy = 0;
+	material.map.magFilter = THREE.NearestFilter;
+	material.map.minFilter = THREE.NearestMipmapNearestFilter;
+	addChar(x,y, material);
+};
 
 function dummyChars(){
 	for(var i=1; i<=cubeDims.x; i++){
@@ -151,10 +171,11 @@ const render = function () {
 	requestAnimationFrame( render );
 };
 
-var clock = new THREE.Clock();
+var clock;
 function update(){
-	var delta = clock.getDelta();
-	//console.log(charAnimations.length)
+	if(!charAnimations.length) return;
+	clock = clock || new THREE.Clock();
+	const delta = clock.getDelta();
 	for(var x of charAnimations){
 		if(!x.update) {
 			console.log(x);
@@ -164,45 +185,23 @@ function update(){
 	};
 }
 
+
 window.addEventListener(
 	'resize', () => {
-		camera.aspect = window.innerWidth / (window.innerHeight/2);
+		const height = window.innerHeight/2;
+		camera.aspect = window.innerWidth / height;
 		autoZoom(camera);
 		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, window.innerHeight/2 );
+		renderer.setSize( window.innerWidth, height );
 	}
 );
 
-const placeChar = async (x, y, url) => {
-	const piskel = await load(url);
-	const texture = await new Promise((resolve) => {
-		new TextureLoader().load(piskel.all.img, resolve);
-	});
-	texture.repeat.set( 1/piskel.all.frames, 1);
+await placeChar(3,3, './assets/castle-front.piskel');
+await placeChar(1,1, './assets/castle-front.piskel');
+await placeChar(1,3, './assets/castle-front.piskel');
+await placeChar(3,2, './assets/castle-front.piskel');
 
-	// texture, #horiz, #vert, #total, duration.
-	const animator = new TextureAnimator(
-		texture,
-		piskel.all.frames, 1, piskel.all.frames,
-		40*piskel.fps
-	);
-	//if(!animator){
-		//console.log(animator)
-	//}
-	charAnimations.push(animator);
-
-	const material = new MeshBasicMaterial({
-			map: texture,
-			transparent: true
-	});
-	material.map.anisotropy = 0;
-	material.map.magFilter = THREE.NearestFilter;
-	material.map.minFilter = THREE.NearestMipmapNearestFilter;
-	addChar(x,y, material);
-};
-
-(async () => {
-	await placeChar(3,3, './assets/castle-front.piskel');
-	await placeChar(2,5, './assets/castle.piskel');
-	render();
-})();
+await placeChar(2,5, './assets/castle.piskel');
+await placeChar(1,4, './assets/castle.piskel');
+await placeChar(4,3, './assets/castle.piskel');
+render();

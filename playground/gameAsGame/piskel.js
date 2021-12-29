@@ -13,6 +13,9 @@ const processChunk = o => c => {
 	};
 	x.imageEl = new Image();
 	x.imageEl.src=x.img;
+	x.loaded = new Promise((resolve) => {
+		x.imageEl.onload = resolve;
+	});
 	return x;
 };
 
@@ -27,20 +30,25 @@ const load = async (url) => {
 		(a, o) => [ ...a, ...o.chunks.map(processChunk(o)) ],
 		[]
 	);
-	
+	await Promise.all(
+		piskel.images.map(x => x.loaded)
+	);
+
 	const {frameCount} = piskel.images[0];
 	const c = document.createElement('canvas');
 	const ctx = c.getContext('2d');
 	c.setAttribute('width', width * frameCount);
 	c.setAttribute('height', height);
+	//ctx.globalCompositeOperation = 'source-over';
+	//ctx.clearRect(0, 0, c.width, c.height);
 
 	for(var x of piskel.images){
-		//ctx.save(); 
+		//ctx.save();
 		ctx.drawImage(x.imageEl, 0, 0);
 		//ctx.restore();
 	}
 	piskel.all = {
-		img: c.toDataURL('image/png'),
+		canvas: c,
 		width: c.width,
 		height: c.height,
 		frames: frameCount

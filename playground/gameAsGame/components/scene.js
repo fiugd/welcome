@@ -4,6 +4,7 @@ const {
 	WebGLRenderer,
 
 	HemisphereLight,
+	PointLight,
 
 	BoxGeometry,
 	PlaneGeometry,
@@ -49,6 +50,10 @@ const setup = () => {
 		1.5
 	);
 	scene.add(light);
+
+	// const point = new PointLight( "#f00", 0.6, 100 );
+	// point.position.set( 0, -10, 30 );
+	// scene.add(point);
 
 	scene.position.y += 1;
 

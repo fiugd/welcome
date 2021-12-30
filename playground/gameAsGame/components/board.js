@@ -16,8 +16,8 @@ const setup = (cubeDims, group) => {
 		`,
 		fragmentShader: `
 	varying vec2 vUv;
-	vec4 colorA = vec4(0.3,0.3,0.3, 1.0);
-	vec4 colorB = vec4(0.45,0.45,0.45, 1.0);
+	vec4 colorA = vec4(0.3,0.32,0.3, 1.0);
+	vec4 colorB = vec4(0.45,0.47,0.45, 1.0);
 
 	void main() {
 		vec2 center = vec2(
@@ -39,7 +39,7 @@ const setup = (cubeDims, group) => {
 	const baseDepth = 0.6;
 	const boardBase = new Mesh(
 		new BoxGeometry( cubeDims.x+0.2, cubeDims.y+0.2, baseDepth),
-		new MeshLambertMaterial( { color: "#301a1a" } )
+		new MeshLambertMaterial( { color: "#432" } )
 	);
 	boardBase.position.z = -(baseDepth * 0.51);
 

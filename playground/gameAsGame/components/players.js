@@ -58,7 +58,7 @@ const placeChar = (charAnimations, cubeDims, group) => async (x, y, url) => {
 		map: texture,
 		transparent: true
 	});
-	material.map.anisotropy = 0;
+	material.map.anisotropy = 16;
 	material.map.magFilter = THREE.NearestFilter;
 	material.map.minFilter = THREE.NearestMipmapNearestFilter;
 	addChar(x,y, material, cubeDims, group);

@@ -9,15 +9,19 @@ const boardDims = {
 };
 
 const characters = [
-	[3,3, './assets/castle-front.piskel'],
 	[1,1, './assets/king-front.piskel'],
-	[2,2, './assets/queen-front.piskel'],
 	[3,1, './assets/bishop-front.piskel'],
+	[4,1, './assets/castle-front.piskel'],
+	
+	[2,2, './assets/queen-front.piskel'],
+	
 	[1,3, './assets/castle-front.piskel'],
-
-	[2,5, './assets/castle.piskel'],
-	[1,4, './assets/castle.piskel'],
 	[4,3, './assets/castle.piskel'],
+
+	[1,4, './assets/bishop-front.piskel'],
+	
+	[2,5, './assets/castle.piskel'],
+	[4,5, './assets/queen-front.piskel'],
 ];
 
 const { group, renderer, scene: _scene } = scene.setup();
@@ -30,9 +34,13 @@ const { animate } = await players.setup(characters, boardDims, group);
 group.rotation.x = -0.9;
 //group.rotation.x = -Math.PI/2;
 
+let added = 0
+let it = 0.00015;
 const render = () => {
-	//group.rotation.x += 0.01;
-	//group.rotation.y += 0.01;
+	group.rotation.x -= it;
+	group.rotation.z += it;
+	added += it;
+	if(Math.abs(added) > 0.1) it *= -1;
 	renderer.render();
 	animate();
 	requestAnimationFrame( render );

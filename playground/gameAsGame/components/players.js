@@ -1,4 +1,4 @@
-import { load } from '../piskel.js';
+import { load } from '../modules/piskel.js';
 import TextureAnimator from '../modules/textureAnimate.js';
 
 const {

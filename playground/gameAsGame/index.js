@@ -3,13 +3,19 @@ import {
 	players, board, scene, logo, menu
 } from './components/index.js';
 
-menu.setup([{
-	name: 'Fake Menu Item',
+const menuItems = [{
+	name: 'play',
 	click: () => {
-		console.log('clicked hello');
-		return false;
+		console.log('clicked play');
 	}
-}]);
+}, {
+	name: 'collect',
+	click: () => {
+		console.log('clicked collect');
+	}
+}]
+
+menu.setup(menuItems);
 
 const boardDims = {
 	x: 4,

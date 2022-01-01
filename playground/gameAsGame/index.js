@@ -1,7 +1,15 @@
 
 import {
-	players, board, scene, logo
+	players, board, scene, logo, menu
 } from './components/index.js';
+
+menu.setup([{
+	name: 'Fake Menu Item',
+	click: () => {
+		console.log('clicked hello');
+		return false;
+	}
+}]);
 
 const boardDims = {
 	x: 4,

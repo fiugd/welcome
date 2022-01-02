@@ -3,7 +3,7 @@ const mainCss = `
 		color: #c6ffec;
 		background: rgb(67 154 179);
 		font-family: 'Orbitron', sans-serif;
-		font-size: 2em;
+		font-size: 3em;
 	}
 	#menu li:hover {
 		color: white;

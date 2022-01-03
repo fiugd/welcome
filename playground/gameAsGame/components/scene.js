@@ -15,20 +15,26 @@ const {
 
 var camera, renderer, scene;
 
+// const height = 1536;
+// const width = 2048;
+const height = 1024;
+const width = 768;
+
 const autoZoom = () => {
-	camera.position.z = 45 + (window.innerWidth < 650
-		? Math.floor(4500 / window.innerWidth)
+	camera.position.z = 45 + (width < 650
+		? Math.floor(4500 / width)
 		: 0);
 };
+
+
 
 const setup = () => {
 	THREE.Cache.enabled = true;
 
 	scene = new Scene();
-	const height = window.innerHeight;
 	camera = new PerspectiveCamera(
 		10,
-		window.innerWidth/height,
+		width/height,
 		0.1,
 		1000
 	);
@@ -38,7 +44,7 @@ const setup = () => {
 		antialias:false,
 		alpha: true
 	});
-	renderer.setSize( window.innerWidth, height );
+	renderer.setSize( width, height );
 	document.body.appendChild( renderer.domElement );
 
 	const group = new Group();
@@ -69,11 +75,12 @@ const setup = () => {
 
 window.addEventListener(
 	'resize', () => {
-		const height = window.innerHeight;
-		camera.aspect = window.innerWidth / height;
-		autoZoom();
-		camera.updateProjectionMatrix();
-		renderer.setSize( window.innerWidth, height );
+		//const height = 600; //window.innerHeight;
+		//const width = 800; //window.innerWidth;
+		// camera.aspect = width / height;
+		//autoZoom();
+		//camera.updateProjectionMatrix();
+		//renderer.setSize( window.innerWidth, height );
 	}
 );
 

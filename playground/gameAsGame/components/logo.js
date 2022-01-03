@@ -38,9 +38,9 @@ const setup = async (scene) => {
 	scene.add(await textMesh({
 		text: 'GAME',
 		fontUrl: 'https://raw.githubusercontent.com/components-ai/typefaces/main/packages/font-orbitron/data/typefaces/normal-400.json',
-		size: 0.65,
+		size: 0.55,
 		height: 2,
-		curveSegments: 2,
+		curveSegments: 12,
 		color: "#9fd",
 		center: true,
 		y: 2.4
@@ -53,9 +53,9 @@ const setup = async (scene) => {
 		text: 'game',
 		fontUrl: mountains,
 		size: 0.4,
-		height: 0.5,
+		height: 0.0,
 		curveSegments: 12,
-		color: "#f4c",
+		color: "#f3c",
 		z: 1,
 		x: -0.44,
 		y: 1.95

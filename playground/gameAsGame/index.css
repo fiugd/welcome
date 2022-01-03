@@ -18,14 +18,19 @@ body {
 	font-size: 2vmin;
 	background: linear-gradient(
 		0deg,
-		rgb(26 16 2),
-		rgb(74 177 209)
+		rgb(0 0 0),
+		rgb(50 0 0),
+		rgb(138 110 130)
 	);
 	height: 100vh;
 }
-}
-body > canvas {
+
+canvas {
 	image-rendering: pixelated;
+	width: 100% !important;
+	height: auto !important;
+	max-width: 850;
+	max-height: 1536;
 }
 @media only screen and (min-width: 650px) {
 	body {

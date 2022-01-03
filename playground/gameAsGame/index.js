@@ -11,6 +11,11 @@ const menuItems = [{
 		console.log('clicked play');
 	}
 }, {
+	name: 'create',
+	click: () => {
+		console.log('clicked create');
+	}
+}, {
 	name: 'collect',
 	click: () => {
 		console.log('clicked collect');

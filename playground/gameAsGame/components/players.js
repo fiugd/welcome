@@ -54,14 +54,23 @@ const placeChar = (charAnimations, cubeDims, group) => async (x, y, url) => {
 	);
 	charAnimations.push(animator);
 
-	const material = new MeshBasicMaterial({
+	const material = new MeshLambertMaterial({
 		map: texture,
+		emissiveIntensity: 0.3,
+		emissive: new THREE.Color(1, 1, 1),
+		emissiveMap: texture,
+		//specularMap: texture,
 		transparent: true
 	});
-	material.map.anisotropy = 16;
+	//material.map.anisotropy = 16;
 	material.map.magFilter = THREE.NearestFilter;
-	material.map.minFilter = THREE.NearestMipmapNearestFilter;
-	addChar(x,y, material, cubeDims, group);
+	//material.map.minFilter = THREE.NearestMipmapNearestFilter;
+	const char = addChar(x,y, material, cubeDims, group);
+	char.name = `${url.split('/').pop().replace('.piskel', '')} [${x}, ${y}]`;
+	char.data = {
+		x,y
+	};
+	return char;
 };
 
 function dummyChars(){
@@ -101,12 +110,14 @@ const setup = async (characters, cubeDims, group) => {
 	const _placeChar = placeChar(
 		charAnimations, cubeDims, group
 	);
+	const players = [];
 	for(var charArgs of characters){
-		await _placeChar(...charArgs);
+		players.push(await _placeChar(...charArgs));
 	}
 	const clock = new Clock();
 	return {
-		animate: () => animate(clock, charAnimations)
+		animate: () => animate(clock, charAnimations),
+		players
 	};
 };
 

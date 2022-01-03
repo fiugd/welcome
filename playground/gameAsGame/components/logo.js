@@ -40,7 +40,7 @@ const setup = async (scene) => {
 		fontUrl: 'https://raw.githubusercontent.com/components-ai/typefaces/main/packages/font-orbitron/data/typefaces/normal-400.json',
 		size: 0.65,
 		height: 2,
-		curveSegments: 6,
+		curveSegments: 2,
 		color: "#9fd",
 		center: true,
 		y: 2.4
@@ -54,7 +54,7 @@ const setup = async (scene) => {
 		fontUrl: mountains,
 		size: 0.4,
 		height: 0.5,
-		curveSegments: 6,
+		curveSegments: 12,
 		color: "#f4c",
 		z: 1,
 		x: -0.44,

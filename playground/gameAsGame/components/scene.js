@@ -46,20 +46,21 @@ const setup = () => {
 
 	const light = new HemisphereLight(
 		'white', //"#fef",
-		'#623', //"#465",
-		1.5
+		'#444', //"#465",
+		1.8
 	);
 	scene.add(light);
 
-	// const point = new PointLight( "#f00", 0.6, 100 );
-	// point.position.set( 0, -10, 30 );
-	// scene.add(point);
+	const point = new PointLight( "#ffbbf0", 0.1, 10 );
+	point.position.set( 0, 5, -1 );
+	scene.add(point);
 
-	scene.position.y += 1;
+	scene.position.y += 1.1;
 
 	return {
 		group,
 		scene,
+		camera,
 		renderer: {
 			render: () => renderer.render(scene, camera)
 		}

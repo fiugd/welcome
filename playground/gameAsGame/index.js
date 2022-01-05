@@ -32,18 +32,18 @@ const boardDims = {
 const characters = [
 	[1,1, './assets/bishop-front.piskel'],
 	[2,1, './assets/king-front.piskel'],
-	[3,1, './assets/knight.piskel'],
+	[3,1, './assets/knight-front.piskel'],
 	[4,1, './assets/castle-front.piskel'],
 	
 	[2,3, './assets/queen-front.piskel'],
 	
 	[1,3, './assets/castle-front.piskel'],
-	[3,3, './assets/castle.piskel'],
-	[4,3, './assets/knight.piskel'],
+	[3,3, './assets/castle-back.piskel'],
+	[4,3, './assets/knight-front.piskel'],
 
 	[1,4, './assets/bishop-front.piskel'],
 	
-	[2,5, './assets/castle.piskel'],
+	[2,5, './assets/castle-back.piskel'],
 	[4,5, './assets/queen-front.piskel'],
 ];
 

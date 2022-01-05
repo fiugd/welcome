@@ -23,6 +23,7 @@ body {
 		rgb(138 110 130)
 	);
 	height: 100vh;
+	overflow: hidden;
 }
 
 canvas {

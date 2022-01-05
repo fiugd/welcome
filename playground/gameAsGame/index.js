@@ -39,7 +39,7 @@ const characters = [
 	
 	[1,3, './assets/castle-front.piskel'],
 	[3,3, './assets/castle-back.piskel'],
-	[4,3, './assets/knight-front.piskel'],
+	[4,3, './assets/knight-back.piskel'],
 
 	[1,4, './assets/bishop-front.piskel'],
 	

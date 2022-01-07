@@ -37,7 +37,11 @@ MVP for this idea:
     - king acts according to strategy upgrades
     - king has limited bandwidth/range
     - players without leadership perform as individuals
-
+    - king communication/orders
+        - commands: move(will attack if not empty), attack(won't move to)
+        - limited communication speed/bandwidth
+    - king actually "is" the meta moderator of the realm?
+    - creator actually "is" the bishop or queen?
 
 [threejs pixelated look](https://joooooo308.medium.com/three-js-pixelated-lo-fi-energy-look-298b8dc3eaad)
 

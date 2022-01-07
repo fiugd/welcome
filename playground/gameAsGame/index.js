@@ -30,23 +30,26 @@ const boardDims = {
 };
 
 const characters = [
-	[1,1, './assets/bishop-front.piskel'],
+	[1,1, './assets/castle-front.piskel'],
 	[2,1, './assets/king-front.piskel'],
-	[3,1, './assets/knight-front.piskel'],
-	[4,1, './assets/castle-front.piskel'],
+	[3,1, './assets/queen-front.piskel'],
+	[4,1, './assets/knight-front.piskel'],
 	
-	[2,3, './assets/queen-front.piskel'],
-	
-	[1,3, './assets/castle-front.piskel'],
-	[3,3, './assets/castle-back.piskel'],
-	[4,3, './assets/knight-back.piskel'],
+	[1,2, './assets/bishop-front.piskel'],
+	[2,2, './assets/pawn-front.piskel'],
+	[3,2, './assets/pawn-front.piskel'],
+	[4,2, './assets/bishop-front.piskel'],
 
 	[1,4, './assets/bishop-back.piskel'],
-	[3,4, './assets/pawn-front.piskel'],
-	
-	[2,5, './assets/castle-back.piskel'],
-	[3,5, './assets/pawn-back.piskel'],
-	[4,5, './assets/queen-front.piskel'],
+	[2,4, './assets/pawn-back.piskel'],
+	[3,4, './assets/pawn-back.piskel'],
+	[4,4, './assets/bishop-back.piskel'],
+
+	[1,5, './assets/knight-back.piskel'],
+	[2,5, './assets/queen-front.piskel'],
+	[3,5, './assets/king-front.piskel'],
+	[4,5, './assets/castle-back.piskel'],
+
 ];
 
 const {

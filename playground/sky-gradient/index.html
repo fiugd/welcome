@@ -1,0 +1,70 @@
+<html>
+	<head>
+		<title>Sky Gradient</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="index.css">
+		<meta name="color-scheme" content="dark light">
+		<script src="https://cdn.jsdelivr.net/gh/mourner/suncalc/suncalc.js"></script>
+	</head>
+	<style>
+		body { margin: 0; background: black; }
+		#latlong {
+			position: absolute;
+			font-family: sans-serif;
+			padding: 1em;
+		}
+		#sky, #ground {
+			position: absolute;
+			width: 100vw;
+			height: 50vh;
+		}
+		#sky { top: 0vh; z-index: 0;}
+		#ground { top: 50vh; z-index: 2; }
+		#sun, #moon {
+			position: relative;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			margin-right: auto;
+			margin-left: 15vmin;
+		}
+		#sun {
+			background: yellow;
+		}
+		#moon {
+/* 			background: #fff7; */
+			background: radial-gradient(circle at -10px 0px, #fffc, #000f);
+		}
+		#sun-contain, #moon-contain {
+			position: absolute;
+			width: 100vw;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			z-index: 1;
+		}
+		#sun-contain {
+			transform: rotateZ(45deg)
+		}
+		#moon-contain {
+			transform: rotateZ(90deg);
+		}
+	</style>
+	<body>
+		<div id="sky"></div>
+		<div id="ground"></div>
+		<div id="latlong"></div>
+		<div id="sun-contain">
+			<div id="sun"></div>
+		</div>
+		<div id="moon-contain">
+			<div id="moon"></div>
+		</div>
+	</body>
+	<script src="./index.js" type="module"></script>
+</html>

@@ -2,7 +2,8 @@ const locEl = document.getElementById('latlong');
 const sunEl = document.getElementById('sun-contain');
 const moonEl = document.getElementById('moon-contain');
 
-const timeAngle = (start, end, current) => {
+const timeAngle = (start, end) => {
+	const current = dayjs();
 	const date1 = dayjs(start)
 	const date2 = dayjs(end);
 	return 180 * date1.diff(current) / date1.diff(date2);
@@ -60,14 +61,14 @@ const getWeather = async ({lat, long}) => {
 
 const getColors = async ({lat, long}) => {
 	const { sunrise, sunset, weather} = await getWeather({lat, long});
-	locEl.innerText += 
+	locEl.innerText = 
 `${weather||'weather API error'}
 ⬆ ${sunrise.toLocaleString()}
 ⬇ ${sunset.toLocaleString()}
 ${lat}, ${long}
 `;
-	moonEl.style.transform = `rotateZ(${-1*timeAngle(sunset, sunrise, dayjs())}deg)`
-	sunEl.style.transform = `rotateZ(${timeAngle(sunrise, sunset, dayjs())}deg)`
+	moonEl.style.transform = `rotateZ(${timeAngle(sunset, sunrise)}deg)`
+	sunEl.style.transform = `rotateZ(${-1*timeAngle(sunrise, sunset)}deg)`
 
 	// use time of day
 	// use location
@@ -92,11 +93,14 @@ const changeColors = ({ sky, ground }, {lat, long}) => {
 	groundEl.style.background = `linear-gradient(0deg, ${ground[0]}, ${ground[1]})`;
 };
 
-(async () => {
+const refresh = async () => {
 	const lat = '34.021648';
 	const long = '-84.361671';
 	
 	const colors = await getColors({lat, long});
 	//console.log(colors)
 	changeColors(colors, {lat, long});
-})()
+};
+
+refresh();
+setInterval(refresh, 60 * 1000);

@@ -1,0 +1,43 @@
+body { margin: 0; background: black; }
+#latlong {
+	position: absolute;
+	font-family: sans-serif;
+	padding: 1em;
+}
+#sky, #ground {
+	position: absolute;
+	width: 100vw;
+}
+#sky { top: 0vh; height: 70vh; z-index: 0;}
+#ground { top: 70vh; z-index: 2; height: 30vh;}
+#sun, #moon {
+	position: relative;
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	margin-left: auto;
+	margin-right: 15vmin;
+}
+#sun {
+	background: yellow;
+}
+#moon {
+/* 			background: #fff7; */
+	background: radial-gradient(circle at -10px 0px, #fffc, #000f);
+}
+#sun-contain, #moon-contain {
+	position: absolute;
+	width: 100vw;
+	height: 10vh;
+	top: 70vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+}
+#sun-contain {
+	transform: rotateZ(-1deg)
+}
+#moon-contain {
+	transform: rotateZ(-1deg);
+}

@@ -8,7 +8,9 @@
 		<meta name="mobile-web-app-capable" content="yes">
 		<link rel="stylesheet" href="index.css">
 		<meta name="color-scheme" content="dark light">
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 		<script src="https://cdn.jsdelivr.net/gh/mourner/suncalc/suncalc.js"></script>
+		<script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 	</head>
 	<style>
 		body { margin: 0; background: black; }
@@ -20,10 +22,9 @@
 		#sky, #ground {
 			position: absolute;
 			width: 100vw;
-			height: 50vh;
 		}
-		#sky { top: 0vh; z-index: 0;}
-		#ground { top: 50vh; z-index: 2; }
+		#sky { top: 0vh; height: 70vh; z-index: 0;}
+		#ground { top: 70vh; z-index: 2; height: 30vh;}
 		#sun, #moon {
 			position: relative;
 			width: 30px;
@@ -42,17 +43,18 @@
 		#sun-contain, #moon-contain {
 			position: absolute;
 			width: 100vw;
-			height: 100vh;
+			height: 10vh;
+			top: 70vh;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			z-index: 1;
 		}
 		#sun-contain {
-			transform: rotateZ(45deg)
+			transform: rotateZ(-1deg)
 		}
 		#moon-contain {
-			transform: rotateZ(90deg);
+			transform: rotateZ(-1deg);
 		}
 	</style>
 	<body>

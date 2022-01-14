@@ -1,4 +1,12 @@
 const locEl = document.getElementById('latlong');
+const sunEl = document.getElementById('sun-contain');
+const moonEl = document.getElementById('moon-contain');
+
+const timeAngle = (start, end, current) => {
+	const date1 = dayjs(start)
+	const date2 = dayjs(end);
+	return 180 * date1.diff(current) / date1.diff(date2);
+};
 
 
 const cachedFetch = (url, options) => {
@@ -10,22 +18,22 @@ const cachedFetch = (url, options) => {
 		expiry = options.seconds || expiry
 	}
 	let cacheKey = url
-	let cached = localStorage.getItem(cacheKey)
-	let whenCached = localStorage.getItem(cacheKey + ':ts')
+	let cached = sessionStorage.getItem(cacheKey)
+	let whenCached = sessionStorage.getItem(cacheKey + ':ts')
 	if (cached !== null && whenCached !== null) {
 		let age = (Date.now() - whenCached) / 1000
 		if (age < expiry) {
 			let response = new Response(new Blob([cached]))
 			return Promise.resolve(response)
 		} else {
-			localStorage.removeItem(cacheKey)
-			localStorage.removeItem(cacheKey + ':ts')
+			sessionStorage.removeItem(cacheKey)
+			sessionStorage.removeItem(cacheKey + ':ts')
 		}
 	}
 	return fetch(url, options).then(response => {
 		response.clone().text().then(content => {
-			localStorage.setItem(cacheKey, content)
-			localStorage.setItem(cacheKey+':ts', Date.now())
+			sessionStorage.setItem(cacheKey, content)
+			sessionStorage.setItem(cacheKey+':ts', Date.now())
 		})
 		return response;
 	})
@@ -58,6 +66,9 @@ const getColors = async ({lat, long}) => {
 ⬇ ${sunset.toLocaleString()}
 ${lat}, ${long}
 `;
+	moonEl.style.transform = `rotateZ(${-1*timeAngle(sunset, sunrise, dayjs())}deg)`
+	sunEl.style.transform = `rotateZ(${timeAngle(sunrise, sunset, dayjs())}deg)`
+
 	// use time of day
 	// use location
 
@@ -86,6 +97,6 @@ const changeColors = ({ sky, ground }, {lat, long}) => {
 	const long = '-84.361671';
 	
 	const colors = await getColors({lat, long});
-	console.log(colors)
+	//console.log(colors)
 	changeColors(colors, {lat, long});
 })()

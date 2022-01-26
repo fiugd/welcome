@@ -1,5 +1,5 @@
 
-body { margin: 0; background: black; }
+body { margin: 0; background: black; overflow: hidden; }
 #latlong {
 	position: absolute;
 	font-family: sans-serif;
@@ -45,7 +45,7 @@ body { margin: 0; background: black; }
 
 .slidecontainer {
 	position: fixed;
-	bottom: 0;
+	bottom: 1vh;
 	z-index: 9;
 	right: 0;
 	left: 0;

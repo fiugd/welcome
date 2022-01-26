@@ -1,3 +1,4 @@
+
 body { margin: 0; background: black; }
 #latlong {
 	position: absolute;
@@ -28,7 +29,7 @@ body { margin: 0; background: black; }
 #sun-contain, #moon-contain {
 	position: absolute;
 	width: 100vw;
-	height: 10vh;
+	height: 0vh;
 	top: 70vh;
 	display: flex;
 	justify-content: center;
@@ -41,3 +42,13 @@ body { margin: 0; background: black; }
 #moon-contain {
 	transform: rotateZ(-1deg);
 }
+
+.slidecontainer {
+	position: fixed;
+	bottom: 0;
+	z-index: 9;
+	right: 0;
+	left: 0;
+	padding: 0 1em;
+}
+.slidecontainer input { width: 100%; }

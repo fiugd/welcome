@@ -1,6 +1,7 @@
 const locEl = document.getElementById('latlong');
 const sunEl = document.getElementById('sun-contain');
 const moonEl = document.getElementById('moon-contain');
+const timeSlider = document.getElementById('time-slider');
 
 const timeAngle = (start, end) => {
 	const current = dayjs();
@@ -59,6 +60,11 @@ const getWeather = async ({lat, long}) => {
 	}
 };
 
+const rotateCelestial = (deg) => {
+	moonEl.style.transform = `rotateZ(${deg}deg)`
+	sunEl.style.transform = `rotateZ(${deg-180}deg)`
+}
+
 const getColors = async ({lat, long}) => {
 	const { sunrise, sunset, weather} = await getWeather({lat, long});
 	locEl.innerText = 
@@ -67,8 +73,8 @@ const getColors = async ({lat, long}) => {
 ⬇ ${sunset.toLocaleString()}
 ${lat}, ${long}
 `;
-	moonEl.style.transform = `rotateZ(${timeAngle(sunset, sunrise)}deg)`
-	sunEl.style.transform = `rotateZ(${-1*timeAngle(sunrise, sunset)}deg)`
+	rotateCelestial();
+	timeSlider.value = timeAngle(sunset, sunrise)*100/360;
 
 	// use time of day
 	// use location
@@ -102,5 +108,12 @@ const refresh = async () => {
 	changeColors(colors, {lat, long});
 };
 
+const sliderChange = (e) => {
+	//console.log(e.target.value)
+	rotateCelestial(e.target.value*360/100)
+};
+timeSlider.addEventListener("change", sliderChange);
+timeSlider.addEventListener("input", sliderChange);
+
 refresh();
-setInterval(refresh, 60 * 1000);
+//setInterval(refresh, 60 * 1000);

@@ -2,6 +2,9 @@
 	some help from: https://omrelli.ug/nearley-playground/
 
 	codemirror mode: https://codemirror.net/mode/ebnf/index.html
+	
+	https://en.wikipedia.org/wiki/Comparison_of_parser_generators
+	https://www.ics.uci.edu/~pattis/ICS-33/lectures/ebnf.pdf
 */
 
 const version = '2.20'; //nearley version

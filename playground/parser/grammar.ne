@@ -89,7 +89,6 @@
 		document.body.innerHTML += `<pre>${l}: ${type}${
 			fn ? fn(d) : ''
 		}</pre>`;
-		//return d;
 	};
 %}
 
@@ -97,9 +96,10 @@
 @lexer lexer
 
 main -> (statement _ %NL):*
+{% function(d) {return "yay!"; } %}
 
 statement
-	-> %EXIT              {% output('exit') %}
+	-> %EXIT              {% function(d) {return "yay!"; } %}
 	| %comment            {% output('comment') %}
 	| declaration _ ";"   {% output('declaration', (d) => d)%}
 	| assignment _ ";"    {% output('assignment: ', (d) => d)%}

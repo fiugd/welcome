@@ -41,18 +41,18 @@ intdet x;
 
 window.require = (p) => window[p];
 
-const parse = (compiledGrammar, input) => {
+const parse = (compiledGrammar, input, verbose=true) => {
 	const parserGrammar = nearley.Grammar.fromCompiled(compiledGrammar);
-	const parser = new nearley.Parser(parserGrammar);
+	const parser = new nearley.Parser(parserGrammar, { keepHistory: true });
 	parser.feed(input);
-	//console.log(parser.lexer)
 	return parser.results;
 };
 
 const compile = async (input, opts={}) => {
 	const { default: NearlyBoot } = await import('./nearlyBoot.js');
-	const results = parse(NearlyBoot, input);
+	const results = parse(NearlyBoot, input, false);
 	const c = Compile(results[0], { ...opts, version });
+	//console.log(generate(c,opts.export));
 	return eval(generate(c,opts.export));
 }
 
@@ -65,10 +65,10 @@ const render = (text, className) => {
 try {
 	const opts = { export: 'exampleParse' };
 	const grammar = await fetch('./grammar.ne').then(x => x.text());
-	const exampleParser = await compile(grammar, opts);
+	await compile(grammar, opts);
 	const res = parse(window.exampleParse, code);
-	//console.log(res)
-	render(res);
+	console.log(res)
+	render(res); 
 } catch(e){
 	render(e, 'error');
 }

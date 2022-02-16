@@ -9,71 +9,43 @@
 
 const version = '2.20'; //nearley version
 
-const test = `
-6 * 7
-1 times 9
-sin 42
-`.trim().split('\n');
+const code = `
+#sample
 
-const exampleGrammar = `
-@{%
-	// Moo lexer documention is here:
-	// https://github.com/no-context/moo
+func say(){
+	show("Good day!");
+}
 
-	const moo = require("moo")
-	const lexer = moo.compile({
-		ws:     /[ \t]+/,
-		number: /[0-9]+/,
-		times: /\\*|times/,
-		word: /[a-z]+/,
-	});
-%}
+a+a;
+y=a;
+con float eu = 2.71;
 
-# Pass your lexer with @lexer:
-@lexer lexer
+ENTER();
+intde x;
+string sample = "Hello World!";
+show(sample,1.1,2,"string");
 
-main -> trig | multiplication {% ([first]) => first %}
+x++;
+x = y[10] + 1;
+x=eu + 3.142222;
+show("hello", x, y, z, 1.1, 2, null);
+say();
+EXIT
 
-# %token matches any token of that type
-multiplication -> %number %ws %times %ws %number {% ([first, , , , second]) => first * second %}
+/*
+multiline comment
+intdet x;
+*/
 
-# literal strings match lexed tokens with their exact text
-trig -> "sin" %ws %number {% ([, ,third]) => Math.sin(third) %}
-`.trim();
-
-
+`.trim() + '';
 
 window.require = (p) => window[p];
-
-function warn(opts, str) {
-	opts.out("WARN"+"\t" + str + "\n");
-}
-
-function lintNames(grm, opts) {
-	var all = [];
-	grm.rules.forEach(function(rule) {
-		all.push(rule.name);
-	});
-	grm.rules.forEach(function(rule) {
-		rule.symbols.forEach(function(symbol) {
-			if (!symbol.literal && !symbol.token && symbol.constructor !== RegExp) {
-				if (all.indexOf(symbol) === -1) {
-					warn(opts,"Undefined symbol `" + symbol + "` used.");
-				}
-			}
-		});
-	});
-}
-
-function lint(grm, opts) {
-	if (!opts.out) opts.out = console.error;
-	lintNames(grm, opts);
-}
 
 const parse = (compiledGrammar, input) => {
 	const parserGrammar = nearley.Grammar.fromCompiled(compiledGrammar);
 	const parser = new nearley.Parser(parserGrammar);
 	parser.feed(input);
+	//console.log(parser.lexer)
 	return parser.results;
 };
 
@@ -81,24 +53,22 @@ const compile = async (input, opts={}) => {
 	const { default: NearlyBoot } = await import('./nearlyBoot.js');
 	const results = parse(NearlyBoot, input);
 	const c = Compile(results[0], { ...opts, version });
-	if (!opts.quiet) lint(c, { out: console.warn, version });
 	return eval(generate(c,opts.export));
 }
 
 const render = (text, className) => {
-	document.body.innerHTML = `
+	document.body.innerHTML += `
 	<pre class="${className||''}">${text}</pre>
 	`.trim();
 };
 
 try {
 	const opts = { export: 'exampleParse' };
-	const exampleParser = await compile(exampleGrammar, opts);
-	const parser = (input) => [
-		input,
-		parse(window.exampleParse, input)
-	].join(' => ');
-	render(test.map(parser).join('\n'));
+	const grammar = await fetch('./grammar.ne').then(x => x.text());
+	const exampleParser = await compile(grammar, opts);
+	const res = parse(window.exampleParse, code);
+	//console.log(res)
+	render(res);
 } catch(e){
 	render(e, 'error');
 }

@@ -76,11 +76,14 @@ async function findRomBuffer () {
 	});
 }
 
+//ROMS: https://github.com/aduros/webuxn/tree/master/roms
+const webuxnBase = "https://cdn.jsdelivr.net/gh/aduros/webuxn@1c796b4c";
+
 (async function () {
 	// Load all assets in parallel
 	const [webuxn, wasmBuffer, romBuffer] = await Promise.all([
-		import("https://aduros.com/webuxn/webuxn.js"),
-		fetchArrayBuffer("https://aduros.com/webuxn/webuxn.wasm"),
+		import(webuxnBase + "/webuxn.js"),
+		fetchArrayBuffer(webuxnBase + "./webuxn.wasm"),
 		findRomBuffer(),
 	]);
 

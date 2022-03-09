@@ -1,5 +1,45 @@
 const screenCanvas = document.getElementById("screen");
-const loadButton = document.getElementById("load-button");
+//const loadButton = document.getElementById("load-button");
+const romSelector = document.getElementById("rom-selector");
+
+function addRoms(changeHandler){
+	const roms = [
+		"animation",
+		"asma",
+		"audio.channels",
+		"audio",
+		"automata",
+		"bifurcan",
+		"console.lib",
+		"console",
+		"controller.buttons",
+		"controller.keys",
+		"darena",
+		"datetime",
+		"drum-rack",
+		"file.load",
+		"file",
+		"file.save",
+		"hover",
+		"label",
+		"life",
+		"mouse",
+		"musictracker",
+		"neralie",
+		"piano",
+		"picture",
+		"polycat",
+		"proportional-font",
+		"screen",
+		"shapes",
+		"theme",
+		"wallpaper"
+	];
+	romSelector.innerHTML = romSelector.innerHTML + roms.map(r =>
+		`<option value="${r}">${r}</option>`
+	).join('\n');
+	romSelector.onchange = changeHandler;
+}
 
 async function fetchArrayBuffer (url) {
 		const response = await fetch(url);
@@ -45,7 +85,8 @@ async function findRomBuffer () {
 	const url = new URL(document.location);
 
 	// Try to get an URL from the ?rom query string
-	const romUrl = url.searchParams.get("rom");
+	//const romUrl = url.searchParams.get("rom");
+	const romUrl = 'https://cdn.jsdelivr.net/gh/aduros/webuxn@1c796b4c/roms/life.rom';
 	if (romUrl) {
 		return fetchArrayBuffer(romUrl);
 	}
@@ -80,12 +121,16 @@ async function findRomBuffer () {
 const webuxnBase = "https://cdn.jsdelivr.net/gh/aduros/webuxn@1c796b4c";
 
 (async function () {
-	// Load all assets in parallel
-	const [webuxn, wasmBuffer, romBuffer] = await Promise.all([
-		import(webuxnBase + "/webuxn.js"),
-		fetchArrayBuffer(webuxnBase + "./webuxn.wasm"),
-		findRomBuffer(),
-	]);
+	screenCanvas.style.visibility = 'hidden';
+	const webuxn = await import(webuxnBase + "/webuxn.js");
+	const wasmBuffer = await fetchArrayBuffer("./webuxn.wasm");
 
-	webuxn.run(wasmBuffer, romBuffer, screenCanvas);
+	const romSwitch = async (e) => {
+		romSelector.style.display = 'none';
+		screenCanvas.style.visibility = '';
+		const romUrl = `${webuxnBase}/roms/${e.target.value}.rom`;
+		const romBuffer = await fetchArrayBuffer(romUrl)
+		webuxn.run(wasmBuffer, romBuffer, screenCanvas);
+	};
+	addRoms(romSwitch);
 })();

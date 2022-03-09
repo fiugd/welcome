@@ -25,6 +25,11 @@ body {
 }
 #load-button, #screen {
 	flex: 1;
-	max-width: 768px;
-	max-height: 512px;
+/* 	max-width: 768px;
+	max-height: 512px; */
+}
+#rom-selector {
+	position: absolute;
+	user-select: none;
+	top: 15vh;
 }

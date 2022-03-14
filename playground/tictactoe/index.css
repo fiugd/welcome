@@ -3,9 +3,52 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin: 0;
 }
 
-canvas {
-	background: #333;
-	width: 100%;
+.game-board {
+	display: grid;
+	grid-template-rows: 200px 200px 200px;
+	grid-template-columns: 200px 200px 200px;
+}
+
+.box {
+	border: 5px solid white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: currentColor;
+	font-size: 200px;
+	font-family: sans-serif;
+}
+.game-board .box:nth-child(3n) {
+  border-right: 0;
+}
+.game-board .box:nth-child(-n+3) {
+  border-top: 0;
+}
+.game-board .box:nth-child(-n+3) {
+  border-top: 0;
+}
+.game-board .box:nth-child(n+7):nth-child(-n+10){
+	border-bottom: 0;
+}
+.game-board .box:nth-child(1),
+.game-board .box:nth-child(4),
+.game-board .box:nth-child(7){
+	border-left: 0;
+}
+
+.box:hover {
+	background: #555;
+}
+.box.win {
+	color: yellow;
+}
+
+.status {
+	position: absolute;
+	top: 17px;
+	font-size: 2em;
+	font-family: sans-serif;
 }

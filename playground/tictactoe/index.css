@@ -8,8 +8,8 @@ body {
 
 .game-board {
 	display: grid;
-	grid-template-rows: 200px 200px 200px;
-	grid-template-columns: 200px 200px 200px;
+	grid-template-rows: 33vw 33vw 33vw;
+	grid-template-columns: 33vw 33vw 33vw;
 }
 
 .box {
@@ -18,7 +18,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	color: currentColor;
-	font-size: 200px;
+	font-size: 33vw;
 	font-family: sans-serif;
 }
 .game-board .box:nth-child(3n) {

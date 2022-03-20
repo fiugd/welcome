@@ -1,4 +1,5 @@
 import SimplePeer from 'https://cdn.skypack.dev/simple-peer/simplepeer.min.js';
+import Store from './store.js';
 
 const form = document.querySelector('form');
 const incoming = document.querySelector('#incoming');
@@ -9,6 +10,14 @@ const roleLabel = document.querySelector('.role-label');
 const outCopy = document.querySelector('#outgoing-copy');
 const outPaste = document.querySelector('#outgoing-paste');
 const chatSend = document.querySelector('#chat-send');
+
+let answer;
+let offer;
+const refreshStore = async () => {
+	const stored = await Store.read();
+	offer = stored.filter(({type}) => type === 'offer').pop();
+	answer = stored.filter(({type}) => type === 'answer').pop()
+};
 
 let ready = false;
 let isClient = !(localStorage.getItem('webrtc-host') || false);
@@ -87,27 +96,45 @@ outCopy.addEventListener('click', (e) => {
 		outPaste.style.display = '';
 		logEl.textContent = '';
 		log('now give token to client and paste their answer')
+		Store.write(newClip);
 	}
 });
 outPaste.addEventListener('click', async (e) => {
 	e.preventDefault();
 	try {
-		const clipText = await navigator.clipboard.readText();
-		const i = JSON.parse(clipText);
-		p.signal(i);
+		await refreshStore();
+		const clientHasOffer = isClient && offer;
+		const hostHasAnswer = !isClient && answer;
+		if(clientHasOffer){
+			p.signal(offer);
+			console.log(offer);
+		}
+		if(hostHasAnswer){
+			p.signal(answer);
+			console.log(answer);
+		}
+		if(!hostHasAnswer && !clientHasOffer){
+			const clipText = await navigator.clipboard.readText();
+			const i = JSON.parse(clipText);
+			p.signal(i);
+		}
+		if(isClient){
+			outPaste.style.display = 'none';
+			await sleep(500);
+			const answer = outgoing.textContent;
+			if(clientHasOffer){
+				Store.write(answer);
+			} else {
+				navigator.clipboard.writeText(answer);
+			}
+			logEl.textContent = '';
+			log('your token/answer copied to clipboard - share with host');
+		}
+		if(!isClient){
+			outPaste.style.display = 'none';
+		}
 	} catch(e){
 		log(e.message)
-	}
-	if(isClient){
-		outPaste.style.display = 'none';
-		await sleep(500);
-		const newClip = outgoing.textContent;
-		navigator.clipboard.writeText(newClip);
-		logEl.textContent = '';
-		log('your token/answer copied to clipboard - share with host');
-	}
-	if(!isClient){
-		outPaste.style.display = 'none';
 	}
 });
 
@@ -115,7 +142,11 @@ if(isClient){
 	log('clip "paste" to add a token from a host');
 	outCopy.style.display = 'none';
 }
-if(!isClient){
-	log('click "copy" to get started');
-	outPaste.style.display = 'none';
+if(!isClient && answer){
+	log('click "copy" to extend an offer');
+	log('click "paste" to accept client answer');
+	//outCopy.style.display = 'none';
 }
+
+
+console.log(await Store.read())

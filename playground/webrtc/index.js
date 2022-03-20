@@ -112,10 +112,10 @@ outPaste.addEventListener('click', async (e) => {
 });
 
 if(isClient){
-	log('paste a token from a host');
+	log('clip "paste" to add a token from a host');
 	outCopy.style.display = 'none';
 }
 if(!isClient){
-	log('click "connect" to get started');
+	log('click "copy" to get started');
 	outPaste.style.display = 'none';
 }

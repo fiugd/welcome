@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<title>Web RTC</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="index.css">
+		<meta name="color-scheme" content="dark light">
+	</head>
+
+	<body>
+		<form>
+			<div class="role-switcher">
+				<label class="switch">
+					<input id="role" type="checkbox">
+					<span class="slider round"></span>
+				</label>
+				<label class="role-label">client</label>
+			</div>
+			<pre id="log"></pre>
+			<textarea id="incoming" style="display: none;"></textarea>
+			<button id="chat-send" type="submit" style="display: none;">submit</button>
+			<pre id="outgoing"></pre>
+			<button id="outgoing-copy">copy</button>
+			<button id="outgoing-paste">paste</button>
+		</form>
+
+	</body>
+
+	<script type="module" src="index.js"></script>
+</html>
+
+

@@ -75,12 +75,12 @@ button#chat-send {
 	border-radius: 5px;
 	text-transform: uppercase;
 	/* color: ButtonText; */
-	color: ButtonFace;
+	color: GrayText;
 	background: transparent;
 	height: 2.75em;
 }
 button#chat-send:hover {
-	color: Highlight;
+	color: ButtonText;
 }
 @media (hover: none) {
 	button#chat-send:hover { color: inherit; }

@@ -50,19 +50,31 @@ body #outgoing {
 	display: block;
 	padding: 10px;
 	flex: 1;
+	font-family: sans-serif;
+	line-height: 2em;
+	font-size: 0.9em;
 }
 input#incoming {
 	height: calc(1em + 25px);
 	min-height: calc(1em + 25px);
 	flex: 1;
+	border: 0;
+	background: transparent;
+	border-top: 0.1px solid ButtonFace;
+	border-radius: 9px;
+	padding-top: 2em;
+	padding-bottom: 2em;
 }
 button#chat-send {
 	border: 0;
-	background: #5c855c;
+	background: ButtonFace;
 	padding: 5px;
-	right: 7px;
+	right: 1.25em;
 	position: absolute;
 	margin: 0;
+	border-radius: 5px;
+	text-transform: uppercase;
+	color: ButtonText;
 }
 .chat-input {
 	display: flex;

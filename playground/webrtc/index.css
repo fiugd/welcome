@@ -82,7 +82,7 @@ button#chat-send {
 button#chat-send:hover {
 	color: ButtonText;
 }
-@media (hover: none) {
+@media (hover: none) and (pointer: coarse) {
 	button#chat-send:hover { color: inherit; }
 }
 button#chat-send svg {

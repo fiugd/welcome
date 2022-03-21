@@ -92,7 +92,7 @@ outCopy.addEventListener('click', (e) => {
 	e.preventDefault();
 	if(!checkClip()) return;
 	const newClip = outgoing.textContent;
-	navigator.clipboard.writeText(newClip);
+	//navigator.clipboard.writeText(newClip);
 	if(!isClient){
 		outCopy.style.display = 'none';
 		outPaste.style.display = '';
@@ -119,7 +119,7 @@ outPaste.addEventListener('click', async (e) => {
 			await sleep(500);
 			const answer = outgoing.textContent;
 			Store.write(answer);
-			navigator.clipboard.writeText(answer);
+			//navigator.clipboard.writeText(answer);
 			logEl.textContent = '';
 			log('your token/answer copied to clipboard - share with host');
 		}

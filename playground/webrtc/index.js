@@ -10,6 +10,7 @@ const roleLabel = document.querySelector('.role-label');
 const outCopy = document.querySelector('#outgoing-copy');
 const outPaste = document.querySelector('#outgoing-paste');
 const chatSend = document.querySelector('#chat-send');
+const chatInput = document.querySelector('.chat-input');
 
 let answer;
 let offer;
@@ -54,8 +55,7 @@ p.on('connect', () => {
 	logEl.textContent = '';
 	log('CONNECTED\n');
 	ready = true;
-	incoming.style.display = ''
-	chatSend.style.display = '';
+	chatInput.style.display = '';
 });
 
 p.on('data', data => {

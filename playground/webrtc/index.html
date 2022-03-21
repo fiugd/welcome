@@ -11,22 +11,26 @@
 	</head>
 
 	<body>
-		<form>
-			<div class="role-switcher">
-				<label class="switch">
-					<input id="role" type="checkbox">
-					<span class="slider round"></span>
-				</label>
-				<label class="role-label">client</label>
-			</div>
-			<pre id="log"></pre>
-			<textarea id="incoming" style="display: none;"></textarea>
-			<button id="chat-send" type="submit" style="display: none;">submit</button>
-			<pre id="outgoing"></pre>
-			<button id="outgoing-copy">copy</button>
-			<button id="outgoing-paste">paste</button>
-		</form>
-
+		<div class="chat-wrapper">
+			<form>
+				<div class="role-switcher">
+					<label class="switch">
+						<input id="role" type="checkbox">
+						<span class="slider round"></span>
+					</label>
+					<label class="role-label">client</label>
+				</div>
+				<pre id="log"></pre>
+				<div class="chat-input" style="display: none;">
+					<input id="incoming" type="text" autocomplete="off"></input>
+					<button id="chat-send" type="submit">submit</button>
+				</div>
+				<pre id="outgoing"></pre>
+				<button id="outgoing-copy">copy</button>
+				<button id="outgoing-paste">paste</button>
+			</form>
+		</div>
+		
 	</body>
 
 	<script type="module" src="index.js"></script>

@@ -73,6 +73,7 @@ form.addEventListener('submit', ev => {
 		p.send(incoming.value.trim());
 		log(' YOU: ' + incoming.value.trim());
 		incoming.value = '';
+		incoming.focus();
 	}
 });
 

@@ -6,9 +6,9 @@ const write = async (message) => {
 			method: 'POST',
 			body: JSON.stringify({ message })
 		};
-		const { message: resMessage } = await fetch(anonyak + '/client', config)
+		const res = await fetch(anonyak + '/client', config)
 			.then(x => x.json());
-		return JSON.parse(resMessage);
+		return res;
 	} catch(e){
 		console.log(e);
 		return { error: 'failed to create'}
@@ -20,6 +20,7 @@ const read = async () => {
 		const { items } = await fetch(anonyak + '/host')
 			.then(x => x.json());
 		return items
+			.sort((a, b) => a.ttl - b.ttl)
 			.map(x => {
 				try { return JSON.parse(x.message); }
 				catch(e){ return; }

@@ -18,6 +18,7 @@ const refreshStore = async () => {
 	offer = stored.filter(({type}) => type === 'offer').pop();
 	answer = stored.filter(({type}) => type === 'answer').pop()
 };
+refreshStore();
 
 let ready = false;
 let isClient = !(localStorage.getItem('webrtc-host') || false);
@@ -105,14 +106,8 @@ outPaste.addEventListener('click', async (e) => {
 		await refreshStore();
 		const clientHasOffer = isClient && offer;
 		const hostHasAnswer = !isClient && answer;
-		if(clientHasOffer){
-			p.signal(offer);
-			console.log(offer);
-		}
-		if(hostHasAnswer){
-			p.signal(answer);
-			console.log(answer);
-		}
+		if(clientHasOffer) p.signal(offer);
+		if(hostHasAnswer) p.signal(answer);
 		if(!hostHasAnswer && !clientHasOffer){
 			const clipText = await navigator.clipboard.readText();
 			const i = JSON.parse(clipText);
@@ -122,11 +117,8 @@ outPaste.addEventListener('click', async (e) => {
 			outPaste.style.display = 'none';
 			await sleep(500);
 			const answer = outgoing.textContent;
-			if(clientHasOffer){
-				Store.write(answer);
-			} else {
-				navigator.clipboard.writeText(answer);
-			}
+			Store.write(answer);
+			navigator.clipboard.writeText(answer);
 			logEl.textContent = '';
 			log('your token/answer copied to clipboard - share with host');
 		}
@@ -135,6 +127,7 @@ outPaste.addEventListener('click', async (e) => {
 		}
 	} catch(e){
 		log(e.message)
+		console.log(e)
 	}
 });
 
@@ -147,6 +140,3 @@ if(!isClient && answer){
 	log('click "paste" to accept client answer');
 	//outCopy.style.display = 'none';
 }
-
-
-console.log(await Store.read())

@@ -45,3 +45,5 @@ MVP for this idea:
 
 [threejs pixelated look](https://joooooo308.medium.com/three-js-pixelated-lo-fi-energy-look-298b8dc3eaad)
 
+## Game description languages:
+- [GDL](https://en.wikipedia.org/wiki/Game_Description_Language)

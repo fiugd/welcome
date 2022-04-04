@@ -1,0 +1,15 @@
+{
+	status: '',
+	win: '',
+	player: 'X',
+	history: [],
+	boardDim: {
+		x: 5,
+		y: 5
+	},
+	board: [
+		[],
+		[],
+		[],
+	]
+}

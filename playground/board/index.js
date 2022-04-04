@@ -46,6 +46,6 @@ document.body.onpointerdown = (e) => {
 
 	const pieces = Array.from(boardDom.querySelectorAll('div'));
 	// placePiece(pieces[1],'X');
-	placePiece(pieces[12],'O');
+	//placePiece(pieces[12],'O');
 
 })();

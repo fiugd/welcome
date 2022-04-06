@@ -1,3 +1,16 @@
 body {
   font-family: 'Raleway', sans-serif;
 }
+
+.feed-item > a {
+    color: #c6a769;
+}
+
+.content span:first-child {
+    color: #977f67;
+}
+
+.content > span+span:before {
+    content: " | ";
+    color: #666;
+}

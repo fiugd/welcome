@@ -88,13 +88,14 @@
 				<div class="feed-item ${className}">
 					<a href="${link}">${title}</a>
 					<div class="content">
-					${_content || ''}
+					${_content ? _content.split('\n')[0] : ''}
 					${ title !== 'Hacker News: Front Page'
 						? `<span>
 								<a href="https://widgets.getpocket.com/v1/popup?url=${link}" target="popup">add to pocket</a>
 							<span>`
 						: ''
 					}
+					${_content ? _content.split('\n').slice(1).join('\n') : ''}
 					</div>
 				</div>`;
 		};

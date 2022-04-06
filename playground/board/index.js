@@ -1,6 +1,8 @@
 import JSON5 from 'https://cdn.skypack.dev/json5';
 
 const boardDom = document.querySelector('.game-board');
+const statusDom = document.querySelector('.status');
+const dimForm = document.getElementById('dims');
 
 const requireJSON = async (url) => {
 	return await fetch(url).then(async (x) => JSON5.parse(await x.text()));
@@ -34,9 +36,7 @@ document.body.onpointerdown = (e) => {
 	boxClickHandler(e);
 };
 
-(async() => {
-	const def = await requireJSON('./game.json');
-	const { boardDim: dim } = def;
+const render = (dim) => {
 	boardDom.innerHTML = new Array(dim.x*dim.y).fill('<div class="box"></div>').join('\n')
 	// boardDom.style.gridTemplateRows = new Array(dim.x).fill(90/dim.x + 'vw').join(' ');
 	// boardDom.style.gridTemplateColumns = new Array(dim.y).fill(90/dim.y + 'vw').join(' ');
@@ -45,7 +45,19 @@ document.body.onpointerdown = (e) => {
 	boardDom.style.gridTemplateColumns = `repeat(${dim.y}, 1fr)`;
 
 	const pieces = Array.from(boardDom.querySelectorAll('div'));
-	// placePiece(pieces[1],'X');
-	//placePiece(pieces[12],'O');
+	
+	statusDom.textContent = `${dim.x} x ${dim.y}`;
+};
 
-})();
+dimForm.addEventListener("submit", (e) => {
+	e.preventDefault();
+	const formData = new FormData(e.target);
+	const formProps = Object.fromEntries(formData);
+	render(formProps)
+}, false);
+
+document.body.onload = async() => {
+	const def = await requireJSON('./game.json');
+	const { boardDim: dim } = def;
+	render(dim);
+};

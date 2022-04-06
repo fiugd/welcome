@@ -6,11 +6,31 @@
 
 body {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+/* 	justify-content: center; */
 	align-items: center;
 	margin: 0;
 	height: 100vh;
 	width: 100vw;
+}
+
+body, input, button {
+	font-size: 5vmax;
+	font-family: sans-serif;
+}
+
+input {
+	border: 0;
+	text-align: center;
+}
+
+button.refresh {
+	padding: 0;
+	border-radius: 50%;
+	width: 1.5em;
+	height: 1.5em;
+	border: 0;
+	text-align: center;
 }
 
 .game-board {
@@ -70,8 +90,7 @@ body {
 }
 
 .status {
-	position: absolute;
-	top: 17px;
-	font-size: 2em;
-	font-family: sans-serif;
+/* 	position: absolute;
+	top: 17px; */
 }
+#dims, .status { margin: 1em; }

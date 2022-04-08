@@ -79,7 +79,11 @@
 		(async () => {
 			const parser = new RSSParser();
 			const CORS_PROXY = 'https://api.allorigins.win/raw?url='
+			
 			const feedUrl = "https://hnrss.org/frontpage";
+			const hnRss = "https://news.ycombinator.com/rss";
+			const lobsRss = "https://lobste.rs/rss";
+			
 			const feed = await parser.parseURL(CORS_PROXY+feedUrl);
 			FeedItem(feed, 'title');
 			feed.items.forEach(FeedItem);

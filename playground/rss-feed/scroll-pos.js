@@ -37,7 +37,11 @@ class State {
 }
 
 /*
-TODO: what happens if the size of the window has changed since last time (Desktop)?
+TODO:
+
+- what happens if the size of the window has changed since last time (Desktop)?
+
+	- saved scroll positions should have a timeout of some sort
 */
 
 (async () => {

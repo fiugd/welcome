@@ -5,6 +5,27 @@ import './scroll-pos.js';
 
 const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
+const Notes = () => `
+<pre class="notes">
+	THE POINT OF THIS:
+	I'd like to read/track news my way
+
+	That means:
+	- stored where I want and how I want
+	- bubble: there are some things I just don't want to think about
+	- alerts: some things I don't want to miss
+	- search: retrieve what I stored via search
+	- discover: on searched and saved items
+
+	TODO:
+	- saving to pocket is a blinding flash of light
+	- saving to pocket requires pocket login (elsewhere in browser)
+
+</pre>
+<a class="notes" href="https://hnrss.github.io/">HN RSS feeds</a>
+`;
+
+
 const FeedItem = (item, className='') => {
 	const { title, link, content, comments, categories=[] } = item;
 
@@ -63,20 +84,6 @@ const LobsFeedItem = (item, className='') => {
 	console.log(item)
 	return FeedItem(item, className);
 };
-
-const Notes = () => `
-	<pre class="notes">
-		THE POINT OF THIS:
-		I'd like to read/track news my way
-
-		That means:
-		- stored where I want and how I want
-		- bubble: there are some things I just don't want to think about
-		- alerts: some things I don't want to miss
-		- search: I want to retrieve what I stored via search; would also be nice to discover based on search
-	</pre>
-	<a class="notes" href="https://hnrss.github.io/">HN RSS feeds</a>
-`;
 
 const dedupe = (feeds) => {
 	const dupeFilter = (index) => (item) => {

@@ -1,3 +1,5 @@
+import './scroll-pos.js';
+
 //import rssParser from 'https://cdn.skypack.dev/rss-parser';
 //console.log(rssParser)
 
@@ -32,7 +34,7 @@ const FeedItem = (item, className='') => {
 	}
 	document.body.innerHTML += `
 		<div class="feed-item ${className}">
-			<div class="flex-col">
+			<div class="flex-col feed-title">
 				<a href="${link}">${title}</a>
 				<div class="categories">
 					${ categories.map(x => `<span>${x}</span>`).join('\n')}
@@ -127,4 +129,6 @@ const reOrder = (feeds) => {
 	}
 
 	document.body.innerHTML += Notes();
+
+	document.body.dispatchEvent(new CustomEvent("RSSdone", { bubbles: true }));
 })();

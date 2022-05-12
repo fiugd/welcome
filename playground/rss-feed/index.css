@@ -12,6 +12,7 @@ a {
 	color: #a73;
 	text-decoration: none;
 }
+.feed-title a { color: #c2822e; }
 .flex-row {
 	display: flex;
 	flex-direction: row;

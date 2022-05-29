@@ -104,6 +104,14 @@
 			background: var(--bg-1);
 			letter-spacing: 0.15em;
 		}
+		button#left {
+			margin-left: auto;
+			margin-right: 1em;
+		}
+		button#right {
+			margin-left: 1em;
+			margin-right: auto;
+		}
 	</style>
 
 	<body>
@@ -124,7 +132,9 @@
 			</div>
 			<div>
 				<!-- <input id="search" type="tel" pattern="\d*" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"> -->
+				<button id="left">⬅</button>
 				<input id="search" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+				<button id="right">⮕</button>
 			</div>
 		</div>
 	</body>
@@ -151,7 +161,6 @@
 		const fromText = document.getElementById('from-text');
 		const baseText = document.getElementById('base-text');
 		const toText = document.getElementById('to-text');
-		const search = document.getElementById('search');
 
 		const MAX_POKE_ID = 898;
 		search.value = random(1, MAX_POKE_ID);
@@ -183,8 +192,15 @@
 		search.onclick = function() {
 			search.selectionStart = 0;
 			search.selectionEnd = search.value.length;
-		}
-		
+		};
+		left.onclick = () => {
+			search.value = Number(search.value) - 1;
+			searchAndShow();
+		};
+		right.onclick = () => {
+			search.value = Number(search.value) + 1;
+			searchAndShow();
+		};
 		allImages.onclick = (e) => {
 			const {name} = e.target.dataset;
 			if(!name) return;

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>container tests</title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="mobile-web-app-capable" content="yes">
+		<meta name="color-scheme" content="dark light">
+		<link rel="icon" href="../shared/favicon.svg">
+	</head>
+
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		canvas {
+			background: white;
+			width:99%;
+			image-rendering: pixelated;
+			max-width: 66vw;
+		}
+	</style>
+
+	<body onload="cityInABottle()">
+		<a href="https://twitter.com/KilledByAPixel/status/1517294627996545024">original</a>
+		<canvas id="c">
+	</body>
+
+	<script>
+		const DELAY_AMOUNT = 70;
+		const delay = (d) => new Promise((r) => setTimeout(r,d))
+		let t = 100;
+		const ctx = c.getContext`2d`;
+		c.height = 60;
+
+		async function render(){
+			for(
+				c.width=w=99,++t,i=6e3;
+				i--;
+				ctx.fillRect(
+					i%w,
+					i/w|0,
+					1-d*Z/w+s,
+					1
+				)
+			)
+				for(
+					a=i%w/50-1,s=b=1-i/4e3,X=t,Y=Z=d=1;
+					++Z<w & (
+						Y<6-(
+							32<Z&27<X%w&&X/9^Z/8
+						) * 8%46||d|(
+							s=(X&Y&Z)%3/Z,a=b=1,d=Z/w
+						)
+					);
+					Y-=b
+				){
+					X+=a
+				}
+			await delay(DELAY_AMOUNT);
+			window.requestAnimationFrame(render);
+		}
+		function cityInABottle(){
+			window.requestAnimationFrame(render);
+		}
+	</script>
+</html>

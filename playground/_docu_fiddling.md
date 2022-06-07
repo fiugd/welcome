@@ -27,24 +27,60 @@ hello
 
 
 
-An example of CS highlight in editor, by CodeMirror.
+CSS/Stylus highlighting in editor
+
 ```css
   #foo { color: red; }
 ```
 
-Less/Sass/Stylus don't seem to get the same
-```text/less
+```stylus
+@import "reset.css"
+@require "compass/*"
+
+font-size = 24px
+
+a()
+  text-decoration underline
+
+border-width()
+  3px
+
+body
+  font font-size sans-serif
+  a()
+  border border-width() solid pink
+
+bg-color = #1a1a1a
+bg-color-a = #1a1a1aff
+bg-color-a-low = #1a1a1a11
+top-grad = linear-gradient(bg-color-a, bg-color-a-low)
+bot-grad = linear-gradient(bg-color-a-low, bg-color-a)
+
 #foo
   color red
 ```
-```text/sass
+
+
+Less/Sass don't seem to get the same
+
+text/less
+```css
 #foo
   color red
 ```
-```text/styl
+
+text/scss
+```css
+@import "compass/css3";
+$variable: #333;
+
+$blue: #3bbfce;
+$margin: 16px;
+
 #foo
   color red
 ```
+
 
 
 It's cool that CodeMirror gives highlighting here!  Would be even cooler to have prism (or something similar) highlighting the preview..

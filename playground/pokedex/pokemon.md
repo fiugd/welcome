@@ -13,7 +13,7 @@ Gen 2: 1999-2002    - GBC    - Gold, Silver and Crystal
 Gen 3: 2002-2006    - GBA    - Ruby, Sapphire, Emerald, LeafGreen, and FireRed (G1 Remake)
 Gen 4: 2006-2010    - DS     - Diamond, Pearl, Platinum, HeartGold, and SoulSilver (G2 Remake)
 Gen 5: 2010-2013    - DS     - Black, White, Black 2, and White 2
-Gen 6: 2013-2016    - 3DS    - X, Y, Omega Ruby, and Alpha Sapphire (G3 Remake)
+Gen 6: 2013-2016    - 3DS    - X, Y (Oct 2013), Omega Ruby, and Alpha Sapphire (G3 Remake, Nov 2014)
 Gen 7: 2016-2019    - 3DS/SW - Sun, Moon, Ultra Sun, Ultra Moon, Let's Go Pikachu! and Let's Go Eevee!
 Gen 8: 2019-Present - SW     - Sword and Shield, Legends: Arceus, Brilliant Diamond, and Shining Pearl (G4 Remake)
 

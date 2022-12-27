@@ -11,7 +11,7 @@ export { random } from 'https://cdn.skypack.dev/lodash';;
 const POKE_SEARCH_STRING = 'curs';
 
 import Papa from 'https://cdn.skypack.dev/papaparse';
-import ansiEscapes from 'https://cdn.skypack.dev/ansi-escapes';
+import ansiEscapes from 'https://cdn.skypack.dev/ansi-escapes@5';
 const pokedexUrl = 'https://raw.githubusercontent.com/crosshj/data/main/pokedex.csv';
 const pokeSpeciesUrl = 'https://raw.githubusercontent.com/veekun/pokedex/master/pokedex/data/csv/pokemon_species.csv';
 

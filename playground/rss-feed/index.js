@@ -26,6 +26,15 @@ const Notes = () => `
 `;
 
 
+const showError = (e) => {
+	const errorsDiv = document.querySelector('.errors');
+	console.log(e);
+	const errorPre = document.createElement('pre');
+	errorPre.innerHTML = e.stack;
+	errorsDiv.querySelector('.items').append(errorPre);
+	errorsDiv.classList.remove('hidden');
+};
+
 const FeedItem = (item, className='') => {
 	const { title, link, content, comments, categories=[] } = item;
 
@@ -125,17 +134,37 @@ const reOrder = (feeds) => {
 	}];
 
 	for(const f of feeds){
-		f.feed = await parser.parseURL(f.url);
+		try {
+			f.feed = await parser.parseURL(f.url);
+		} catch(e){
+			showError(e);
+		}
 	}
-	
-	const process = pipe(dedupe, reOrder);
 
-	for(const {feed, parse} of process(feeds)){
-		parse(feed, 'title');
-		feed.items.forEach(FeedItem);
+	let processedFeeds = [];
+	try {
+		const process = pipe(dedupe, reOrder);
+		processedFeeds = process(feeds);
+	} catch(e){
+		showError(e);
+	}
+
+	for(const {feed, parse} of processedFeeds){
+		try {
+			parse(feed, 'title');
+			feed.items.forEach(FeedItem);
+		} catch(e){
+			showError(e);
+		}
 	}
 
 	document.body.innerHTML += Notes();
+	
+	try {
+		throw new Error('oops!');
+	} catch(e){
+		showError(e);
+	}
 
 	document.body.dispatchEvent(new CustomEvent("RSSdone", { bubbles: true }));
 })();

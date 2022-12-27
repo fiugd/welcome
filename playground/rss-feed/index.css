@@ -7,7 +7,8 @@ body {
 	align-items: center;
 	justify-content: space-between;
 }
-body > * { width: 90%; }
+.hidden { display: none; }
+body > .feed-item { width: 90%; }
 a {
 	color: #a73;
 	text-decoration: none;
@@ -68,4 +69,60 @@ pre { white-space: pre-line; }
 	font-size: 0.8em;
 	background: #212121;
 	color: grey;
+}
+
+.errors {
+	bottom: 0;
+	right: 0;
+	top: 0;
+	left: 0;
+}
+.errors .menu {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin: 1em;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	background: #171717;
+	color: #978067;
+	box-shadow: 0 0 0px 2px currentColor;
+	transform: rotateZ(0deg);
+	transition: transform 0.45s;
+}
+.errors .menu:hover {
+	color: white;
+	background: black;
+}
+.errors .items {
+	display: none;
+	background: #171717;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	padding: 1em;
+	overflow: scroll;
+	overscroll-behavior: contain;
+	padding-bottom: 76px;
+}
+.errors .items pre {
+	border: 1px solid;
+	border-radius: 5px;
+	padding: 2em;
+	white-space: pre;
+	overflow: scroll;
+}
+input[type=checkbox] {
+	transition: all 0.3s;
+	box-sizing: border-box;
+	display: none;
+}
+input[type="checkbox"]:checked ~ .items {
+	display: block;
+}
+input[type="checkbox"]:checked ~ .menu {
+	transform: rotateZ(180deg);
 }

@@ -159,12 +159,6 @@ const reOrder = (feeds) => {
 	}
 
 	document.body.innerHTML += Notes();
-	
-	try {
-		throw new Error('oops!');
-	} catch(e){
-		showError(e);
-	}
 
 	document.body.dispatchEvent(new CustomEvent("RSSdone", { bubbles: true }));
 })();

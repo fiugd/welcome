@@ -14,9 +14,7 @@
 		li { list-style: none; padding: 0.5em 1em;}
 	</style>
 
-	<body>
-		<p>some experiments:</p>
-	</body>
+	<body></body>
 
 	<script>
 		const experiments = [
@@ -44,6 +42,14 @@
 			['playground/cityBottle/index', 'City In a Bottle'],
 		];
 
+		const others = [
+			['https://crosshj.com', 'crosshj.com'],
+			['https://chimpjuice.com', 'chimpjuice.com'],
+		];
+
+		const experimentsHeader = document.createElement('p');
+		experimentsHeader.textContent = 'experiments:';
+		document.body.append(experimentsHeader);
 		experiments.forEach(exp => {
 			const element = document.createElement('div');
 			exp = Array.isArray(exp)
@@ -52,6 +58,22 @@
 			element.innerHTML = `
 				<li>
 					<a href="./${exp[0]}.html">${exp[1]}</a>
+				</li>
+			`;
+			document.body.append(element);
+		});
+
+		const otherHeader = document.createElement('p');
+		otherHeader.textContent = 'other:';
+		document.body.append(otherHeader);
+		others.forEach(exp => {
+			const element = document.createElement('div');
+			exp = Array.isArray(exp)
+				? exp
+				: [exp,exp]
+			element.innerHTML = `
+				<li>
+					<a href="${exp[0]}">${exp[1]}</a>
 				</li>
 			`;
 			document.body.append(element);

@@ -1,3 +1,6 @@
+/*
+	thumbnails: https://github.com/fiugd/welcome/issues/3
+*/
 const experiments = [
 	['playground/state-machine/index', 'State Machine', 'Explore state machine concepts', 'https://user-images.githubusercontent.com/1816471/219848753-09183123-bca1-4eb8-80a7-74f5d4272464.png'],
 	['playground/bookmarks/bookmarks', 'bookmarks', '', 'https://user-images.githubusercontent.com/1816471/219848051-dc4cc529-0737-471b-a481-3c53cddb158e.png'],
@@ -9,19 +12,19 @@ const experiments = [
 	['playground/kalman/kalman', 'kalman', 'Experiment to recover data from noisy sensors', 'https://user-images.githubusercontent.com/1816471/219848300-196b886c-8164-43fb-bc37-dc7b7effa620.png'],
 	['playground/mixed-canvas/mixed-canvas', 'mixed canvas', '2D + 3D in one canvas', 'https://user-images.githubusercontent.com/1816471/219848807-61944f32-d41f-483f-8a9d-31fba07a5b94.png'],
 	['playground/boxes-and-wires/index', 'Boxes and Wires', 'Fooling with node-based UI', 'https://user-images.githubusercontent.com/1816471/219895775-c80d7056-6332-4c33-bc3f-49aa3271485b.png'],
-	['playground/rangers-advent/rangers.advent', 'rangers-advent'],
+	['playground/rangers-advent/rangers.advent', 'rangers-advent', 'A calculator for determining Advent Rangers drop rate in Line Rangers', 'https://user-images.githubusercontent.com/1816471/219901197-3fbd35de-6ee1-49d0-a412-4fd75b135978.png'],
 	['playground/languages/shiki/shiki', 'shiki'],
 	['playground/tower.defense/tower.defense', 'tower defense'],
-	['playground/wave-function-collapse/wave-function', 'wave function collapse'],
+	['playground/wave-function-collapse/wave-function', 'wave function collapse', 'An algorithm that can be used for map creation among other things', 'https://user-images.githubusercontent.com/1816471/219901260-c556657e-f023-44ab-8486-ebe850c4bfa2.png'],
 	['playground/webgl-quad/webgl-quad', 'webgl-quad'],
 	['playground/gameAsGame/index', 'GAME game'],
-	['playground/tictactoe/index', 'Tic Tac Toe'],
+	['playground/tictactoe/index', 'Tic Tac Toe', 'You guessed it!', 'https://user-images.githubusercontent.com/1816471/219901232-108e1a9e-9288-4dca-a02f-a02370474ab3.png'],
 	['playground/board/index', 'Game Board'],
 	['playground/sky-gradient/index', 'Sky Sim', 'Simulate the sky at different times of the day'],
 	['playground/stack-css/index', 'Stack Game', '', 'https://user-images.githubusercontent.com/1816471/219849230-35442d68-dc83-4c3f-8038-301258570bc6.png'],
-	['playground/uxn/rom', 'Web UXN'],
+	['playground/uxn/rom', 'Web UXN', 'A VM of sorts by those 100 rabbits folks', 'https://user-images.githubusercontent.com/1816471/219901115-ece749d7-e3c5-478b-ad57-5547ab93ed40.png'],
 	['playground/webrtc/index', 'Web RTC'],
-	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from Twitter@KilledByAPixel'],
+	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
 ];
 

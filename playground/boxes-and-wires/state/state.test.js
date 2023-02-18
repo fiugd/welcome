@@ -8,6 +8,7 @@ state.on('delete', x => PRE('delete: ' + JSON.stringify(x)));
 state.on('history', x => PRE('history: ' + JSON.stringify(x)));
 
 const test = async () => {
+console.log('---------')
 	PRE(`STATE:`);
 	PRE('value: ' +
 		JSON.stringify(state.toObject().foo, null, 2)

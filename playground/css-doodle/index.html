@@ -1,0 +1,40 @@
+<meta name="color-scheme" content="dark light">
+<link rel="stylesheet" href="index.css">
+
+<style>
+	:root {
+		--body-bg: #0a0c27;
+		--doodle-bg: #190B32;
+		--col: 6;
+		--gap: 2px;
+		--width: 95vw;
+		--size: calc((var(--width) - (var(--col) - 1) * var(--gap)) / var(--col));
+	}
+	css-doodle {
+		--rule-1: (
+			@place-cell: center;
+			@size: calc(100% - @calc(@index() - 1) * 1%);
+			transform: rotate(calc(@index() * -20deg));
+
+			:after {
+				content: '';
+				background: var(--doodle-bg);
+				@size: 100%;
+				@shape: star;
+			}
+
+			filter:
+				drop-shadow(-1px 1px 0 hsla(
+					calc(@index() * 1.5 - 50), 70%, 65%,
+					calc(@index() / 50)
+				))
+				saturate(1.9);
+		);
+	}
+</style>
+
+<css-doodle use="var(--rule-1)" grid="1x100" #1></css-doodle>
+
+<a target="new" class="more-doodle" href="https://css-doodle.com/#usage">more css-doodle</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/css-doodle/0.22.0/css-doodle.min.js"></script>

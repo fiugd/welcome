@@ -22,7 +22,7 @@ const experiments = [
 	['playground/uxn/rom', 'Web UXN'],
 	['playground/webrtc/index', 'Web RTC'],
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from Twitter@KilledByAPixel'],
-	['playground/css-doodle', 'css-doodle', 'Not sure why this doodle is broken'],
+	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
 ];
 
 const others = [

@@ -29,7 +29,7 @@ const experiments = [
 ];
 
 const others = [
-	['https://crosshj.com', 'crosshj.com', 'Personal / portfolio site', 'https://user-images.githubusercontent.com/1816471/219903201-1e02e486-e40f-442f-9153-400930d36f0a.png'],
+	['https://crosshj.com', 'crosshj.com', 'Personal / portfolio site. More experiments here', 'https://user-images.githubusercontent.com/1816471/219903201-1e02e486-e40f-442f-9153-400930d36f0a.png'],
 	['https://crosshj.com/grfx/', 'grfx', 'Yet another graphics manipulation app', 'https://user-images.githubusercontent.com/1816471/219903128-f93a1729-7fe2-4dce-93f0-68141c6dd73e.png'],
 	['https://chimpjuice.com', 'chimpjuice.com', 'Random-ish tumblr blog', 'https://user-images.githubusercontent.com/1816471/219903174-450b51f4-7279-466f-83ad-c3811ed424b0.png'],
 ];

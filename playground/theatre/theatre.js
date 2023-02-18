@@ -35,7 +35,7 @@ div.style.cssText = `
 	position: absolute;
 	width: 100px;
 	height: 100px;
-	background: white;
+	background: red;
 `;
 document.body.append(div);
 

@@ -1,0 +1,40 @@
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: sans-serif;
+}
+table {
+	border: 1px solid grey;
+	font-size: 12pt;
+	border-collapse: collapse;
+}
+table thead th,
+table tfoot th {
+	color: #777;
+	background: rgba(0,0,0,.1);
+}
+table caption {
+	padding:.5em;
+}
+table th,
+table td {
+	padding: .5em;
+	border: 1px solid lightgrey;
+}
+
+#flattened-state {
+	max-width: 800px;
+}
+#flattened-state table {
+	width: 100%;
+}
+#flattened-state td {
+	min-width: 10rem;
+}
+#flattened-state select {
+	width: -webkit-fill-available;
+}
+#flattened-state tr.possible {
+	background: #7778;
+}

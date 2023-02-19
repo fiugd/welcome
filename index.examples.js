@@ -77,6 +77,7 @@ const sortVisits = (defaults) => {
 };
 
 const getPages = async () => {
+	//see: https://x8ki-letl-twmt.n7.xano.io/admin/workspace/30009/database/151553
 	const storage = EnhancedStorage({
 		api: "https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits"
 	});

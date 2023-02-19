@@ -33,7 +33,7 @@ const getItems = (result) => {
 				title: v.resolved_title || v.given_title,
 				link: v.given_url,
 				desc: v.excerpt,
-				preview: v.top_image_url || ''
+				preview: v.top_image_url || '',
 			};
 		});
 };
@@ -80,9 +80,9 @@ const getAccessToken = async () => {
 
 	const { result } = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:usa_ghAv:v1/PocketAPI', POST({
 		args: {
-			"path": "v3/get",
-			"access_token": "116f49c6-ab80-de85-c973-05d24e",
-			"count": "20",
+			path: "v3/get",
+			access_token,
+			count: "20",
 			detailType: "complete",
 		},
 	})).then(x => x.json());

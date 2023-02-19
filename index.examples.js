@@ -34,18 +34,7 @@ const others = [
 	['https://chimpjuice.com', 'chimpjuice.com', 'Random-ish tumblr blog', 'https://user-images.githubusercontent.com/1816471/219903174-450b51f4-7279-466f-83ad-c3811ed424b0.png'],
 ];
 
-const visit = (title, link) => {
-	fetch('https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits', {
-		method: 'post',
-		body: JSON.stringify({ title }),
-		 headers: {
-			'Content-Type': 'application/json'
-		},
-	});
-	document.location = link;
-};
-
-const stored = {
+const EnhancedStorage = ({ api }) => ({
 	get: () => {
 		const fromStore = localStorage.getItem('welcome-visits');
 		const parsed = JSON.parse(fromStore || '{}');
@@ -53,17 +42,29 @@ const stored = {
 	},
 	update: async (ttl = 100000) => {
 		const time = Date.now();
-		const prevTime = stored.get().time;
+		const prevTime = EnhancedStorage({ api }).get().time;
 		const diffTime = time-prevTime;
-		if(diffTime < ttl) return;
-
-		const visits = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits').then(x => x.json());
+		if(diffTime < ttl){
+			console.log(`will refresh again: ${(ttl-diffTime)/1000} seconds`)
+			return;
+		}
+		const visits = await fetch(api).then(x => x.json());
 		localStorage.setItem('welcome-visits', JSON.stringify({
 			visits,
 			time
 		}));
 	},
-};
+	visit: async (title, link) => {
+		await fetch(api, {
+			method: 'post',
+			body: JSON.stringify({ title }),
+			headers: {
+				'Content-Type': 'application/json'
+			},
+		});
+		document.location = link;
+	},
+});
 
 const sortVisits = (defaults) => {
 	const getVisits = (item) => defaults.visits
@@ -76,10 +77,13 @@ const sortVisits = (defaults) => {
 };
 
 const getPages = async () => {
-	stored.update();
-	const { visits=[] } = stored.get();
+	const storage = EnhancedStorage({
+		api: "https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits"
+	});
+	storage.update();
+	const { visits=[] } = storage.get();
 	const sorted = sortVisits({ experiments, others, visits });
-	return { ...sorted, visit };
+	return { ...sorted, visit: storage.visit };
 };
 
 export default getPages;

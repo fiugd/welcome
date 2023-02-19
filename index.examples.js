@@ -34,4 +34,52 @@ const others = [
 	['https://chimpjuice.com', 'chimpjuice.com', 'Random-ish tumblr blog', 'https://user-images.githubusercontent.com/1816471/219903174-450b51f4-7279-466f-83ad-c3811ed424b0.png'],
 ];
 
-export { experiments, others };
+const visit = (title, link) => {
+	fetch('https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits', {
+		method: 'post',
+		body: JSON.stringify({ title }),
+		 headers: {
+			'Content-Type': 'application/json'
+		},
+	});
+	document.location = link;
+};
+
+const stored = {
+	get: () => {
+		const fromStore = localStorage.getItem('welcome-visits');
+		const parsed = JSON.parse(fromStore || '{}');
+		return parsed || {};
+	},
+	update: async (ttl = 100000) => {
+		const time = Date.now();
+		const prevTime = stored.get().time;
+		const diffTime = time-prevTime;
+		if(diffTime < ttl) return;
+
+		const visits = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits').then(x => x.json());
+		localStorage.setItem('welcome-visits', JSON.stringify({
+			visits,
+			time
+		}));
+	},
+};
+
+const sortVisits = (defaults) => {
+	const getVisits = (item) => defaults.visits
+		.find(x => x.title === item[1]) || { number: 0 };
+	const experiments = defaults.experiments
+		.sort((a,b) => getVisits(b).number - getVisits(a).number);
+	const others = defaults.others
+		.sort((a,b) => getVisits(b).number - getVisits(a).number);
+	return { experiments, others };
+};
+
+const getPages = async () => {
+	stored.update();
+	const { visits=[] } = stored.get();
+	const sorted = sortVisits({ experiments, others, visits });
+	return { ...sorted, visit };
+};
+
+export default getPages;

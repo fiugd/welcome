@@ -62,13 +62,16 @@
 	<body></body>
 
 	<script type="module">
-		import { experiments, others } from './index.examples.js';
+		import getExamples from './index.examples.js';
+		const pages = await getExamples();
+		const { experiments, others, visit } = pages;
+		window.visit = visit;
 
 		const ListItem = ({ link, title, desc='', preview }) => {
 			const element = document.createElement('div');
 			element.classList.add('card');
 			element.innerHTML= `
-					<a href="${link}">
+					<a nohref onClick="visit('${title}', '${link}')">
 						<div class="preview" style="background-image:url('${preview}')"></div>
 						<div class="info">
 							<div class="title">${title.replace(/-/g, ' ')}</div>

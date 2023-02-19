@@ -4,6 +4,7 @@
 const experiments = [
 	['playground/state-machine/index', 'State Machine', 'Explore state machine concepts', 'https://user-images.githubusercontent.com/1816471/219848753-09183123-bca1-4eb8-80a7-74f5d4272464.png'],
 	['playground/bookmarks/bookmarks', 'bookmarks', '', 'https://user-images.githubusercontent.com/1816471/219848051-dc4cc529-0737-471b-a481-3c53cddb158e.png'],
+	['playground/bookmarks/pocket', 'your-pocket', 'Your Pocket bookmarks (requires authorization)', 'https://user-images.githubusercontent.com/1816471/219935960-2601e624-a400-4f36-99ca-dcb6679a6210.png'],
 	['playground/rss-feed/index', 'News Feed', 'Hacker News ++', 'https://user-images.githubusercontent.com/1816471/219903457-e9edf131-3bc8-45cd-87c2-87400a38367b.png'],
 	['playground/pokedex/pokedex', 'pokedex', 'My own basic dex tool','https://user-images.githubusercontent.com/1816471/219903392-2d0b5f02-ca50-4f47-ac06-3694b61233f2.png'],
 	['playground/css-3d', 'css-3d', 'How 3D can you go with CSS? I attempt to answer this.', 'https://user-images.githubusercontent.com/1816471/219848103-0b88b67a-cb25-4917-8b72-9cf71055b5c4.png'],

@@ -38,3 +38,10 @@ table td {
 #flattened-state tr.possible {
 	background: #7778;
 }
+
+
+@media screen and (max-width: 768px) {
+	#flattened-state td {
+		min-width: auto;
+	}
+}

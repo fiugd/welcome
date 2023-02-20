@@ -28,10 +28,11 @@ const getItems = (result) => {
 	return Object.entries(list)
 		.sort((a,b) => Number(b[1].time_added) - Number(a[1].time_added))
 		.map(([k,v]) => {
-			//if(!v.resolved_title) console.log(v)
+			if(!v.resolved_title) console.log(v)
 			return {
 				title: v.resolved_title || v.given_title,
-				link: v.given_url,
+				link: 'https://getpocket.com/read/' + v.item_id,
+				//link: v.given_url,
 				desc: v.excerpt,
 				preview: v.top_image_url || '',
 			};

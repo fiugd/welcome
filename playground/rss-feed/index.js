@@ -7,20 +7,22 @@ const CORS_PROXY = 'https://x8ki-letl-twmt.n7.xano.io/api:DctopIEQ/proxy?url='
 
 const cachedFetch = (url) => Cache({
 	key: url,
-	fn: (url) => fetch(url).then(x => x.text())
+	fn: async (url) => {
+		const res = await fetch(url).then(x => x.text());
+		let unescaped = '';
+		try {
+			unescaped = decodeURIComponent(JSON.parse(res));
+		} catch(e){
+			unescaped = res;
+		}
+		return unescaped;
+	}
 });
 
 const parser = new RSSParser();
 const parseURL = async (url) => {
-	//TODO: add cache
 	const res = await cachedFetch(url);
-	let unescaped = '';
-	try {
-		unescaped = decodeURIComponent(JSON.parse(res));
-	} catch(e){
-		unescaped = res;
-	}
-	return parser.parseString(unescaped);
+	return parser.parseString(res);
 };
 
 const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);

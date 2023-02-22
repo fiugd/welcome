@@ -1,8 +1,8 @@
 function setWithExpiry(key, value, ttl) {
 	const now = new Date()
 	const item = {
-		value: value,
 		expiry: now.getTime() + ttl,
+		value: value,
 	};
 	sessionStorage.setItem(key, JSON.stringify(item))
 }

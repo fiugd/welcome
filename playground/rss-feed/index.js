@@ -1,7 +1,27 @@
 import './scroll-pos.js';
+import Cache from './cache.js';
 
 //import rssParser from 'https://cdn.skypack.dev/rss-parser';
 //console.log(rssParser)
+const CORS_PROXY = 'https://x8ki-letl-twmt.n7.xano.io/api:DctopIEQ/proxy?url='
+
+const cachedFetch = (url) => Cache({
+	key: url,
+	fn: (url) => fetch(url).then(x => x.text())
+});
+
+const parser = new RSSParser();
+const parseURL = async (url) => {
+	//TODO: add cache
+	const res = await cachedFetch(url);
+	let unescaped = '';
+	try {
+		unescaped = decodeURIComponent(JSON.parse(res));
+	} catch(e){
+		unescaped = res;
+	}
+	return parser.parseString(unescaped);
+};
 
 const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);
 
@@ -90,7 +110,7 @@ const HNFeedItem = (item, className='') => {
 
 
 const LobsFeedItem = (item, className='') => {
-	console.log(item)
+	// console.log(item)
 	return FeedItem(item, className);
 };
 
@@ -119,9 +139,6 @@ const reOrder = (feeds) => {
 }
 
 (async () => {
-	const parser = new RSSParser();
-	const CORS_PROXY = 'https://api.allorigins.win/raw?url='
-
 	const feeds = [{
 		url: CORS_PROXY+"https://news.ycombinator.com/rss",
 		parse: HNFeedItem,
@@ -135,7 +152,7 @@ const reOrder = (feeds) => {
 
 	for(const f of feeds){
 		try {
-			f.feed = await parser.parseURL(f.url);
+			f.feed = await parseURL(f.url);
 		} catch(e){
 			showError(e);
 		}

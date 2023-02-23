@@ -1,0 +1,22 @@
+body{
+	margin:0;
+	overflow:hidden
+}
+#reset{
+	border:1px;
+	position:absolute;
+	padding:5px;
+	font-family:monospace;
+	margin:40px 20px;
+	background:#b6b6b68f;
+	cursor:pointer;
+	right:0
+}
+#menu {
+/* 	min-width: 200px;
+	min-height: 200px; */
+	position: absolute;
+	bottom: 30px;
+	right: 5px;
+	background: ButtonFace;
+}

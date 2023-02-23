@@ -19,7 +19,7 @@
 
 window.addEventListener( 'resize', onWindowResize, false );
 
-window.resetQuad = function(copter){
+const resetQuad = function(copter){
 	const { x, y, z } = copter.originalPosition;
 	copter.position.set(x, y, z);
 	copter.rotation.set(0, 0, 0);
@@ -270,8 +270,10 @@ function Player({ OrbitControls }) {
 	}
 
 class NewPlayer {
-	constructor({ OrbitControls }){
+	constructor({ OrbitControls, Menu }){
+		this.Menu = new Menu({ player: this });
 		this.OrbitControls = OrbitControls;
+		this.resetQuad = () => resetQuad(this.copter);
 	}
 	load(scene){
 		this.loader = new THREE.ObjectLoader();
@@ -328,6 +330,7 @@ class NewPlayer {
 	setSize( width, height ) {
 	}
 	animate( time ) {
+		this.Menu.updatePos(this.copter.position);
 		if(this.copter.position.y < -2.5){ 
 			resetQuad(this.copter);
 			this.camera.lookAt(this.copter.position);

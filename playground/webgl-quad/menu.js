@@ -21,7 +21,7 @@ const setupDom = ({ player }) => {
 	zValue.__li.style = "pointer-events: none;";
 	actualFolder.open();
 
-	const controlsFolder = gui.addFolder('Controls');
+	const controlsFolder = gui.addFolder('Misc Controls');
 	controlsFolder.add({ reset: () => player.resetQuad() }, 'reset');
 	controlsFolder.open();
 

@@ -1,10 +1,5 @@
 import * as dat from 'https://unpkg.com/dat.gui@0.7.9/build/dat.gui.module.js';
 
-/*
-	<div id="reset" onclick="resetQuad(copter)">RESET</div>
-	<div id="menu"></div>
-*/
-
 const setupDom = ({ player }) => {
 	const menu = document.createElement('div');
 	menu.id = "menu";

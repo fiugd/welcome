@@ -287,9 +287,14 @@ class NewPlayer {
 			this.scene = this.loader.parse(scene);
 			//this.scene.background = new THREE.Color(0x1a1a1a);
 			this.camera = this.scene.getObjectByName( 'Camera 1' )
-			this.copter = this.scene.getObjectByName('quadcopter')
+			this.copter = this.scene.getObjectByName('quadcopter');
+			const copterAxes = new THREE.AxesHelper( 3 );
+			copterAxes.translateY(3);
+			this.copter.add( copterAxes );
 			this.copter.originalPosition = JSON.parse(JSON.stringify(this.copter.position));
 			this.light = this.scene.getObjectByName('Light');
+			this.light.shadow.mapSize.width = 1024;
+			this.light.shadow.mapSize.height = 1024;
 			
 			//console.log(JSON.stringify(this.scene.toJSON(), null, 2))
 		} catch(e){
@@ -309,12 +314,14 @@ class NewPlayer {
 		this.onSize();
 		
 		const controls = new this.OrbitControls(this.camera, this.dom);
+		controls.maxPolarAngle = Math.PI/2.2;
+
 		controls.addEventListener('change', (...args) => {
 			//TODO: adjust camera far here
 			this.renderer.render( this.scene, this.camera );
 		});
 		controls.target = new THREE.Vector3(0, 0, 0);
-		
+
 		window.renderer = this.renderer;
 		window.camera = this.camera;
 		

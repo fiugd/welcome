@@ -189,7 +189,7 @@
 				"layers": 1,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,100,0,1],
 				"color": 16777215,
-				"intensity": 0.7,
+				"intensity": 2,
 				"shadow": {
 					"camera": {
 						"uuid": "E43E512E-2BF8-4166-837E-902A415C516D",
@@ -212,7 +212,7 @@
 				"layers": 1,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 				"color": 2236962,
-				"intensity": 10
+				"intensity": 3
 			},
 			{
 				"uuid": "A5746C56-7E1E-4983-AEFB-F722354263BA",

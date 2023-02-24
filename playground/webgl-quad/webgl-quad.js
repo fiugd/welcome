@@ -25,7 +25,6 @@ const resetQuad = function(copter){
 	const { x, y, z } = copter.originalPosition;
 	copter.position.set(x, y, z);
 	copter.rotation.set(0, 0, 0);
-	console.log(copter);
 }
 
 var updateQuad = function(copter){
@@ -132,11 +131,11 @@ function Player({ OrbitControls }) {
 		const light = scene.getObjectByName( 'PointLight' )
 
 		// to antialias the shadow
-		// renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-		// renderer.shadowMap.enabled = true;
-		// // renderer.shadowMapSoft = true;
-		// // renderer.shadowMapAutoUpdate = true;
-		// // renderer.shadowMapCullFace = THREE.CullFaceBack;
+		renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+		renderer.shadowMap.enabled = true;
+		renderer.shadowMapSoft = true;
+		renderer.shadowMapAutoUpdate = true;
+		renderer.shadowMapCullFace = THREE.CullFaceBack;
 
 		const controls = new OrbitControls(camera, renderer.domElement);
 		controls.addEventListener( 'change', this.renderer.render.bind(this) );
@@ -299,6 +298,11 @@ class NewPlayer {
 			this.light = this.scene.getObjectByName('Light');
 			this.light.shadow.mapSize.width = 1024;
 			this.light.shadow.mapSize.height = 1024;
+
+
+			const grid = new THREE.GridHelper(100, 10);
+			grid.position.set( 0,0.005,0 );
+			this.scene.add(grid);
 			
 			//console.log(JSON.stringify(this.scene.toJSON(), null, 2))
 		} catch(e){
@@ -319,6 +323,8 @@ class NewPlayer {
 
 		const controls = new this.OrbitControls(this.camera, this.dom);
 		controls.maxPolarAngle = Math.PI/2.2;
+		controls.minDistance = 10;
+		controls.maxDistance = 400;
 
 		controls.addEventListener('change', (...args) => {
 			//TODO: adjust camera far here

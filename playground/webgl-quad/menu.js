@@ -43,7 +43,6 @@ const setupDom = ({ player }) => {
 
 class Menu {
 	constructor({ player }){
-		console.log('TODO: menu');
 		const Menu = setupDom({ player });
 		this.setPos = Menu.setPos;
 	}

@@ -21,7 +21,7 @@
 			"radiusTop": 0.1,
 			"radiusBottom": 0.1,
 			"height": 0.14,
-			"radialSegments": 6,
+			"radialSegments": 20,
 			"heightSegments": 1,
 			"openEnded": false
 		},
@@ -83,7 +83,7 @@
 		},
 		{
 			"uuid": "133A19A2-3E89-46C6-A586-5695FA92922E",
-			"type": "MeshBasicMaterial",
+			"type": "MeshLambertMaterial",
 			"name": "thruster mat 1",
 			"color": "0xFF6600",
 			"depthFunc": 0,
@@ -92,7 +92,7 @@
 		},
 		{
 			"uuid": "7BEB0606-6994-491C-B09B-C6E20F46E6F6",
-			"type": "MeshBasicMaterial",
+			"type": "MeshLambertMaterial",
 			"name": "thruster mat 2",
 			"color": "0xFF0000",
 			"depthFunc": 0,
@@ -101,7 +101,7 @@
 		},
 		{
 			"uuid": "25A935AA-4365-4F12-84E2-ADDABF7EB6A8",
-			"type": "MeshBasicMaterial",
+			"type": "MeshLambertMaterial",
 			"name": "thruster mat 3",
 			"color": "0x3366FF",
 			"depthFunc": 0,
@@ -110,10 +110,9 @@
 		},
 		{
 			"uuid": "DB4D3E9C-C58A-4356-8814-F98E34498542",
-			"type": "MeshBasicMaterial",
+			"type": "MeshLambertMaterial",
 			"name": "thruster mat 4",
 			"color": "0x30D585",
-			"flatShading": true,
 			"depthFunc": 0,
 			"depthTest": true,
 			"depthWrite": true

@@ -121,7 +121,7 @@
 			"uuid": "4FF2A96A-0FC8-4571-9ED5-06F40B9F6600",
 			"type": "MeshLambertMaterial",
 			"name": "body mat",
-			"color": "0x505050",
+			"color": "0xffffff",
 			"depthFunc": 0,
 			"depthTest": true,
 			"depthWrite": true
@@ -182,13 +182,13 @@
 			},
 			{
 				"uuid": "365B88E0-7BF0-4A02-89E1-FD06BF32E65B",
-				"type": "DirectionalLight",
+				"type": "SpotLight",
 				"name": "Light",
 				"castShadow": true,
 				"layers": 1,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,100,0,1],
-				"color": 16777215,
-				"intensity": 2,
+				"color": "#ffa95c",
+				"intensity": 1,
 				"shadow": {
 					"camera": {
 						"uuid": "E43E512E-2BF8-4166-837E-902A415C516D",
@@ -204,6 +204,16 @@
 					}
 				}
 			},
+{
+				"uuid": "810efc29-a920-4b84-b874-a3f1177a1279",
+				"type": "HemisphereLight",
+				"name": "HemisphereLight",
+				"layers": 1,
+				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,10,0,1],
+				"intensity": 1,
+				"color": "#ffeeb1",
+				"groundColor": "#080820"
+			},
 			{
 				"uuid": "61AD953E-5447-4A63-83DE-485FB0A4C364",
 				"type": "AmbientLight",
@@ -211,7 +221,7 @@
 				"layers": 1,
 				"matrix": [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
 				"color": 2236962,
-				"intensity": 4
+				"intensity": 0
 			},
 			{
 				"uuid": "A5746C56-7E1E-4983-AEFB-F722354263BA",

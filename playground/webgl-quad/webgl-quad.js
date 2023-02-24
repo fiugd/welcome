@@ -3,7 +3,10 @@ import getController from './control.js';
 /*
   @author mrdoob / http://mrdoob.com/ <-- from http://threejs.org/editor/
 
-  
+  Realistic Lighting:
+	https://www.youtube.com/watch?v=7GGNzryHfTw
+	https://www.youtube.com/watch?v=6XvqaokjuYU
+
   - matlab, quadcopter dynamics - http://andrew.gibiansky.com/blog/physics/quadcopter-dynamics/
 
   X translateOnAxis - http://math.hws.edu/eck/cs424/notes2013/15_Threejs_Intro.html
@@ -31,20 +34,20 @@ var updateQuad = function(copter){
 	var FORCE = 1;
 	// delay	
 	//if (new Date().getMilliseconds() < 900){ return; }
-	
+
 	// rotation cause by motor noise
 	var randomRadians = (Math.floor(Math.random() * 3) - 1) * Math.PI / 180;
-	copter.rotation.x+=randomRadians/5;	
+	copter.rotation.x+=randomRadians/5;
 
 	randomRadians = (Math.floor(Math.random() * 5) - 2) * Math.PI / 180;
-	copter.rotation.y+=randomRadians/10;	
+	copter.rotation.y+=randomRadians/10;
 
 	randomRadians = (Math.floor(Math.random() * 3) - 1) * Math.PI / 180;
-	copter.rotation.z+=randomRadians/5;	
+	copter.rotation.z+=randomRadians/5;
 
 	// force of rotors summed
 	copter.translateOnAxis( new THREE.Vector3(0,1,0).normalize(), FORCE );
-	
+
 	// Gravity
 	copter.position.y-=FORCE;
 
@@ -74,10 +77,10 @@ var updateCopter = function({ copter, controller, camera, light } = {}){
 
 	// force of rotors summed
 	copter.translateOnAxis( new THREE.Vector3(0,1,0).normalize(), FORCE + aC );
-	
+
 	// Gravity
 	copter.position.y -= FORCE;
-	
+
 	light.position.set(copter.position.x, light.position.y, copter.position.z);
 	if(light.target){
 		light.target.position.x = copter.position.x;
@@ -86,7 +89,6 @@ var updateCopter = function({ copter, controller, camera, light } = {}){
 	}
 
 	//camera.lookAt(copter.position);
-
 }
 
 function onWindowResize() {
@@ -115,6 +117,9 @@ function Player({ OrbitControls }) {
 			alpha: true
 		});
 		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.toneMapping = THREE.RheinhardToneMapping;
+		renderer.toneMappingExposure = 2.3;
+
 		if(json.camera){
 			camera = loader.parse( json.camera );
 		}
@@ -286,6 +291,14 @@ class NewPlayer {
 			powerPreference: 'high-performance'
 		});
 		//this.renderer.setPixelRatio( window.devicePixelRatio );
+		
+		//https://threejs.org/docs/#api/en/constants/Renderer (tone mapping)
+		this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+		//this.renderer.toneMapping = THREE.ReinhardToneMapping
+		//this.renderer.toneMappingExposure = 2.3;
+		this.renderer.toneMappingExposure = 1.5;
+		this.renderer.outputEncoding = THREE.sRGBEncoding;
+
 		try {
 			this.scene = this.loader.parse(scene);
 			//this.scene.background = new THREE.Color(0x1a1a1a);
@@ -296,14 +309,22 @@ class NewPlayer {
 			this.copter.add( copterAxes );
 			this.copter.originalPosition = JSON.parse(JSON.stringify(this.copter.position));
 			this.light = this.scene.getObjectByName('Light');
-			this.light.shadow.mapSize.width = 1024;
-			this.light.shadow.mapSize.height = 1024;
+			this.light.shadow.bias = -0.0001;
+			this.light.shadow.mapSize.width = 1024*4;
+			this.light.shadow.mapSize.height = 1024*4;
 
 
 			const grid = new THREE.GridHelper(100, 10);
 			grid.position.set( 0,0.005,0 );
 			this.scene.add(grid);
-			
+
+			// to antialias the shadow
+			this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+			this.renderer.shadowMap.enabled = true;
+			// this.renderer.shadowMapSoft = true;
+			// this.renderer.shadowMapAutoUpdate = true;
+			// this.renderer.shadowMapCullFace = THREE.CullFaceBack;
+
 			//console.log(JSON.stringify(this.scene.toJSON(), null, 2))
 		} catch(e){
 			console.log(e)

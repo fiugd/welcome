@@ -49,29 +49,39 @@ class RotationControl {
 	}
 }
 
-const rotControl = new RotationControl();
-window.setRot = rotControl.target.bind(rotControl);
+const getController = () => {
+	const rotControl = new RotationControl();
+	const setRot = rotControl.target.bind(rotControl);
 
-const aPid = new PID({ p: 1.4, i: 0.09, d: 0.15 });
-window.setA = aPid.setTarget.bind(aPid);
+	const aPid = new PID({ p: 1.4, i: 0.09, d: 0.15 });
+	const setA = aPid.setTarget.bind(aPid);
 
-window.controller = ({ rotation, position }) => {
-	const rotC = rotControl.compute(rotation);
-	const aC = aPid.compute(position.y)
-	return { ...rotC, aC }
+	const controller = ({ rotation, position }) => {
+		const rotC = rotControl.compute(rotation);
+		const aC = aPid.compute(position.y)
+		return { ...rotC, aC }
+	};
+
+	// test flying
+	let hts = [1, 2, 3, 10, 3, 2, 1, 0];
+	let rot = [8, -8];
+
+	const interval = setInterval(() => {
+		const h = hts.pop() || 0;
+		if(!h) hts = [1, 2, 3, 10, 3, 2, 1];
+		setA(h)
+
+		const r = rot.pop() || 0;
+		if(!r) rot = [8, -8];
+		setTimeout(()=>{
+			setRot({ z: r, x: -1*r, y: 0 })
+		},1000)
+	}, 2000);
+	
+	controller.stop = () => {
+		clearInterval(interval);
+	};
+
+	return controller;
 };
-
-// test flying
-let hts = [1, 2, 3, 10, 3, 2, 1, 0];
-let rot = [8, -8];
-const interval = setInterval(() => {
-	const h = hts.pop() || 0;
-	if(!h) hts = [1, 2, 3, 10, 3, 2, 1];
-	setA(h)
-
-	const r = rot.pop() || 0;
-	if(!r) rot = [8, -8];
-	setTimeout(()=>{
-		setRot({ z: r, x: -1*r, y: 0 })
-	},1000)
-}, 2000)
+export default getController;

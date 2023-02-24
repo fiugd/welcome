@@ -1,7 +1,6 @@
 import "https://unpkg.com/three@0.122.0/build/three.min.js";
 import { OrbitControls } from "https://unpkg.com/three@0.122.0/examples/jsm/controls/OrbitControls.js"
 
-import './control.js';
 import { APP } from "./webgl-quad.js";
 import Menu from "./menu.js";
 
@@ -10,7 +9,7 @@ loader.load('webgl-quad-scene.json', function ( text ) {
 	var player = new APP.Player({ OrbitControls, Menu }); 
 	player.load( JSON.parse( text ) );
 	player.setSize( window.innerWidth, window.innerHeight );
-	player.play({ controller });
+	player.play();
 	document.body.appendChild( player.dom );
 });
 

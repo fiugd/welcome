@@ -4,20 +4,31 @@ const setupDom = ({ player }) => {
 	const menu = document.createElement('div');
 	menu.id = "menu";
 	document.body.append(menu);
-	
+
+	const settings = {
+		actual: {
+			x: 0, y: 0, z: 0
+		},
+		reset: () => { player.resetQuad(); player.animate({ update: false }); },
+		stop: () => player.stop(),
+		play: () => player.play(),
+	};
+
 	const gui = new dat.GUI({ autoPlace: false });
 
 	const actualFolder = gui.addFolder('Actual Position');
-	const xValue = actualFolder.add({ x: 0 }, 'x', -10, 10).step(0.001);
-	const zValue = actualFolder.add({ z: 0 }, 'z', -10, 10).step(0.001);
-	const yValue = actualFolder.add({ y: 0 }, 'y', -1, 7).step(0.001);
+	const xValue = actualFolder.add(settings.actual, 'x', -10, 10).step(0.001);
+	const zValue = actualFolder.add(settings.actual, 'z', -10, 10).step(0.001);
+	const yValue = actualFolder.add(settings.actual, 'y', -1, 7).step(0.001);
 	xValue.__li.style = "pointer-events: none;";
 	yValue.__li.style = "pointer-events: none;";
 	zValue.__li.style = "pointer-events: none;";
 	actualFolder.open();
 
 	const controlsFolder = gui.addFolder('Misc Controls');
-	controlsFolder.add({ reset: () => player.resetQuad() }, 'reset');
+	controlsFolder.add(settings, 'reset');
+	controlsFolder.add(settings, 'stop');
+	controlsFolder.add(settings, 'play');
 	controlsFolder.open();
 
 	const setPos = ({ x, y, z }) => {

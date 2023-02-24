@@ -7,7 +7,7 @@
 	"geometries": [
 		{
 			"uuid": "9F6A636C-971A-4B2F-8C9B-718565E61F99",
-			"type": "CircleBufferGeometry",
+			"type": "CircleGeometry",
 			"name": "ground geometry",
 			"radius": 2,
 			"segments": 32,
@@ -16,7 +16,7 @@
 		},
 		{
 			"uuid": "B1F21F15-26EA-4942-9116-C83F0418527A",
-			"type": "CylinderBufferGeometry",
+			"type": "CylinderGeometry",
 			"name": "thruster geometry",
 			"radiusTop": 0.1,
 			"radiusBottom": 0.1,
@@ -27,7 +27,7 @@
 		},
 		{
 			"uuid": "EC639541-0405-4715-94B6-485EAFB8C31C",
-			"type": "BoxBufferGeometry",
+			"type": "BoxGeometry",
 			"width": 1,
 			"height": 1,
 			"depth": 1,
@@ -37,7 +37,7 @@
 		},
 		{
 			"uuid": "35F63EC8-AFC6-498F-909B-99CF0C77DAC6",
-			"type": "SphereBufferGeometry",
+			"type": "SphereGeometry",
 			"radius": 1,
 			"widthSegments": 32,
 			"heightSegments": 32,
@@ -48,7 +48,7 @@
 		},
 		{
 			"uuid": "35F63EC8-AFC6-498F-909B-99CF0C77DAC7",
-			"type": "SphereBufferGeometry",
+			"type": "SphereGeometry",
 			"name": "origin marker geometry",
 			"radius": 1,
 			"widthSegments": 4,
@@ -60,7 +60,7 @@
 		},
 		{
 			"uuid": "16C799B7-8244-42A0-91AD-93BEEA9173EB",
-			"type": "ExtrudeBufferGeometry",
+			"type": "ExtrudeGeometry",
 			"shapes": [ "A56D5B10-0F7E-46A2-B1D1-486A3DF34956" ],
 			"options": {
 				"steps": 1,

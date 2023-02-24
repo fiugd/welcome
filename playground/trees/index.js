@@ -45,6 +45,8 @@ const traversable = traverse(example);
 const paths = traversable.paths();
 const nodes = traversable.nodes();
 
+traverable.get('bar/baz')
+
 const pathNodes = {};
 for(const [i,v] of Object.entries(paths)){
 	const path = v.join('/');

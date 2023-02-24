@@ -1,25 +1,32 @@
 const unique = (items) => [...new Set(items)];
 
-const flatStateDom = (tableEl, data, config, state) => {
-	const columns = Object.keys(data[0]);
-	const options = columns.map(col => {
-		const depends = config.depends[col] || [];
-		const allPossible = data
-			.filter(x => {
-				for(const dep of depends){
-					if(state[dep] !== x[dep]) return;
-				}
-				return true;
-			})
-			.map(x => x[col] || '');
-		return unique(allPossible);
-	});
+const getOptions = ({ matrix, selected, column }) => {
+	const columns = Object.keys(matrix[0]);
+	const options = []
+	for(const def of matrix){
+		let isPossible = true;
+		for(const col of Object.keys(selected)){
+			if(col === column) continue;
+			if(selected[col] === def[col]) continue;
+			isPossible = false;
+			break;
+		}
+		if(!isPossible) continue;
+		options.push(def);
+	}
+	const columnOptions = unique(options.map(x => x[column]));
+	return columnOptions;
+};
+
+const flatStateDom = (tableEl, matrix, config, state) => {
+	const columns = Object.keys(matrix[0]);
+	const options = columns.map(column => getOptions({ matrix, selected: state, column }))
 	const tableSrc = `
 		<table>
 			<tr>
 				${ columns.map(col => `<th>${col}</th>`).join('\n') }
 			</tr>
-			${ data.map(row => {
+			${ matrix.map(row => {
 				let className = '';
 				const notPossible = options.find((opt, i) => ![...opt, true, undefined].includes(row[columns[i]]));
 				if(!notPossible){
@@ -30,20 +37,22 @@ const flatStateDom = (tableEl, data, config, state) => {
 				}</tr>`
 			}).join('\n')}
 			<tr>
-				${ options.map((opt, i) => {
-					const col = columns[i];
-					if(col.startsWith("input") && opt.length <= 1){
-						if(opt[0])
+				${ columns.map((col, i) => {
+					const columnOptions = options[i];
+					if(col.startsWith("input")){
+						console.log(columnOptions);
+						if(columnOptions?.[0] === undefined) return `<td></td>`;
+						if(col[0])
 							return `<td><input /></td>`;
 						return `<td></td>`;
 					}
-					if(opt.length <= 1) return `<td>${opt[0] || ''}</td>`
+					if(columnOptions.length <= 1) return `<td>${columnOptions[0] || ''}</td>`
 
 					return `<td>
 						<select col="${col}">
-							${opt.map(sel => {
+							${columnOptions.map(sel => {
 								const selected = state?.[col] === sel ? 'selected' : '';
-								return `<option value="${sel}" ${selected}>${sel}</option>`
+								return `<option value="${sel}" ${selected}>${sel||''}</option>`
 							}).join('\n')}
 						</select>
 					</td>`
@@ -56,8 +65,12 @@ const flatStateDom = (tableEl, data, config, state) => {
 	for(const selector of Array.from(tableEl.querySelectorAll('select'))){
 		const col = selector.getAttribute('col');
 		selector.onchange = (e) => {
-			const { value } = e.target;
-			flatStateDom(tableEl, data, config, { ...state, [col]: value });
+			const { value } = e.target.value === 'undefined'
+				? {}
+				: e.target;
+			const newState = { ...state, [col]: value };
+			console.log(newState);
+			flatStateDom(tableEl, matrix, config, newState);
 		}
 	}
 };
@@ -65,7 +78,7 @@ const flatStateDom = (tableEl, data, config, state) => {
 const flatState = () => {
 	const flatEl = document.getElementById('flattened-state');
 	const state = {};
-	const flatData = [
+	const matrix = [
 		{ opt1: undefined, opt2: undefined, input1: undefined, input2: undefined },
 		{ opt1: 'one',     opt2: undefined, input1: undefined, input2: undefined },
 		{ opt1: 'two',     opt2: undefined, input1: undefined, input2: undefined },
@@ -87,6 +100,7 @@ const flatState = () => {
 			input2: ['opt2'],
 		}
 	};
+
 	flatEl.innerHTML = `
 	<p>
 		The idea here is that state machines can be represented as state lookup tables.
@@ -101,6 +115,6 @@ const flatState = () => {
 	`.replace(/$\t/g, '');
 	const tableEl = document.createElement('table');
 	flatEl.append(tableEl);
-	flatStateDom(tableEl, flatData, config, {});
+	flatStateDom(tableEl, matrix, config, {});
 };
 flatState();

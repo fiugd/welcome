@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="color-scheme" content="dark light">
+		<meta name="mobile-web-app-capable" content="yes">
+		<link rel="stylesheet" href="index.css">
+	</head>
+
+	<body>
+		<pre id="p"></pre>
+	</body>
+	<script type="module">
+		import prettier from "https://unpkg.com/prettier@2.8.4/esm/standalone.mjs";
+
+		// for other plugins: see https://unpkg.com/browse/prettier@2.8.4/esm/
+		import parserBabel from "https://unpkg.com/prettier@2.8.4/esm/parser-babel.mjs";
+		//import parserGraphql from "https://unpkg.com/prettier@2.8.4/esm/parser-graphql.mjs";
+		//import parserBabel from "https://unpkg.com/prettier@2.8.4/esm/parser-angular.mjs";
+
+		const config = {
+			singleQuote: true,
+			useTabs: true,
+			tabWidth: 4,
+			semi: true,
+		};
+
+		const input = `
+			const foo = "hello";  const derp = "wow"     
+
+
+			if(global.condition){ let foo = "bar"; let dank = "hello"; }
+
+
+
+			if(one && two && three && four && five && six && seven  && eight && nine && 'long' ) {
+			return "foo"; }
+
+		`;
+		const formatted = prettier.format(input, {
+			...config,
+			parser: "babel",
+			plugins: [parserBabel],
+		});
+		document.getElementById('p').innerText = formatted
+			.replace(/ /gm, '·')
+			.replace(/\t/gm, '  →  ');
+	</script>
+</html>

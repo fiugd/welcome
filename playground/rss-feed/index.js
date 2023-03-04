@@ -1,5 +1,6 @@
 import './scroll-pos.js';
 import Cache from './cache.js';
+import Parser from './parser.js';
 
 //import rssParser from 'https://cdn.skypack.dev/rss-parser';
 //console.log(rssParser)
@@ -15,14 +16,16 @@ const cachedFetch = (url) => Cache({
 		} catch(e){
 			unescaped = res;
 		}
-		return unescaped;
+		return JSON.stringify(unescaped);
 	}
 });
 
-const parser = new RSSParser();
 const parseURL = async (url) => {
 	const res = await cachedFetch(url);
-	return parser.parseString(res);
+	const parsed = Parser.parseString(JSON.parse(res));
+	//const parsed = Parser.parseJSON(res);
+	//console.log({parsed});
+	return parsed;
 };
 
 const pipe = (...fns) => (x) => fns.reduce((v, f) => f(v), x);

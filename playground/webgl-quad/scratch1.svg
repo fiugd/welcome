@@ -2,19 +2,28 @@
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 100 100"
 	style="background: var(--main-bg)"
+	preserveAspectRatio="none"
 >
 	<style>
 		:root {
 			--main-bg: #2a2a2a;
 			--field-bg: #ddd;
 			--indicator-color: #111;
-			--indicator-width: 0.5;
-			--subject-bg: #c22c;
+			--indicator-width: 0.3;
+			--subject-bg: #28ca;
 			--subject-x: 0;
 		}
 		line {
 			stroke-linecap: round;
 		}
+		text {
+			fill: white;
+			font-family: sans-serif;
+			font-size: 5px;
+		}
+		.baseHang { alignment-baseline: hanging; }
+		.anchorEnd { text-anchor: end; }
+		.anchorMid { text-anchor: middle; }
 		#field {
 			stroke: var(--field-bg);
 			stroke-width: 20;
@@ -24,18 +33,35 @@
 			stroke-width: var(--indicator-width);
 		}
 		#subject {
-			stroke: var(--subject-bg);
-			stroke-width: 18;
 			transform: translateX(calc(var(--subject-x) * 1px));
+		}
+		#subject line {
+			stroke: var(--subject-bg);
+			stroke-width: 20;
 		}
 	</style>
 
 	<line id="field" x1="15" y1="50" x2="85" y2="50" />
 
+	<g id="subject">
+		<polygon points="50,50 52,53 48,53" />
+		<line x1="50" y1="50" x2="50" y2="50" />
+	</g>
+
 	<line class="indicator" x1="10" y1="50" x2="90" y2="50" />
 	<line class="indicator" x1="50" y1="45" x2="50" y2="55" />
+
 	<line class="indicator" x1="25" y1="48" x2="25" y2="52" />
 	<line class="indicator" x1="75" y1="48" x2="75" y2="52" />
 
-	<line id="subject" x1="50" y1="50" x2="50" y2="50" />
+	<line class="indicator" x1="40" y1="49" x2="40" y2="51" />
+	<line class="indicator" x1="60" y1="49" x2="60" y2="51" />
+
+	<text id="upLeftText" x="3" y="3" class="baseHang">---</text>
+	<text id="upRightText" x="97" y="3" class="baseHang anchorEnd">---</text>
+	<text id="upMiddleText" x="50" y="3" class="baseHang anchorMid">---</text>
+
+	<text id="downLeftText" x="3" y="97">---</text>
+	<text id="downRightText" x="97" y="97" class="anchorEnd">---</text>
+	<text id="downMiddleText" x="50" y="97" class="anchorMid">---</text>
 </svg>

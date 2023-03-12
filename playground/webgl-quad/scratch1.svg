@@ -1,0 +1,41 @@
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 100 100"
+	style="background: var(--main-bg)"
+>
+	<style>
+		:root {
+			--main-bg: #2a2a2a;
+			--field-bg: #ddd;
+			--indicator-color: #111;
+			--indicator-width: 0.5;
+			--subject-bg: #c22c;
+			--subject-x: 0;
+		}
+		line {
+			stroke-linecap: round;
+		}
+		#field {
+			stroke: var(--field-bg);
+			stroke-width: 20;
+		}
+		.indicator {
+			stroke: var(--indicator-color);
+			stroke-width: var(--indicator-width);
+		}
+		#subject {
+			stroke: var(--subject-bg);
+			stroke-width: 18;
+			transform: translateX(calc(var(--subject-x) * 1px));
+		}
+	</style>
+
+	<line id="field" x1="15" y1="50" x2="85" y2="50" />
+
+	<line class="indicator" x1="10" y1="50" x2="90" y2="50" />
+	<line class="indicator" x1="50" y1="45" x2="50" y2="55" />
+	<line class="indicator" x1="25" y1="48" x2="25" y2="52" />
+	<line class="indicator" x1="75" y1="48" x2="75" y2="52" />
+
+	<line id="subject" x1="50" y1="50" x2="50" y2="50" />
+</svg>

@@ -17,7 +17,7 @@ const experiments = [
 	['playground/languages/shiki/shiki', 'shiki', 'Code highlighting', 'https://user-images.githubusercontent.com/1816471/219902569-cfba7d84-0755-41a7-b3ed-bdf160346734.png'],
 	['playground/tower.defense/tower.defense', 'tower defense', 'My attempts at a Line Rangers type game; still WIP', 'https://user-images.githubusercontent.com/1816471/219902596-ec501e25-cbc8-462a-91c8-9714e4372441.png'],
 	['playground/wave-function-collapse/wave-function', 'wave function collapse', 'An algorithm that can be used for map creation among other things', 'https://user-images.githubusercontent.com/1816471/219903637-1a9c2af5-df7a-4854-a192-268278b80072.png'],
-	['playground/webgl-quad/webgl-quad', 'webgl-quad', 'Simulating a quadcopter with noisy rotors', 'https://user-images.githubusercontent.com/1816471/219902750-bfd85759-615f-409d-9f55-9d5190d188db.png'],
+	['playground/webgl-quad/index', 'webgl-quad', 'Simulating a quadcopter with noisy rotors', 'https://user-images.githubusercontent.com/1816471/219902750-bfd85759-615f-409d-9f55-9d5190d188db.png'],
 	['playground/gameAsGame/index', 'GAME game', 'Exploring an idea I had for a game that has heavy focus on game meta', 'https://user-images.githubusercontent.com/1816471/219902771-f865230b-f8e6-4665-b7e0-0115e8d54d60.png'],
 	['playground/tictactoe/index', 'Tic Tac Toe', 'You guessed it!', 'https://user-images.githubusercontent.com/1816471/219901232-108e1a9e-9288-4dca-a02f-a02370474ab3.png'],
 	['playground/board/index', 'Game Board', 'Gneralizing on the idea of making an n x n game board', 'https://user-images.githubusercontent.com/1816471/219902885-62e0c1e8-5d0a-4182-84f8-426375f8c318.png'],

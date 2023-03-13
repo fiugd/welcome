@@ -1,4 +1,5 @@
 function setWithExpiry(key, value, ttl) {
+	if(["undefined", undefined].includes(value)) return;
 	const now = new Date()
 	const item = {
 		expiry: now.getTime() + ttl,
@@ -23,7 +24,7 @@ function getWithExpiry(key) {
 const cache = async ({ fn, key, ttl=100000 }) => {
 	const cached = getWithExpiry(key);
 	if(cached) return cached;
-	console.log('cache not exist')
+	console.log('cache not exist');
 	const newValue = await fn(key);
 	setWithExpiry(key, newValue, ttl);
 	return newValue;

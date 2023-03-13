@@ -6,15 +6,26 @@ import Parser from './parser.js';
 //console.log(rssParser)
 const CORS_PROXY = 'https://x8ki-letl-twmt.n7.xano.io/api:DctopIEQ/proxy?url='
 
+const showError = (e) => {
+	const errorsDiv = document.querySelector('.errors');
+	console.log(e);
+	const errorPre = document.createElement('pre');
+	errorPre.innerHTML = e.stack;
+	errorsDiv.querySelector('.items').append(errorPre);
+	errorsDiv.classList.remove('hidden');
+};
+
 const cachedFetch = (url) => Cache({
 	key: url,
 	fn: async (url) => {
 		const res = await fetch(url).then(x => x.text());
 		let unescaped = '';
 		try {
-			unescaped = decodeURIComponent(JSON.parse(res));
+			if(res.includes("\\u003"))
+				unescaped = JSON.parse(res.toString());
+			unescaped = decodeURIComponent(unescaped || JSON.parse(res));
 		} catch(e){
-			unescaped = res;
+			showError(e);
 		}
 		return JSON.stringify(unescaped);
 	}
@@ -22,6 +33,7 @@ const cachedFetch = (url) => Cache({
 
 const parseURL = async (url) => {
 	const res = await cachedFetch(url);
+	if(!res) return {};
 	const parsed = Parser.parseString(JSON.parse(res));
 	//const parsed = Parser.parseJSON(res);
 	//console.log({parsed});
@@ -51,16 +63,10 @@ const Notes = () => `
 `;
 
 
-const showError = (e) => {
-	const errorsDiv = document.querySelector('.errors');
-	console.log(e);
-	const errorPre = document.createElement('pre');
-	errorPre.innerHTML = e.stack;
-	errorsDiv.querySelector('.items').append(errorPre);
-	errorsDiv.classList.remove('hidden');
-};
+
 
 const FeedItem = (item, className='') => {
+	if(!item) return;
 	const { title, link, content, comments, categories=[] } = item;
 
 	const contentMap = (line) => {
@@ -113,7 +119,6 @@ const HNFeedItem = (item, className='') => {
 	return FeedItem(item, className);
 };
 
-
 const LobsFeedItem = (item, className='') => {
 	// console.log(item)
 	return FeedItem(item, className);
@@ -124,16 +129,16 @@ const dedupe = (feeds) => {
 		let found = false;
 		for(const i in feeds){
 			if(i === index) continue;
-			const { feed: target } = feeds[i];
-			if(!target.items.find(x => x.title === item.title)) continue;
+			const { feed: target={} } = feeds[i];
+			if(!(target.items||[]).find(x => x.title === item.title)) continue;
 			found = true;
 			break;
 		}
 		return !found;
 	};
 	for(const i in feeds){
-		const { feed: f } = feeds[i];
-		f.items = f.items.filter(dupeFilter(i));
+		const { feed: f={} } = feeds[i];
+		f.items = (f.items||[]).filter(dupeFilter(i));
 	}
 	return feeds;
 };
@@ -171,10 +176,10 @@ const reOrder = (feeds) => {
 		showError(e);
 	}
 
-	for(const {feed, parse} of processedFeeds){
+	for(const {feed={}, parse} of processedFeeds){
 		try {
 			parse(feed, 'title');
-			feed.items.forEach(FeedItem);
+			(feed.items||[]).forEach(FeedItem);
 		} catch(e){
 			showError(e);
 		}
@@ -183,4 +188,15 @@ const reOrder = (feeds) => {
 	document.body.innerHTML += Notes();
 
 	document.body.dispatchEvent(new CustomEvent("RSSdone", { bubbles: true }));
+	
+	const errorsDiv = document.querySelector('.errors');
+	const resetButton = document.createElement('button');
+	resetButton.innerHTML = `Reset`;
+	resetButton.onclick = () => {
+		for(const {url} of feeds){
+			sessionStorage.removeItem(url);
+		}
+	};
+	errorsDiv.querySelector('.items').append(resetButton);
+
 })();

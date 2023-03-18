@@ -1,29 +1,50 @@
-class PID {
-	constructor({ p=0, i=0, d=0 }={}){
+export class PID {
+	constructor({ p=0, i=0, d=0, i_max, rate, onChange }={}){
+		this.onChange = onChange;
 		this.p = p; this.i = i; this.d = d;
 		this.sumError = 0;
 		this.lastError = 0;
-		this.maxCorrect = 0.09;
-		this.i_max = 3;
+		this.maxCorrect = rate || 0.09;
+		this.i_max = i_max || 3;
+		this.setTarget = this.setTarget.bind(this);
+		this.compute = this.compute.bind(this);
 	}
 
 	setTarget(value){ this.target = value; }
 
 	compute(current){
-		this.target = this.target || 0;
-		let error = this.target - current;
-		this.sumError = this.sumError + error;
-		if (this.i_max > 0 && Math.abs(this.sumError) > this.i_max) {
-			let sumSign = (this.sumError > 0) ? 1 : -1;
-			this.sumError = sumSign * this.i_max;
-		}
-		let dError = (error - this.lastError);
-		this.lastError = error;
-		const correction = (this.p*error) + (this.i * this.sumError) + (this.d * dError);
+		const { onChange, i_max, target=0 } = this;
 
-		return Math.abs(correction) > this.maxCorrect
+
+		const error = target - current;
+		this.sumError = this.sumError + error;
+
+		const sumSign = (this.sumError > 0) ? 1 : -1;
+		const sumAbs = Math.abs(this.sumError);
+		if (i_max > 0 && sumAbs > i_max) {
+			this.sumError = this.i_max > 1
+				? sumSign * this.i_max
+				: sumSign * sumAbs * this.i_max;
+		}
+		const dError = (error - this.lastError);
+		this.lastError = error;
+
+		const correction = (this.p*error) + (this.i*this.sumError) + (this.d*dError);
+		const cappedCorrection = Math.abs(correction) > this.maxCorrect
 			? (correction > 0 ? 1 : -1) * this.maxCorrect
 			: correction;
+
+		onChange && onChange({
+			error: {
+				p: error,
+				i: this.sumError,
+				d: dError,
+				sum: error + this.sumError + dError,
+			},
+			correction: cappedCorrection,
+		});
+
+		return cappedCorrection;
 	}
 }
 
@@ -84,4 +105,5 @@ const getController = () => {
 
 	return controller;
 };
+
 export default getController;

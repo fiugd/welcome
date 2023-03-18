@@ -1,33 +1,15 @@
-import getGraphic from './graphics.js';
-import loop from './gameloop.js';
+import Graphic from './graphics.js';
+import GameLoop from './gameloop.js';
 
-const graphic = await getGraphic();
+import MoveA from './moveA.js';
+import MoveB from './moveB.js';
 
-class Mover {
-	pos = 0;
-	ascending = true;
-	DIFF = 0.1;
-	MAX = 9;
-	NEG_MAX = this.MAX * -1;
+const FRAME_RATE = 30;
+const READY_DELAY = 1;
 
-	constructor({ graphic }){
-		this.graphic = graphic;
-		this.update = this.update.bind(this);
-		this.render = () => this.graphic.setPos(this.pos);
-	}
-	update(){
-		const { DIFF, MAX, NEG_MAX } = this;
+const game = GameLoop(
+	new MoveB({ graphic: new Graphic() }),
+	FRAME_RATE
+);
 
-		if(this.ascending && (this.pos+DIFF > MAX ))
-			this.ascending = false;
-		if(!this.ascending && (this.pos-DIFF < NEG_MAX))
-			this.ascending = true;
-		this.pos = this.ascending
-			? this.pos + DIFF
-			: this.pos - DIFF;
-	}
-}
-
-const game = loop(new Mover({ graphic }), 30);
-
-setTimeout(game.start, 1);
+setTimeout(game.start, READY_DELAY);

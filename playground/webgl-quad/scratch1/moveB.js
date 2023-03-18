@@ -8,6 +8,10 @@
 	Each time update is called, the controller target should be set to the sub-target based on update increment.
 	When all sub-routes are consumed, a new route should be planned.
 
+	TODO:
+	kalman filter from ../..kalman
+	linear regression(to graph drift) - https://www.w3schools.com/ai/ai_regressions.asp
+
 */
 
 import { PID } from '../control.js';

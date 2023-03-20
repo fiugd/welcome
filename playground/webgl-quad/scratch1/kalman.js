@@ -66,7 +66,6 @@ export const wip = async ({ graphic }) => {
 	const huge = 1e8;
 	const kalman = (() => {
 		const config = {
-			//... I am a bit lost here.  Happy to share what I've tried
 			observation: {
 				dimension: 3,
 				stateProjection: [[1],[1],[1]],
@@ -75,7 +74,7 @@ export const wip = async ({ graphic }) => {
 			dynamic: {
 				dimension: 1,
 				transition: [[1]],
-				covariance: [0],
+				covariance: [[0]],
 				init: {
 					mean: [[0]],
 					covariance: [
@@ -90,16 +89,15 @@ export const wip = async ({ graphic }) => {
 		return (observation) => {
 			// previousCorrected = kFilter.filter({previousCorrected, observation});
 			// return previousCorrected.mean;
+
 			const predicted = kFilter.predict({
 				previousCorrected
 			});
-
 			const correctedState = kFilter.correct({
 				predicted,
 				observation
 			});
-
-			 return correctedState.mean;
+			return correctedState.mean;
 		};
 	})();
 
@@ -110,12 +108,11 @@ export const wip = async ({ graphic }) => {
 		const actual = Math.sin(counter/100) * 10;
 		const sensor1 = (Math.random() > 0.75 ? noise(10): actual + noise(5));
 		const sensor2 = (Math.random() > 0.75 ? actual + noise(30): actual + noise(5));
-		const sensor3 = actual + noise(20);
+		const sensor3 = actual + Math.sin(counter % 10 * 10)*10*Math.random();
 		const [[kalmanMean]] = kalman([sensor1, sensor2, sensor3]);
 
 		// expecting to minimize diff
 		const diff = kalmanMean - actual;
-		// console.log({ kalmanMean, actual, diff });
 		
 		actualGraph.update(actual);
 		sensor1Graph.update(sensor1);

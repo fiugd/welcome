@@ -12,6 +12,7 @@
 	kalman filter from ../..kalman
 	linear regression(to graph drift) - https://www.w3schools.com/ai/ai_regressions.asp
 
+	https://github.com/markert/fili.js/
 */
 
 import { PID } from '../control.js';
@@ -156,7 +157,7 @@ class Mover {
 	}
 }
 
-class Mover2 {
+class WIPMover {
 	constructor({ graphic }){
 		wip({ graphic });
 		this.update = () => {};
@@ -164,4 +165,4 @@ class Mover2 {
 	}
 }
 
-export default Mover2;
+export default WIPMover;

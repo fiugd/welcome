@@ -104,10 +104,10 @@ function getSensors({ pos, posAlpha }){
 	const wheels = posAlpha;
 
 	// get position based on "GPS"
-	const sensor1 = pos + noiseFn({ center: 0, amp: 0.5 });
+	const sensor1 = pos + noiseFn({ center: 0, amp: 2 });
 
 	// get position based on "accelerometer"
-	const sensor2 = pos + noiseFn({ center: 0, amp: 0.5 });
+	const sensor2 = pos + noiseFn({ center: 0, amp: 2 });
 
 	//const average = [wheels, sensor1, sensor2].reduce((a,o) => a+o, 0)/3;
 	const average = [sensor1, sensor2].reduce((a,o) => a+o, 0)/2;
@@ -135,13 +135,13 @@ class Mover {
 			await this.graphic.ready;
 			const timeDelta = timer - this.prevTime;
 			if(!this.prevTime || timeDelta > 100){
-				this.realPosGraph = this.realPosGraph || this.graphic.graph('real position');
+				this.realPosGraph = this.realPosGraph || this.graphic.graph('real position', -19, 19);
 				this.realPosGraph.update(this.pos);
 
-				this.sensorGraph = this.sensorGraph || this.graphic.graph('sensor fusion');
+				this.sensorGraph = this.sensorGraph || this.graphic.graph('sensors', -19, 19);
 				this.sensorGraph.update(getSensors(this));
 
-				this.posGraph = this.posGraph || this.graphic.graph('wheel position');
+				this.posGraph = this.posGraph || this.graphic.graph('wheels');
 				this.posGraph.update(this.posAlpha);
 
 				this.graphic.setDisplay('up.middle', this.posAlpha);

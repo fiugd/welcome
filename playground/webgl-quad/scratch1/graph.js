@@ -10,7 +10,10 @@ const d3 = await Promise.all([
 //the whole d3
 //import·*·as·d3·from·'https://cdn.skypack.dev/d3';
 
-const drawGraph = ({ id, title, data=[], width=300, height=100, margin=20 }) => {
+const drawGraph = ({
+	id, title, data=[], width=300, height=100, margin=20,
+	ymin, ymax
+}) => {
 	const X_SCALE = 1000;
 
 	const element = d3.select('#'+id);
@@ -64,8 +67,11 @@ const drawGraph = ({ id, title, data=[], width=300, height=100, margin=20 }) => 
 			counter>X_SCALE ? counter-X_SCALE : 0,
 			counter>X_SCALE ? counter : X_SCALE
 		]));
-		//yScale.domain(d3.extent(data, d => d.y*1.5));
-		yScale.domain([-19, 19]);
+		if(!ymin || !ymax){
+			yScale.domain(d3.extent(data, d => d.y*1.5));
+		} else {
+			yScale.domain([ymin, ymax]);
+		}
 		xAxis
 			.call(d3.axisBottom(xScale))
 			.call(g => g.select(".domain").remove());

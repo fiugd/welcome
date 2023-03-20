@@ -76,9 +76,10 @@ const getGraphic = async () => {
 	let minX = 0;
 	const graphs = [];
 	return {
-		graph: (title) => {
+		graph: (title, ymin, ymax) => {
 			const graph = drawGraph({
 				id: "graph" + (graphs.length+1),
+				ymin, ymax,
 				title,
 				data: []
 			});

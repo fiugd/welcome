@@ -63,6 +63,7 @@ export const wip = async ({ graphic }) => {
 
 	const noise = (scale) => (Math.random()-0.5) * scale;
 
+	const huge = 1e8;
 	const kalman = (() => {
 		const config = {
 			//... I am a bit lost here.  Happy to share what I've tried
@@ -73,9 +74,15 @@ export const wip = async ({ graphic }) => {
 			},
 			dynamic: {
 				dimension: 1,
-				transition: [1],
-				covariance: [1]
-			},
+				transition: [[1]],
+				covariance: [0],
+				init: {
+					mean: [[0]],
+					covariance: [
+						[huge],
+					],
+				},
+			}
 		};
 		const kFilter = new KalmanFilter(config);
 

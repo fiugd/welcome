@@ -56,6 +56,13 @@ const getGraphic = async () => {
 			<div id="graph1" class="graph"></div>
 			<div id="graph2" class="graph"></div>
 			<div id="graph3" class="graph"></div>
+			<div id="graph4" class="graph"></div>
+			<div id="graph5" class="graph"></div>
+			<div id="graph6" class="graph"></div>
+			<div id="graph7" class="graph"></div>
+			<div id="graph8" class="graph"></div>
+			<div id="graph9" class="graph"></div>
+			<div id="graph10" class="graph"></div>
 		</div>
 	`;
 	document.body.append(container);

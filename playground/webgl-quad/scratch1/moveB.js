@@ -16,6 +16,7 @@
 
 import { PID } from '../control.js';
 import Kalman from './kalman.js';
+import { wip } from './kalman.js';
 
 const noiseFn = ({ center=0.5, amp = 1 }={}) => {
 	return (Math.random()-(0.5 - center))*amp;
@@ -155,4 +156,12 @@ class Mover {
 	}
 }
 
-export default Mover;
+class Mover2 {
+	constructor({ graphic }){
+		wip({ graphic });
+		this.update = () => {};
+		this.render = () => {};
+	}
+}
+
+export default Mover2;

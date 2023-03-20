@@ -11,7 +11,10 @@ const oneObs = (s1, s2, s3) => {
 	const delay = (amt, arr) => {
 		const newArr = [];
 		for(var i=0, len=arr.length; i<len; i++){
-			newArr.push([ arr[i][0], arr[i+amt] ? arr[i+amt][1] : 0])
+			newArr.push([
+				arr[i][0],
+				arr[i+amt] ? arr[i+amt][1] : 0
+			])
 		}
 		return newArr;
 	};

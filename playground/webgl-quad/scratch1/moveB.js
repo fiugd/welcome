@@ -15,6 +15,7 @@
 */
 
 import { PID } from '../control.js';
+import Kalman from './kalman.js';
 
 const noiseFn = ({ center=0.5, amp = 1 }={}) => {
 	return (Math.random()-(0.5 - center))*amp;
@@ -93,8 +94,27 @@ function getPos(){
 	return () => {
 		//console.log(noisy(this.posAlpha))
 		//return noisy(this.posAlpha);
-		return this.posAlpha;
+		//return this.posAlpha;
+		return getSensors(this);
 	}
+}
+
+function getSensors({ pos, posAlpha }){
+	// get position based on "wheel encoder"
+	const wheels = posAlpha;
+
+	// get position based on "GPS"
+	const sensor1 = pos + noiseFn({ center: 0, amp: 0.5 });
+
+	// get position based on "accelerometer"
+	const sensor2 = pos + noiseFn({ center: 0, amp: 0.5 });
+
+	//const average = [wheels, sensor1, sensor2].reduce((a,o) => a+o, 0)/3;
+	const average = [sensor1, sensor2].reduce((a,o) => a+o, 0)/2;
+	return average;
+
+	// const fused = Kalman(average);
+	// return fused;
 }
 
 
@@ -117,8 +137,13 @@ class Mover {
 			if(!this.prevTime || timeDelta > 100){
 				this.realPosGraph = this.realPosGraph || this.graphic.graph('real position');
 				this.realPosGraph.update(this.pos);
-				this.posGraph = this.posGraph || this.graphic.graph('calc\'ed position');
+
+				this.sensorGraph = this.sensorGraph || this.graphic.graph('sensor fusion');
+				this.sensorGraph.update(getSensors(this));
+
+				this.posGraph = this.posGraph || this.graphic.graph('wheel position');
 				this.posGraph.update(this.posAlpha);
+
 				this.graphic.setDisplay('up.middle', this.posAlpha);
 				this.prevTime = timer;
 			}

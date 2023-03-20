@@ -35,13 +35,14 @@ const getGraphic = async () => {
 			.graph .line {
 				fill: none;
 				stroke: currentColor;
-				stroke-width: 1;
+				stroke-width: 0.5;
 			}
 			.graph .axis path,
 			.graph .axis line {
 				fill: none;
 				stroke: currentColor;
 				color: currentColor;
+				stroke-width: 0.25;
 				shape-rendering: crispEdges;
 			}
 			.graphTitle {

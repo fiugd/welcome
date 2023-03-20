@@ -113,8 +113,8 @@ function getSensors({ pos, posAlpha }){
 	const average = [sensor1, sensor2].reduce((a,o) => a+o, 0)/2;
 	return average;
 
-	// const fused = Kalman(average);
-	// return fused;
+	const fused = Kalman(average);
+	return fused;
 }
 
 

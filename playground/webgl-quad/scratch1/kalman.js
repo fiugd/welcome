@@ -16,8 +16,8 @@ const  iirCascadeCalculator = new CalcCascades();
 const filterCoeffs = iirCascadeCalculator.lowpass({
 	order: 3,
 	characteristic: 'butterworth',
-	Fs: 4000, //sampling freq
-	Fc: 400, // cutoff freq
+	Fs: 800, //sampling freq
+	Fc: 200, // cutoff freq
 	preGain: false 
 });
 const iirFilter1 =  new IirFilter(filterCoeffs);
@@ -28,7 +28,7 @@ const iirFilter3 =  new IirFilter(filterCoeffs);
 const filterCoeffs2 = iirCascadeCalculator.lowpass({
 	order: 1,
 	characteristic: 'butterworth',
-	Fs: 4000, //sampling freq
+	Fs: 800, //sampling freq
 	Fc: 40, // cutoff freq
 	preGain: false 
 });
@@ -101,7 +101,7 @@ export const wip = async ({ graphic }) => {
 			dynamic: {
 				dimension: 1,
 				transition: [[1]],
-				covariance: [[huge]],
+				covariance: [[0]],
 				init: {
 					mean: [[0]],
 					covariance: [

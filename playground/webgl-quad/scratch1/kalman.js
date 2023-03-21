@@ -15,7 +15,8 @@ const {IirFilter, CalcCascades} = fili;
 const  iirCascadeCalculator = new CalcCascades();
 const filterCoeffs = iirCascadeCalculator.lowpass({
 	order: 3,
-	characteristic: 'butterworth',
+	characteristic: 'tschebyscheff05',
+	transform: 'matchedZ',
 	Fs: 800, //sampling freq
 	Fc: 200, // cutoff freq
 	preGain: false 
@@ -26,10 +27,11 @@ const iirFilter3 =  new IirFilter(filterCoeffs);
 
 
 const filterCoeffs2 = iirCascadeCalculator.lowpass({
-	order: 1,
-	characteristic: 'butterworth',
+	order: 3,
+	characteristic: 'tschebyscheff05',
+	transform: 'matchedZ',
 	Fs: 800, //sampling freq
-	Fc: 40, // cutoff freq
+	Fc: 25, // cutoff freq
 	preGain: false 
 });
 const iirFilter4 =  new IirFilter(filterCoeffs2);

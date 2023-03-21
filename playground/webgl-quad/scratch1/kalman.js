@@ -103,7 +103,7 @@ export const wip = async ({ graphic }) => {
 
 	let counter = 0;
 	const step = () => {
-		if(counter++ > 1000) return;
+		if(counter++ > 10000) return;
 
 		const actual = Math.sin(counter/100) * 10;
 		const sensor1 = (Math.random() > 0.75 ? noise(10): actual + noise(5));

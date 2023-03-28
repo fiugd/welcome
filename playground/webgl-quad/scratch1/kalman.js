@@ -92,26 +92,42 @@ export const wip = async ({ graphic }) => {
 
 	const noise = (scale) => (Math.random()-0.5) * scale;
 
-	const huge = 1e8;
 	const kalman = (() => {
+		const baseVariance = 1;
+		const huge = 1e8;
+
 		const config = {
 			observation: {
-				dimension: 3,
 				stateProjection: [[1],[1],[1]],
-				covariance: [1,1,1],
-			},
-			dynamic: {
-				dimension: 1,
-				transition: [[1]],
-				covariance: [[0]],
-				init: {
-					mean: [[0]],
-					covariance: [
-						[huge],
-					],
+				covariance(o) {
+					const variances = o.observation.map(a => {
+						if (a[0] === null) {
+							return huge;
+						}
+						return baseVariance;
+					});
+					return diag(variances);
 				},
-			}
+			},
 		};
+// 		const config = {
+// 			observation: {
+// 				dimension: 3,
+// 				stateProjection: [[1],[1],[1]],
+// 				covariance: [1,1,1],
+// 			},
+// 			dynamic: {
+// 				dimension: 1,
+// 				transition: [[1]],
+// 				covariance: [[0]],
+// 				init: {
+// 					mean: [[0]],
+// 					covariance: [
+// 						[huge],
+// 					],
+// 				},
+// 			}
+// 		};
 		const kFilter = new KalmanFilter(config);
 
 		let previousCorrected;

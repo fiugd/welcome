@@ -27,7 +27,6 @@ const experiments = [
 	['playground/webrtc/index', 'Web RTC', 'Chat host and client with WebRTC', 'https://user-images.githubusercontent.com/1816471/219903559-703a82db-155f-4e86-b74f-a7c1db0e10cb.png'],
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
-	['https://github.com/crosshj/vermiculate', 'verimultate web', 'My favorite gnu/linux screensaver ported by me to the web (WIP).', 'https://user-images.githubusercontent.com/1816471/239815900-10d14acc-a048-4726-8d0a-f566501c197f.png']
 ];
 
 const others = [

@@ -1,0 +1,18 @@
+<div>
+    <Data name="menuItems" src="./data/menuItems.js"></Data>
+
+    <!-- TODO: use this with ForEach versus chidren (?) -->
+    <template id="menuItemTemplate">
+        <div class="menuItem">
+            <a>{{label}}</a>
+        </div>
+    </template>
+
+    <ForEach items="menuItems" selected="path IS route">
+        <div class="menuItem">
+            <a href="#/{{path}}" class="button">
+                <span>{{label}}</span>
+            </a>
+        </div>
+    </ForEach>
+</div>

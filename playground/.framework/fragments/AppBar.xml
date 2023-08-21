@@ -1,0 +1,36 @@
+<div 
+    display="flex"
+    height="100%"
+    justify-content="space-between"
+    align-items="center"
+    padding-left="1em"
+    padding-right="1em"
+>
+    <div
+        display="flex"
+        justify-content="space-between"
+        align-items="center"
+    >
+        <svg viewBox="0 0 500 500" height="32px" style="color: var(--app-bar-icon-color);">
+            <path d="M 415 0 L 500 500 L 0 500 L 90 0" style="fill: currentColor;"></path>
+            <path d="M 130 0 L 100 240 L 390 240 L 370 0" style="fill: white; opacity:0.4;"></path>
+            <path d="M 100 240 L 0 500 L 500 500 L 390 240" style="fill: #448; opacity:0.5;"></path>
+        </svg>
+        <span>
+            <span
+                font-size="32px"
+                font-family="Menlo, sans-serif"
+                margin-left="0.2em"
+            >chisel</span>
+            <span>v0.0.1</span>
+        </span>
+    </div>
+    <div
+        display="flex"
+        gap="10px"
+    >
+        <input type="search" placeholder="Search" />
+        <a>Log in</a>
+        <a class="button primary">Sign up</a>
+    </div>
+</div>

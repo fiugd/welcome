@@ -1,6 +1,8 @@
 /*
-	thumbnails: https://github.com/fiugd/welcome/issues/3
+thumbnails: https://github.com/fiugd/welcome/issues/3
 */
+
+// prettier-ignore
 const experiments = [
 	['playground/state-machine/index', 'State Machine', 'Explore state machine concepts', 'https://user-images.githubusercontent.com/1816471/219848753-09183123-bca1-4eb8-80a7-74f5d4272464.png'],
 	['playground/bookmarks/bookmarks', 'bookmarks', '', 'https://user-images.githubusercontent.com/1816471/219848051-dc4cc529-0737-471b-a481-3c53cddb158e.png'],
@@ -27,8 +29,10 @@ const experiments = [
 	['playground/webrtc/index', 'Web RTC', 'Chat host and client with WebRTC', 'https://user-images.githubusercontent.com/1816471/219903559-703a82db-155f-4e86-b74f-a7c1db0e10cb.png'],
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
+	['playground/.framework/#/overview', 'chisel framework', 'Create sites quickly using XML', 'https://github.com/fiugd/welcome/assets/93937172/6fbf05f9-2c6d-4741-8b13-a332d19bd1de'],
 ];
 
+// prettier-ignore
 const others = [
 	['https://crosshj.com', 'crosshj.com', 'Personal / portfolio site. More experiments here', 'https://user-images.githubusercontent.com/1816471/219903201-1e02e486-e40f-442f-9153-400930d36f0a.png'],
 	['https://crosshj.com/grfx/', 'grfx', 'Yet another graphics manipulation app', 'https://user-images.githubusercontent.com/1816471/219903128-f93a1729-7fe2-4dce-93f0-68141c6dd73e.png'],
@@ -46,16 +50,21 @@ const EnhancedStorage = ({ api }) => ({
 	update: async (ttl = 100000) => {
 		const time = Date.now();
 		const prevTime = EnhancedStorage({ api }).get().time;
-		const diffTime = time-prevTime;
-		if(diffTime < ttl){
-			console.log(`will refresh again: ${(ttl-diffTime)/1000} seconds`)
+		const diffTime = time - prevTime;
+		if (diffTime < ttl) {
+			console.log(
+				`will refresh again: ${(ttl - diffTime) / 1000} seconds`
+			);
 			return;
 		}
-		const visits = await fetch(api).then(x => x.json());
-		localStorage.setItem('welcome-visits', JSON.stringify({
-			visits,
-			time
-		}));
+		const visits = await fetch(api).then((x) => x.json());
+		localStorage.setItem(
+			'welcome-visits',
+			JSON.stringify({
+				visits,
+				time
+			})
+		);
 	},
 	visit: async (title, link) => {
 		await fetch(api, {
@@ -63,29 +72,31 @@ const EnhancedStorage = ({ api }) => ({
 			body: JSON.stringify({ title }),
 			headers: {
 				'Content-Type': 'application/json'
-			},
+			}
 		});
 		document.location = link;
-	},
+	}
 });
 
 const sortVisits = (defaults) => {
-	const getVisits = (item) => defaults.visits
-		.find(x => x.title === item[1]) || { number: 0 };
-	const experiments = defaults.experiments
-		.sort((a,b) => getVisits(b).number - getVisits(a).number);
-	const others = defaults.others
-		.sort((a,b) => getVisits(b).number - getVisits(a).number);
+	const getVisits = (item) =>
+		defaults.visits.find((x) => x.title === item[1]) || { number: 0 };
+	const experiments = defaults.experiments.sort(
+		(a, b) => getVisits(b).number - getVisits(a).number
+	);
+	const others = defaults.others.sort(
+		(a, b) => getVisits(b).number - getVisits(a).number
+	);
 	return { experiments, others };
 };
 
 const getPages = async () => {
 	//see: https://x8ki-letl-twmt.n7.xano.io/admin/workspace/30009/database/151553
 	const storage = EnhancedStorage({
-		api: "https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits"
+		api: 'https://x8ki-letl-twmt.n7.xano.io/api:xXViCsyl:v1/visits'
 	});
 	storage.update();
-	const { visits=[] } = storage.get();
+	const { visits = [] } = storage.get();
 	const sorted = sortVisits({ experiments, others, visits });
 	return { ...sorted, visit: storage.visit };
 };

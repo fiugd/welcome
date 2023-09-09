@@ -1,14 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>fiug.dev welcome playground</title>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
-		<meta name="color-scheme" content="dark light">
-		<link rel="stylesheet" href="index.css"/>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="color-scheme" content="dark light" />
+		<link rel="stylesheet" href="index.css" />
 	</head>
 
 	<body></body>
@@ -19,10 +19,10 @@
 		const { experiments, others, visit } = pages;
 		window.visit = visit;
 
-		const ListItem = ({ link, title, desc='', preview }) => {
+		const ListItem = ({ link, title, desc = '', preview }) => {
 			const element = document.createElement('div');
 			element.classList.add('card');
-			element.innerHTML= `
+			element.innerHTML = `
 					<a nohref onClick="visit('${title}', '${link}')">
 						<div class="preview" style="background-image:url('${preview}')"></div>
 						<div class="info">
@@ -37,32 +37,34 @@
 		const experimentsHeader = document.createElement('p');
 		experimentsHeader.textContent = 'experiments:';
 		document.body.append(experimentsHeader);
-		experiments.forEach(exp => {
-			exp = Array.isArray(exp)
-				? exp
-				: [exp,exp]
-			document.body.append(ListItem({
-				link: `./${exp[0]}.html`,
-				title: exp[1],
-				desc: exp[2],
-				preview: exp[3],
-			}));
+		experiments.forEach((exp) => {
+			exp = Array.isArray(exp) ? exp : [exp, exp];
+			document.body.append(
+				ListItem({
+					link:
+						exp[0].endsWith('/') || exp[0].includes('#')
+							? `./${exp[0]}`
+							: `./${exp[0]}.html`,
+					title: exp[1],
+					desc: exp[2],
+					preview: exp[3]
+				})
+			);
 		});
 
 		const otherHeader = document.createElement('p');
 		otherHeader.textContent = 'other:';
 		document.body.append(otherHeader);
-		others.forEach(exp => {
-			exp = Array.isArray(exp)
-				? exp
-				: [exp,exp];
-			document.body.append(ListItem({
-				link: exp[0],
-				title: exp[1],
-				desc: exp[2],
-				preview: exp[3],
-			}));
+		others.forEach((exp) => {
+			exp = Array.isArray(exp) ? exp : [exp, exp];
+			document.body.append(
+				ListItem({
+					link: exp[0],
+					title: exp[1],
+					desc: exp[2],
+					preview: exp[3]
+				})
+			);
 		});
-
 	</script>
 </html>

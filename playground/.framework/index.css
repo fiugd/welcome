@@ -1,85 +1,98 @@
 :root {
-  --text-color: #666;
-  --text-color-hover: #000000;
-  --button-bg: transparent;
-  --button-primary-bg: #00d6f3;
-  --button-primary-bg-hover: #4deaff;
-  --button-bg-hover: #e0e7f399;
-  --button-bg-selected: #e2e8f6e6;
-  --menu-bg: #f5fcff;
-  --app-bar-bg: #00bcd4;
-  --app-bar-icon-color: #9cecf6;
-  --app-bar-text-color: white;
+	--text-color: #666;
+	--text-color-hover: #000000;
+	--button-bg: transparent;
+	--button-primary-bg: #00d6f3;
+	--button-primary-bg-hover: #4deaff;
+	--button-bg-hover: #e0e7f399;
+	--button-bg-selected: #e2e8f6e6;
+	--menu-bg: #f5fcff;
+	--app-bar-bg: #00bcd4;
+	--app-bar-icon-color: #9cecf6;
+	--app-bar-text-color: white;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
-    --text-color: #aaa;
-    --text-color-hover: #d7d7d7;
-    --button-bg: transparent;
-    --button-primary-bg: #383838;
-    --button-primary-bg-hover: #666;
-    --button-bg-hover: #eee2;
-    --button-bg-selected: #aaa2;
-    --menu-bg: #171717;
-    --app-bar-bg: #242424;
-    --app-bar-icon-color: #00bcd4;
-    --app-bar-text-color: #aaa;
-  }
+	:root {
+		--text-color: #aaa;
+		--text-color-hover: #d7d7d7;
+		--button-bg: transparent;
+		--button-primary-bg: #383838;
+		--button-primary-bg-hover: #666;
+		--button-bg-hover: #eee2;
+		--button-bg-selected: #aaa2;
+		--menu-bg: #171717;
+		--app-bar-bg: #242424;
+		--app-bar-icon-color: #00bcd4;
+		--app-bar-text-color: #aaa;
+	}
 }
 
 body {
-  font-family: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
-  color: var(--text-color);
+	font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+		'Segoe UI Emoji', 'Segoe UI Symbol';
+	color: var(--text-color);
 }
 
 .fit-parent {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 .flex {
-  display: flex;
+	display: flex;
 }
 .alignCenter {
-  align-items: center;
+	align-items: center;
 }
 .justifyCenter {
-  justify-content: center;
+	justify-content: center;
 }
 
 a {
-  /* padding-top: 4px; */
-  /* padding-bottom: 4px; */
-  padding: 6px 10px;
-  display: block;
-  border-radius: 6px;
-  box-sizing: border-box;
-  cursor: pointer;
+	/* padding-top: 4px; */
+	/* padding-bottom: 4px; */
+	padding: 6px 10px;
+	display: block;
+	border-radius: 6px;
+	box-sizing: border-box;
+	cursor: pointer;
 }
 a.button {
-  text-decoration: none;
+	text-decoration: none;
 }
 a:hover {
-  background-color: var(--button-bg-hover);
+	background-color: var(--button-bg-hover);
 }
 a.button.primary {
-  background-color: var(--button-primary-bg);
+	background-color: var(--button-primary-bg);
 }
 a.button.primary:hover {
-  background-color: var(--button-primary-bg-hover);
+	background-color: var(--button-primary-bg-hover);
 }
 
 .menuItem {
-  padding: 8px 10px 0px 10px;
+	padding: 8px 10px 0px 10px;
 }
 .menuItem a {
-  color: var(--text-color);
-  width: 100%;
+	color: var(--text-color);
+	width: 100%;
 }
 .menuItem a:hover {
-  color: var(--text-color-hover);
+	color: var(--text-color-hover);
 }
 .menuItem.selected a {
-  background-color: var(--button-bg-selected);
+	background-color: var(--button-bg-selected);
 }
+
+.dropCap::first-letter {
+	color: #3a80ae;
+	padding-right: 10px;
+	/* margin-top: -7px; */
+	initial-letter: 2;
+	font-family: fantasy;
+}
+
+/* .dropCap::first-letter {
+	font-size: 200%;
+	color: hotpink;
+} */

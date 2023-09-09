@@ -1,0 +1,15 @@
+{
+  "name": "chisel",
+  "module": "server/index.ts",
+  "type": "module",
+  "scripts": {
+    "watch": "bunx http-server"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {}
+}

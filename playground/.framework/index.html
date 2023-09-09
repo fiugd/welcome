@@ -1,21 +1,28 @@
 <html>
 	<head>
 		<title>framework</title>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="stylesheet" href="index.css">
-		<meta name="color-scheme" content="dark light">
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" href="index.css" />
+		<meta name="color-scheme" content="dark light" />
 	</head>
 
 	<body></body>
 
 	<script type="module">
-        import Fragments from "./modules/fragments.js";
-        Fragments.update({ path: "Site.xml", swap: "body" });
-    </script>
+		import Fragments from './modules/fragments.js';
+		import Routing from './modules/routing.js';
+		import StateManager from './modules/state.js';
+
+		Routing.setup();
+		Fragments.update({ path: 'Site.xml', swap: 'body' });
+
+		// StateManager.subscribe(['route'], (...args) => {
+		// 	const route = StateManager.get('route');
+		// 	Fragments.update({ path: `pages/${route}.xml`, swap: '#main' });
+		// });
+	</script>
 </html>
-
-

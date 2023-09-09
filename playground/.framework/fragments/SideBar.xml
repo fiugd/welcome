@@ -8,7 +8,11 @@
         </div>
     </template>
 
-    <ForEach items="menuItems" selected="path IS route">
+    <ForEach
+        items="menuItems"
+        selected="path IS route"
+        listen="route"
+    >
         <div class="menuItem">
             <a href="#/{{path}}" class="button">
                 <span>{{label}}</span>

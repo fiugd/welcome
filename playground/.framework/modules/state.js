@@ -4,7 +4,7 @@ let subscribers = [];
 const getRoute = () => {
 	const pattern = new URLPattern({ hash: '/:route' });
 	const result = pattern.exec({ hash: document.location.hash });
-	return result?.hash?.groups?.route;
+	return result?.hash?.groups?.route || 'overview';
 };
 state.route = getRoute();
 

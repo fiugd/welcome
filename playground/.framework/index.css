@@ -10,6 +10,7 @@
 	--app-bar-bg: #00bcd4;
 	--app-bar-icon-color: #9cecf6;
 	--app-bar-text-color: white;
+	--main-bg: Canvas;
 }
 @media (prefers-color-scheme: dark) {
 	:root {
@@ -22,8 +23,10 @@
 		--button-bg-selected: #aaa2;
 		--menu-bg: #171717;
 		--app-bar-bg: #242424;
+		--app-bar-bg: #171717;
 		--app-bar-icon-color: #00bcd4;
 		--app-bar-text-color: #aaa;
+		--main-bg: #171717;
 	}
 }
 
@@ -32,6 +35,11 @@ body {
 		Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
 		'Segoe UI Emoji', 'Segoe UI Symbol';
 	color: var(--text-color);
+}
+
+::placeholder {
+	color: inherit;
+	opacity: 0.8;
 }
 
 .fit-parent {
@@ -92,7 +100,31 @@ a.button.primary:hover {
 	font-family: fantasy;
 }
 
-/* .dropCap::first-letter {
-	font-size: 200%;
-	color: hotpink;
-} */
+.page {
+	padding: 0px 3em 0px 2em;
+	height: inherit;
+	box-sizing: border-box;
+}
+
+.styledInput {
+	background-color: var(--button-bg-hover);
+	opacity: 0.6;
+	/* background: transparent; */
+	/* background-color: var(--button-primary-bg); */
+	/* box-shadow: inset 0px 0px 3px black; */
+	font-size: inherit;
+	border: 0px solid;
+	color: inherit;
+	outline: 0;
+	padding: 0.5em 1em;
+	border-radius: 7px;
+}
+.styledInput:hover,
+.styledInput:hover:focus {
+	opacity: 1;
+	background-color: var(--button-bg-hover);
+}
+.styledInput:focus {
+	opacity: 1;
+	background-color: var(--button-bg-selected);
+}

@@ -66,7 +66,7 @@ const ForEach = (node) => {
 	const updateHandler = () => {
 		// const thisState = State.get();
 		// console.log({ thisState });
-		console.log('ForEach update');
+		// console.log('ForEach update');
 		target = render({ itemsProp, template, target });
 	};
 	State.subscribe([itemsProp], updateHandler);

@@ -1,0 +1,42 @@
+.controls-bottom {
+	position: absolute;
+	bottom: 8px;
+	width: 100vw;
+	display: flex;
+	justify-content: center;
+	gap: 5px;
+	align-items: flex-end;
+	height: 22%;
+	max-height: 106px;
+	/* opacity: 0.3; */
+}
+
+.controls-bottom > div {
+	border-radius: 15px;
+	display: flex;
+	color: #886337;
+	text-transform: uppercase;
+	font-family: arial;
+	justify-content: center;
+	align-items: flex-end;
+	padding-bottom: 10px;
+	background-color: #4c360e;
+	background: linear-gradient(#644d40, #472f2a);
+	box-shadow: 1px 3px 5px 2px #00000075, inset 1px 1px 0px 4px #6b472b,
+		inset 1px 1px 0px 5px #0f0000c9, inset 1px -6px 8px 0px #312604;
+}
+.controls-bottom .missle {
+	margin-right: 18px;
+}
+.controls-bottom .mineral {
+	margin-left: 18px;
+}
+.controls-bottom .missle,
+.controls-bottom .mineral {
+	height: 85%;
+	aspect-ratio: 112 / 100;
+}
+.controls-bottom .team {
+	height: 80%;
+	aspect-ratio: 101 / 100;
+}

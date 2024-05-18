@@ -6,14 +6,30 @@
 		<meta name="author" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="mobile-web-app-capable" content="yes" />
-		<link rel="stylesheet" href="./visuals/page.css" />
 		<link rel="manifest" href="./manifest.json" />
+
+		<link rel="stylesheet" href="./visuals/page.css" />
+		<link rel="stylesheet" href="./visuals/controls.css" />
+		<link rel="stylesheet" href="./visuals/screen.css" />
 	</head>
 
 	<body>
 		<div class="container">
 			<canvas></canvas>
 		</div>
+		<div
+			style="
+				background: url(assets/linerangers1.png);
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				opacity: 0.25;
+				background-size: contain;
+				display: none;
+			"
+		/>
 	</body>
 
 	<script src="./visuals/screen.js" type="module"></script>

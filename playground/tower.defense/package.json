@@ -1,0 +1,18 @@
+{
+	"name": "tower.defense",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"watch": "ws --spa tower.defense.html"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"local-web-server": "^5.3.3"
+	}
+}

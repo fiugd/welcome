@@ -1,16 +1,14 @@
 <html>
 	<head>
 		<title>Tower Defense</title>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="stylesheet" href="tower.defense.css">
-		<link rel="manifest" href="./pwa/manifest.json" />
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" href="./visuals/page.css" />
+		<link rel="manifest" href="./manifest.json" />
 	</head>
-
-	<script src="td.screen.js" type="module"></script>
 
 	<body>
 		<div class="container">
@@ -18,72 +16,7 @@
 		</div>
 	</body>
 
-	<script>
-		if(document.URL.includes('::preview::')){
-			const container = document.querySelector('.container');
-			container.classList.add('dev');
-		}
-
-		window.towerX = 200;
-		window.towerColor1 = '#24b';
-		window.towerColor2 = '#934';
-
-		window.basicChar = {
-			type: 'attacker',
-			hp: 3000,
-			respawn: 40,
-			range: 400,
-			attack: 110,
-			x: towerX + 140,
-			move: 40
-		};
-
-		window.basicOppChar = {
-			type: 'defender',
-			hp: 3000,
-			respawn: 40,
-			range: 560,
-			attack: 95,
-			move: 40,
-			x: towerX + 140,
-		};
-	</script>
-
-	<script src="tower.defense.js" type="module"></script>
-
-	<!--
-	<script async src="https://unpkg.com/pwacompat" crossorigin="anonymous">
-	</script>
-	-->
-
+	<script src="./visuals/screen.js" type="module"></script>
+	<script src="./engine/config.js" type="module"></script>
+	<script src="./engine/init.js" type="module"></script>
 </html>
-
-<!--
-from lerico, characters seem to be under 200x200 with many around 170 high and varying widths
-760x428 game dims from a screencap I saw, seems reasonable 
-
-heights zoomed in
-total - 400/1400(28.5%) (above tower) + 650/1400(46.4%) (tower - including shadow of 50px) + 350/1400(25%) (below tower)
-horizon line at 800/1400 from top
-character - about 350/1400 (25%)
-
-new res 800 x 4000
-tower top - 229px from top
-tower - 371px (with 28px shadow)
-tower bottom - 600px from top
-
-character - 200px
-
-----
-blaster master - https://www.spriters-resource.com/resources/sheets/113/116445.png?updated=1557048859
-dry bones -https://www.spriters-resource.com/resources/sheets/8/7871.png?updated=1460953762
-
-the dry bones sprite sheet gets me thinking it would be nice to make a bones system
-https://cdn.rawgit.com/flyover/spriter.ts/master/demo/index.html
-http://dragonbones.com/en/download.html#runLibrary
-
--->
-
-
-<!-- http://bit.ly/TowerDefenseGo -->
-

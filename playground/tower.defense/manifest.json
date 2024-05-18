@@ -1,0 +1,10 @@
+{
+	"name": "Tower Defense",
+	"short_name": "Tower Defense",
+	"theme_color": "#080b17",
+	"background_color": "#080b17",
+	"display": "fullscreen",
+	"orientation": "landscape",
+	"scope": "https://welcome.fiug.dev/",
+	"start_url": "tower.defense.html"
+}

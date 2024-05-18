@@ -1,9 +1,9 @@
-import Engine from '/engine/engine.js';
-import Render from '/visuals/render.js';
-import State, { assignId, setHpMax } from '/engine/state.js';
-import { loadAssets } from '/visuals/assets.js';
-import Controls from '/visuals/controls.js';
-import { clone, unNest } from '/utils/utils.js';
+import Engine from './engine.js';
+import Render from '../visuals/render.js';
+import State, { assignId, setHpMax } from './state.js';
+import { loadAssets } from '../visuals/assets.js';
+import Controls from '../visuals/controls.js';
+import { clone, unNest } from '../utils/utils.js';
 
 const state = new State({
 	record: false,

@@ -1,6 +1,6 @@
-import { cleanError, colorShade } from '/utils/utils.js';
-import { toggleCoords } from '/engine/state.js';
-import GifMaker from '/visuals/gif.js';
+import { cleanError, colorShade } from '../utils/utils.js';
+import { toggleCoords } from '../engine/state.js';
+import GifMaker from './gif.js';
 
 const BOTTOM_OFFSET = 60;
 

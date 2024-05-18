@@ -1,4 +1,4 @@
-import { clone } from '/utils/utils.js';
+import { clone } from '../utils/utils.js';
 
 export const toggleCoords = (state, coordMode) => {
 	const stateClone = clone(state);

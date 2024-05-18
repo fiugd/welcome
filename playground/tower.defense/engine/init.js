@@ -125,8 +125,8 @@ const gameLoop = () => {
 	}
 };
 
-const render = new Render({ state });
 const controls = new Controls();
+const render = new Render({ state, controls });
 
 const highPriority = () => {};
 

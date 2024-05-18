@@ -10,15 +10,21 @@
 	max-height: 106px;
 	/* opacity: 0.3; */
 }
-
+.controls-bottom .symbol {
+	font-size: 60px;
+}
+.controls-bottom .symbol-smaller {
+	font-size: 45px;
+}
 .controls-bottom > div {
 	border-radius: 15px;
 	display: flex;
+	flex-direction: column;
 	color: #886337;
 	text-transform: uppercase;
 	font-family: arial;
-	justify-content: center;
-	align-items: flex-end;
+	justify-content: flex-end;
+	align-items: center;
 	padding-bottom: 10px;
 	background-color: #4c360e;
 	background: linear-gradient(#644d40, #472f2a);
@@ -39,4 +45,76 @@
 .controls-bottom .team {
 	height: 80%;
 	aspect-ratio: 101 / 100;
+}
+
+/* ticker */
+.controls-ticker {
+	color: #777;
+	font-family: monospace;
+	position: absolute;
+	top: 30px;
+	background: black;
+	padding: 0.2em 1em;
+	user-select: none;
+	min-width: 80px;
+	white-space: pre;
+	display: flex;
+	justify-content: flex-end;
+}
+.screen-info {
+	color: #777;
+	font-family: monospace;
+	position: absolute;
+	top: 10px;
+	background: black;
+	padding: 0.2em 1em;
+	user-select: none;
+	min-width: 80px;
+}
+
+/* top */
+.controls-top {
+	position: absolute;
+	top: 15px;
+	width: 100vw;
+	height: 50px;
+	display: flex;
+	/* opacity: 0.3; */
+}
+.controls-top .effects {
+	display: flex;
+	margin-right: auto;
+	margin-left: 20px;
+	gap: 11px;
+}
+.controls-top .effects > div,
+.controls-top .pause {
+	background-color: #555;
+	height: 100%;
+	aspect-ratio: 1/1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	border-radius: 50%;
+	box-shadow: 1px 1px 0px 2px black;
+	opacity: 0.5;
+}
+.controls-top .effects > div {
+	font-size: 30px;
+}
+.controls-top .pause {
+	margin-right: 17px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	font-weight: 900;
+}
+.controls-top .mineral {
+	margin-right: 25px;
+	font-size: 30px;
+	font-family: monospace;
+	font-weight: 900;
+	color: #444;
+	display: flex;
+	align-items: center;
 }

@@ -23,7 +23,7 @@ const initDom = (state) => {
 	return { ctx, gif };
 };
 
-const render = (state, ctx, gif) => {
+const render = (state, ctx, gif, controls) => {
 	const { width: fieldWidth, height: fieldHeight } = state.field;
 	const SCALAR = (x) => x * 4;
 	const bottom = (height) => fieldHeight - height - SCALAR(BOTTOM_OFFSET);
@@ -111,14 +111,17 @@ const render = (state, ctx, gif) => {
 		);
 	};
 
+	// const writeTicker = () => {
+	// 	ctx.fillStyle = '#777';
+	// 	ctx.font = `${SCALAR(15)}px sans-serif`;
+	// 	ctx.fillText(
+	// 		state.tick.toString().padStart(5, ' '),
+	// 		SCALAR(20),
+	// 		SCALAR(20)
+	// 	);
+	// };
 	const writeTicker = () => {
-		ctx.fillStyle = '#777';
-		ctx.font = `${SCALAR(15)}px sans-serif`;
-		ctx.fillText(
-			state.tick.toString().padStart(5, ' '),
-			SCALAR(20),
-			SCALAR(20)
-		);
+		controls.updateTicker(state.tick.toString().padStart(5, ' '));
 	};
 
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
@@ -299,9 +302,9 @@ const render = (state, ctx, gif) => {
 	}
 };
 
-const tryRender = (state, ctx, gif) => {
+const tryRender = (state, ctx, gif, controls) => {
 	try {
-		render(state, ctx, gif);
+		render(state, ctx, gif, controls);
 		return true;
 	} catch (e) {
 		console.error(cleanError(e));
@@ -310,8 +313,8 @@ const tryRender = (state, ctx, gif) => {
 };
 
 export default class Render {
-	constructor({ state }) {
+	constructor({ state, controls }) {
 		const { ctx, gif } = initDom(state);
-		return () => tryRender(state, ctx, gif);
+		return () => tryRender(state, ctx, gif, controls);
 	}
 }

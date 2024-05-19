@@ -1,0 +1,11 @@
+-   effects buttons do something
+-   mineral amount grows and can be upgraded
+-   pause button
+-   auto mode versus interactive mode
+-   zoom
+-   towers and characters are "real" looking
+-   missile works
+-   critical hits
+-   custom backgrounds and level lengths
+-   actual characters with different strengths, etc
+-   screen going to sleep automatically

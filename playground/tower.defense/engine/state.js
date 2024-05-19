@@ -19,8 +19,15 @@ export const toggleCoords = (state, coordMode) => {
 	return stateClone;
 };
 
-export const assignId = (x) => (x.id = Math.random().toString().slice(2));
-export const setHpMax = (x) => (x.hpMax = x.hp);
+const assignId = (x) => (x.id = Math.random().toString().slice(2));
+const setHpMax = (x) => (x.hpMax = x.hp);
+
+const spawnCharInstance = (char, deployed) => {
+	const newChar = clone(char);
+	assignId(newChar);
+	setHpMax(newChar);
+	deployed.push(newChar);
+};
 
 const getById = (state, id) =>
 	[
@@ -42,9 +49,9 @@ export default class State {
 		});
 
 		state.getById = (id) => getById(state, id);
+		state.spawnCharInstance = spawnCharInstance;
 
 		state.global = () => toggleCoords(state, 'global');
-
 		return state;
 	}
 }

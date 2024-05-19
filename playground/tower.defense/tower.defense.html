@@ -28,9 +28,13 @@
 				background-size: contain;
 				display: none;
 			"
-		/>
+		></div>
 	</body>
-
-	<script src="./engine/config.js?cache=111" type="module"></script>
-	<script src="./engine/init.js?cache=111" type="module"></script>
+	<script>
+		if (document.URL.includes('::preview::')) {
+			const container = document.querySelector('.container');
+			container.classList.add('dev');
+		}
+	</script>
+	<script src="./engine/init.js?cache=222" type="module"></script>
 </html>

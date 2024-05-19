@@ -1,6 +1,6 @@
 import ScreenInfo from './screen.js';
 
-const createTopControls = ({ showEffects } = {}) => {
+const createTopControls = ({ showEffects, state } = {}) => {
 	const top = document.createElement('div');
 	top.classList.add('controls-top');
 
@@ -21,8 +21,15 @@ const createTopControls = ({ showEffects } = {}) => {
 		<div class="mineral">
 			⬖ 77/170
 		</div>
-		<div class="pause">I I</div>
+		<div class="pause button">I I</div>
 	`;
+	const pauseButton = top.querySelector('.pause.button');
+	pauseButton.addEventListener('click', () => {
+		pauseButton.innerText = state.paused ? 'I I' : '▶';
+		pauseButton.style.backgroundColor = state.paused ? '' : '#478347';
+		pauseButton.style.color = state.paused ? '' : 'white';
+		state.actions.pauseToggle();
+	});
 	document.body.insertAdjacentElement('beforeend', top);
 	return top;
 };
@@ -33,7 +40,7 @@ const createBottomControls = ({ state }) => {
 	bottom.innerHTML = `
         <div class="missile button">
 			<div class="symbol">☢</div>
-			<div class="progress p-50 vertical orange"></div>
+			<div class="progress p-0 vertical orange"></div>
 			<div>missile</div>
 		</div>
         <div class="team">
@@ -58,7 +65,7 @@ const createBottomControls = ({ state }) => {
 		</div>
 		<div class="mineral button">
 			<div class="symbol">⬖</div>
-			<div class="progress p-100 vertical blue"></div>
+			<div class="progress p-0 vertical blue"></div>
 			<div>mineral</div>
 		</div>
     `;
@@ -98,7 +105,7 @@ export default class Controls {
 		if (showScreenInfo) {
 			ScreenInfo();
 		}
-		this.top = createTopControls({ showEffects });
+		this.top = createTopControls({ state, showEffects });
 		this.bottom = createBottomControls({ state });
 	}
 	updateTicker(count) {

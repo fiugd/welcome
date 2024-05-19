@@ -31,8 +31,29 @@ const state = new State({
 			team: [window.basicOppChar]
 		}
 	],
-	tick: 0
+	tick: 0,
+	missile: {
+		charge: 0,
+		chargeRate: 30
+	},
+	mineral: {
+		charge: 0, // level charge
+		chargeRate: 20, // level charge rate
+		level: 1,
+
+		capacity: 170,
+		amount: 77
+	}
 });
+state.actions = {
+	missileFire: () => {
+		state.missile.charge = 0;
+	},
+	mineralLevel: () => {
+		state.mineral.charge = 0;
+		state.mineral.level++;
+	}
+};
 
 const moveDeployed = ({ tick, towers }) => {
 	const move = (char) => {
@@ -103,8 +124,21 @@ const spawnTeam = ({ towers }) => {
 	towers.forEach(spawn);
 };
 
+const chargeMineral = (state) => {
+	if (state.mineral.charge === 100) return;
+	if (state.tick % state.mineral.chargeRate !== 0) return;
+	state.mineral.charge += 10;
+};
+const chargeMissile = (state) => {
+	if (state.missile.charge === 100) return;
+	if (state.tick % state.missile.chargeRate !== 0) return;
+	state.missile.charge += 10;
+};
+
 const gameLoop = () => {
 	try {
+		chargeMissile(state);
+		chargeMineral(state);
 		spawnTeam(state);
 		targetOpponents(state);
 		attackOpponents(state);
@@ -125,7 +159,12 @@ const gameLoop = () => {
 	}
 };
 
-const controls = new Controls();
+const controls = new Controls({
+	state,
+	showTicker: false,
+	showScreenInfo: false,
+	showEffects: true
+});
 const render = new Render({ state, controls });
 
 const highPriority = () => {};

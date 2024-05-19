@@ -1,15 +1,22 @@
 import ScreenInfo from './screen.js';
 
-const createTopControls = () => {
+const createTopControls = ({ showEffects } = {}) => {
 	const top = document.createElement('div');
 	top.classList.add('controls-top');
-	top.innerHTML = `
-		<div class="effects">
+
+	const effects = showEffects
+		? `
 			<div>🙌</div>
 			<div>☄</div>
 			<div>🧊</div>
 			<div>🌪</div>
 			<div>🔧</div>
+		`
+		: '';
+
+	top.innerHTML = `
+		<div class="effects">
+			${effects}
 		</div>
 		<div class="mineral">
 			⬖ 77/170
@@ -20,12 +27,13 @@ const createTopControls = () => {
 	return top;
 };
 
-const createBottomControls = () => {
+const createBottomControls = ({ state }) => {
 	const bottom = document.createElement('div');
 	bottom.classList.add('controls-bottom');
 	bottom.innerHTML = `
-        <div class="missle">
+        <div class="missile button">
 			<div class="symbol">☢</div>
+			<div class="progress p-50 vertical orange"></div>
 			<div>missile</div>
 		</div>
         <div class="team">
@@ -48,12 +56,29 @@ const createBottomControls = () => {
 			<div class="symbol-smaller">웃</div>
 			<div>team 5</div>
 		</div>
-		<div class="mineral">
+		<div class="mineral button">
 			<div class="symbol">⬖</div>
+			<div class="progress p-100 vertical blue"></div>
 			<div>mineral</div>
 		</div>
     `;
 	document.body.insertAdjacentElement('beforeend', bottom);
+	const missileButton = bottom.querySelector('.missile.button');
+	const missileButtonProgress = bottom.querySelector(
+		'.missile.button .progress'
+	);
+	missileButton.addEventListener('click', () => {
+		if (!missileButtonProgress.classList.contains(`p-100`)) return;
+		state.actions.missileFire();
+	});
+	const mineralButton = bottom.querySelector('.mineral.button');
+	const mineralButtonProgress = bottom.querySelector(
+		'.mineral.button .progress'
+	);
+	mineralButton.addEventListener('click', () => {
+		if (!mineralButtonProgress.classList.contains(`p-100`)) return;
+		state.actions.mineralLevel();
+	});
 	return bottom;
 };
 
@@ -65,7 +90,7 @@ const createTicker = () => {
 };
 
 export default class Controls {
-	constructor({ showTicker, showScreenInfo } = {}) {
+	constructor({ state, showTicker, showScreenInfo, showEffects } = {}) {
 		this.showTicker = showTicker;
 		if (showTicker) {
 			this.ticker = createTicker();
@@ -73,11 +98,30 @@ export default class Controls {
 		if (showScreenInfo) {
 			ScreenInfo();
 		}
-		this.top = createTopControls();
-		this.bottom = createBottomControls();
+		this.top = createTopControls({ showEffects });
+		this.bottom = createBottomControls({ state });
 	}
 	updateTicker(count) {
 		if (!this.showTicker) return;
 		this.ticker.innerHTML = count;
+	}
+	updateProgress(which, amount) {
+		const el = this.bottom.querySelector(`.${which} .progress`);
+		if (el.classList.contains(`p-${amount}`)) return;
+		const progressClasses = [
+			'p-0',
+			'p-10',
+			'p-20',
+			'p-30',
+			'p-40',
+			'p-50',
+			'p-60',
+			'p-70',
+			'p-80',
+			'p-90',
+			'p-100'
+		];
+		el.classList.remove(...progressClasses);
+		el.classList.add(`p-${amount}`);
 	}
 }

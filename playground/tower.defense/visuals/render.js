@@ -40,6 +40,9 @@ const render = (state, ctx, gif, controls) => {
 		teeAttackRed
 	} = state.assets.images;
 
+	controls.updateProgress('missile', state.missile.charge || 0);
+	controls.updateProgress('mineral', state.mineral.charge || 0);
+
 	const drawGuides = () => {
 		const line = (x, y, x1, y2, color = '#555') => {
 			ctx.strokeStyle = color;
@@ -111,18 +114,10 @@ const render = (state, ctx, gif, controls) => {
 		);
 	};
 
-	// const writeTicker = () => {
-	// 	ctx.fillStyle = '#777';
-	// 	ctx.font = `${SCALAR(15)}px sans-serif`;
-	// 	ctx.fillText(
-	// 		state.tick.toString().padStart(5, ' '),
-	// 		SCALAR(20),
-	// 		SCALAR(20)
-	// 	);
-	// };
 	const writeTicker = () => {
 		controls.updateTicker(state.tick.toString().padStart(5, ' '));
 	};
+	writeTicker();
 
 	const healthBar = ({ x, y, width, hp, hpMax }) => {
 		const healthX = center(x, SCALAR(width));
@@ -277,7 +272,6 @@ const render = (state, ctx, gif, controls) => {
 	globalModeState.towers.forEach((tower) => {
 		renderTower(tower);
 		tower.deployed.forEach(renderCharacter);
-		writeTicker();
 	});
 
 	if (state.towers[0].status === 'dead') {

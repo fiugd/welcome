@@ -12,9 +12,11 @@
 }
 .controls-bottom .symbol {
 	font-size: 60px;
+	line-height: 55px;
 }
 .controls-bottom .symbol-smaller {
 	font-size: 45px;
+	line-height: 40px;
 }
 .controls-bottom > div {
 	border-radius: 15px;
@@ -31,13 +33,13 @@
 	box-shadow: 1px 3px 5px 2px #00000075, inset 1px 1px 0px 4px #6b472b,
 		inset 1px 1px 0px 5px #0f0000c9, inset 1px -6px 8px 0px #312604;
 }
-.controls-bottom .missle {
+.controls-bottom .missile {
 	margin-right: 18px;
 }
 .controls-bottom .mineral {
 	margin-left: 18px;
 }
-.controls-bottom .missle,
+.controls-bottom .missile,
 .controls-bottom .mineral {
 	height: 85%;
 	aspect-ratio: 112 / 100;
@@ -117,4 +119,67 @@
 	color: #444;
 	display: flex;
 	align-items: center;
+}
+
+.controls-bottom .button {
+	position: relative;
+}
+.controls-bottom .progress.vertical {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	margin: 5px;
+	margin-top: 0;
+	margin-right: 3px;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+	mix-blend-mode: overlay;
+	opacity: 0.6;
+}
+.controls-bottom .progress.blue {
+	background: #17cdfc;
+}
+.controls-bottom .progress.orange {
+	background: #ffe9be;
+}
+.progress.vertical.p-0 {
+	top: 100%;
+}
+.progress.vertical.p-10 {
+	margin-right: 6px;
+	margin-left: 7px;
+	top: 90%;
+}
+.progress.vertical.p-20 {
+	top: 80%;
+}
+.progress.vertical.p-30 {
+	top: 70%;
+}
+.progress.vertical.p-40 {
+	top: 60%;
+}
+.progress.vertical.p-50 {
+	top: 50%;
+}
+.progress.vertical.p-60 {
+	top: 40%;
+}
+.progress.vertical.p-70 {
+	top: 30%;
+}
+.progress.vertical.p-80 {
+	top: 20%;
+}
+.progress.vertical.p-90 {
+	top: 13%;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+.progress.vertical.p-100 {
+	top: 0;
+	margin-top: 5px;
+	border-top-right-radius: 10px;
+	border-top-left-radius: 10px;
 }

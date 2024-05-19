@@ -6,11 +6,13 @@ export const balancedGame1 = () => {
 	const basicChar = {
 		type: 'attacker',
 		hp: 3000,
-		respawn: 40,
+		respawn: 35,
 		range: 400,
 		attack: 110,
 		x: towerX + 140,
-		move: 40
+		move: 50,
+		critChance: 0.1,
+		critMult: 5
 	};
 
 	const basicOppChar = {
@@ -20,7 +22,9 @@ export const balancedGame1 = () => {
 		range: 560,
 		attack: 95,
 		move: 40,
-		x: towerX + 140
+		x: towerX + 140,
+		critChance: 0.1,
+		critMult: 5
 	};
 
 	return {
@@ -38,7 +42,7 @@ export const balancedGame1 = () => {
 					dims: [200, 343],
 					x: towerX,
 					color: towerColor1,
-					hp: 2000,
+					hp: 30000,
 					deployed: [],
 					team: [basicChar]
 				},
@@ -47,7 +51,7 @@ export const balancedGame1 = () => {
 					dims: [200, 343],
 					x: towerX,
 					color: towerColor2,
-					hp: 2000,
+					hp: 30000,
 					deployed: [],
 					team: [basicOppChar]
 				}

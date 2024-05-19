@@ -57,7 +57,15 @@ export const attackOpponents = (state) => {
 			attacker.target = undefined;
 			return;
 		}
-		target.hp -= attacker.attack;
+		let damage = attacker.attack;
+		const canCrit =
+			typeof attacker.critChance === 'number' &&
+			typeof attacker.critMult === 'number';
+		if (canCrit && Math.random() <= attacker.critChance) {
+			damage = attacker.attack * attacker.critMult;
+			console.log('critical attack');
+		}
+		target.hp -= damage;
 		if (target.hp < 0) {
 			target.status = 'dead';
 			attacker.target = undefined;

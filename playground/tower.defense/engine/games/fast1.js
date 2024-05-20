@@ -1,14 +1,14 @@
-export const balancedGame1 = () => {
+export const fast1 = () => {
 	const towerX = 200;
 	const towerColor1 = '#24b';
 	const towerColor2 = '#934';
 
 	const basicChar = {
 		type: 'attacker',
-		hp: 3000,
+		hp: 30000,
 		respawn: 35,
-		range: 400,
-		attack: 110,
+		range: 800,
+		attack: 1000, // hard hitter
 		x: towerX + 140,
 		move: 50,
 		critChance: 0.07,
@@ -29,7 +29,7 @@ export const balancedGame1 = () => {
 
 	return {
 		state: {
-			throttle: 67,
+			throttle: 1,
 			record: false,
 			field: {
 				height: 800,

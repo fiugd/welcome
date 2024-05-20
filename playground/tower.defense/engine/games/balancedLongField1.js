@@ -1,4 +1,4 @@
-export const balancedGame1 = () => {
+export const balancedLongField1 = () => {
 	const towerX = 200;
 	const towerColor1 = '#24b';
 	const towerColor2 = '#934';
@@ -33,7 +33,7 @@ export const balancedGame1 = () => {
 			record: false,
 			field: {
 				height: 800,
-				width: 2300
+				width: 5000
 			},
 			towers: [
 				{

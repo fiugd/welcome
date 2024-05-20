@@ -194,3 +194,9 @@
 	border-top-right-radius: 10px;
 	border-top-left-radius: 10px;
 }
+
+.press-start-2p-regular {
+	font-family: 'Press Start 2P', system-ui;
+	font-weight: 400;
+	font-style: normal;
+}

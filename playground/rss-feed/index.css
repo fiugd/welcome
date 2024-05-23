@@ -1,9 +1,10 @@
+/*
 :root {
 	--color-body-text: #777;
 	--color-link: #a73;
 	--color-feed-title-link: #c2822e;
 	--color-visited-link: #5d4f34;
-	--color-hover-link: #a73; /* Same as link color */
+	--color-hover-link: #a73;
 	--color-comments-link: #888;
 	--color-title-link: #b6aa93;
 	--color-feed-item-bg: #171717;
@@ -18,7 +19,31 @@
 	--color-errors-menu-hover-bg: black;
 	--color-errors-menu-hover-text: white;
 	--color-errors-items-bg: #171717;
-	--color-errors-items-border: #171717; /* Assuming this for the border of items pre */
+	--color-errors-items-border: #171717;
+}
+*/
+
+:root {
+	--color-body-text: #444;
+	--color-link: #d55;
+	--color-feed-title-link: #e69933;
+	--color-visited-link: #8b6b46;
+	--color-hover-link: #d55;
+	--color-comments-link: #666;
+	--color-title-link: #d6c8a1;
+	--color-feed-item-bg: #1e1e1e;
+	--color-feed-item-link: #d7b875;
+	--color-content-span: #b09070;
+	--color-content-span-before: #888;
+	--color-categories-text: #b0b0b0;
+	--color-categories-bg: #2b2b2b;
+	--color-categories-border: #b0b0b0;
+	--color-errors-menu-bg: #1e1e1e;
+	--color-errors-menu-text: #b09070;
+	--color-errors-menu-hover-bg: #000;
+	--color-errors-menu-hover-text: #fff;
+	--color-errors-items-bg: #1e1e1e;
+	--color-errors-items-border: #1e1e1e;
 }
 
 body {

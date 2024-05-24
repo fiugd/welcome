@@ -24,26 +24,26 @@
 */
 
 :root {
-	--color-body-text: #444;
-	--color-link: #d55;
-	--color-feed-title-link: #e69933;
-	--color-visited-link: #8b6b46;
-	--color-hover-link: #d55;
-	--color-comments-link: #666;
-	--color-title-link: #d6c8a1;
-	--color-feed-item-bg: #1e1e1e;
-	--color-feed-item-link: #d7b875;
-	--color-content-span: #b09070;
-	--color-content-span-before: #888;
-	--color-categories-text: #b0b0b0;
-	--color-categories-bg: #2b2b2b;
-	--color-categories-border: #b0b0b0;
-	--color-errors-menu-bg: #1e1e1e;
-	--color-errors-menu-text: #b09070;
-	--color-errors-menu-hover-bg: #000;
-	--color-errors-menu-hover-text: #fff;
-	--color-errors-items-bg: #1e1e1e;
-	--color-errors-items-border: #1e1e1e;
+    --color-body-text: #444;
+    --color-link: var(--color-feed-item-link);
+    --color-feed-title-link: #ff9100;
+    --color-visited-link: #8b6b46;
+    --color-hover-link: #d55;
+    --color-comments-link: var(--color-link);
+    --color-title-link: #d6c8a1;
+    --color-feed-item-bg: #262525;
+    --color-feed-item-link: #d7b875;
+    --color-content-span: #b09070;
+    --color-content-span-before: #888;
+    --color-categories-text: #b0b0b0;
+    --color-categories-bg: #2b2b2b;
+    --color-categories-border: #b0b0b0;
+    --color-errors-menu-bg: #1e1e1e;
+    --color-errors-menu-text: #b09070;
+    --color-errors-menu-hover-bg: #000;
+    --color-errors-menu-hover-text: #fff;
+    --color-errors-items-bg: #1e1e1e;
+    --color-errors-items-border: #1e1e1e;
 }
 
 body {

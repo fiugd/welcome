@@ -24,7 +24,7 @@
 */
 
 :root {
-    --color-body-text: #444;
+    --color-body-text: #98957a;
     --color-link: var(--color-feed-item-link);
     --color-feed-title-link: #ff9100;
     --color-visited-link: #8b6b46;

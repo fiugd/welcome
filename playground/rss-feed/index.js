@@ -77,12 +77,12 @@ const FeedItem = (item, className='') => {
 			const numb = line.replace('# Comments: ','');
 			//if(!Number(numb)) return '';
 			line = `<a class="comments" href="${comments}">${numb} comments</a>`;
-			comments = `<a class="comments" href="${comments}">${numb} comments</a>`
+			_comments = `<a class="comments" href="${comments}">${numb} comments</a>`
 		}
 		if(line.includes('Points')){
 			const numb = line.replace('Points: ','');
 			line = `${numb} points`;
-			points = `${numb} points`
+			_points = `${numb} points`
 		}
 		return `<span>${line}</span>`;
 	};
@@ -114,8 +114,8 @@ const FeedItem = (item, className='') => {
 					: ''
 				}
 				${_content && false ? (_content.split('</span>').slice(1).join('</span>')) : ''}
-				<span>${_points}</span>
-   				<span>${_points}</span>
+				${ !isTitle ? `<span>${_points}</span>` : '' }
+				${ !isTitle ? `<span>${_comments}</span>` : '' }
 			</div>
 		</div>`;
 };

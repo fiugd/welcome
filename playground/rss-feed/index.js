@@ -102,7 +102,7 @@ const FeedItem = (item, className='') => {
 				</div>
 			</div>
 			<div class="content">
-			${_content ? (_content.split('</span>')[0]+'</span>') : ''}
+			${_content && false ? (_content.split('</span>')[0]+'</span>') : ''}
 			${ !isTitle
 				? `<span>
 						<a href="https://widgets.getpocket.com/v1/popup?url=${link}" target="popup">add to pocket</a>

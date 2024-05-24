@@ -69,22 +69,26 @@ const FeedItem = (item, className='') => {
 	if(!item) return;
 	const { title, link, content, comments, categories=[] } = item;
 
+	let _points = "- points";
+	let _comments = `<a class="comments" href="${comments}">- comments</a>`;
 	const contentMap = (line) => {
 		line = line.replace(/<p>|<\/p>/g, '');
 		if(line.includes('# Comments')){
 			const numb = line.replace('# Comments: ','');
 			//if(!Number(numb)) return '';
 			line = `<a class="comments" href="${comments}">${numb} comments</a>`;
+			comments = `<a class="comments" href="${comments}">${numb} comments</a>`
 		}
 		if(line.includes('Points')){
 			const numb = line.replace('Points: ','');
 			line = `${numb} points`;
+			points = `${numb} points`
 		}
 		return `<span>${line}</span>`;
 	};
 	let _content = content
 		? content.split('\n')
-			.filter(c => c.includes('oints') || c.includes('# Comments'))
+			.filter(c => c.includes('Points: ') || c.includes('# Comments'))
 			.map(contentMap)
 			.filter(x=>!!x)
 			.join('\n')
@@ -102,14 +106,16 @@ const FeedItem = (item, className='') => {
 				</div>
 			</div>
 			<div class="content">
-			${_content && false ? (_content.split('</span>')[0]+'</span>') : ''}
-			${ !isTitle
-				? `<span>
-						<a href="https://widgets.getpocket.com/v1/popup?url=${link}" target="popup">add to pocket</a>
-					</span>`
-				: ''
-			}
-			${_content ? (_content.split('</span>').slice(1).join('</span>')) : ''}
+				${_content && false ? (_content.split('</span>')[0]+'</span>') : ''}
+				${ !isTitle
+					? `<span>
+							<a href="https://widgets.getpocket.com/v1/popup?url=${link}" target="popup">add to pocket</a>
+						</span>`
+					: ''
+				}
+				${_content && false ? (_content.split('</span>').slice(1).join('</span>')) : ''}
+				<span>${_points}</span>
+   				<span>${_points}</span>
 			</div>
 		</div>`;
 };

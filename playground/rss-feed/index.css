@@ -24,44 +24,50 @@
 */
 
 :root {
-    --color-body-text: #98957a;
-    --color-link: var(--color-feed-item-link);
-    --color-feed-title-link: #ff9100;
-    --color-visited-link: #8b6b46;
-    --color-hover-link: #d55;
-    --color-comments-link: var(--color-link);
-    --color-title-link: #d6c8a1;
-    --color-feed-item-bg: #262525;
-    --color-feed-item-link: #d7b875;
-    --color-content-span: #b09070;
-    --color-content-span-before: #888;
-    --color-categories-text: #b0b0b0;
-    --color-categories-bg: #2b2b2b;
-    --color-categories-border: #b0b0b0;
-    --color-errors-menu-bg: #1e1e1e;
-    --color-errors-menu-text: #b09070;
-    --color-errors-menu-hover-bg: #000;
-    --color-errors-menu-hover-text: #fff;
-    --color-errors-items-bg: #1e1e1e;
-    --color-errors-items-border: #1e1e1e;
+	--color-body-text: #98957a;
+	--color-link: var(--color-feed-item-link);
+	--color-feed-title-link: #ff9100;
+	--color-visited-link: #8b6b46;
+	--color-hover-link: #d55;
+	--color-comments-link: var(--color-link);
+	--color-title-link: #d6c8a1;
+	--color-feed-item-bg: #262525;
+	--color-feed-item-link: #d7b875;
+	--color-content-span: #b09070;
+	--color-content-span-before: #888;
+	--color-categories-text: #b0b0b0;
+	--color-categories-bg: #2b2b2b;
+	--color-categories-border: #b0b0b0;
+	--color-errors-menu-bg: #1e1e1e;
+	--color-errors-menu-text: #b09070;
+	--color-errors-menu-hover-bg: #000;
+	--color-errors-menu-hover-text: #fff;
+	--color-errors-items-bg: #1e1e1e;
+	--color-errors-items-border: #1e1e1e;
 }
 
 body {
 	color: var(--color-body-text);
-/* 	margin-right: 15px; */
+	/* 	margin-right: 15px; */
 	font-family: 'Raleway', sans-serif;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	/* justify-content: space-between; */
 }
-.hidden { display: none; }
-body > .feed-item { width: 90%; }
+.hidden {
+	display: none;
+}
+body > .feed-item {
+	width: 90%;
+}
 a {
 	color: var(--color-link);
 	text-decoration: none;
 }
-.feed-title a { color: var(--color-feed-title-link); }
+.feed-title a {
+	color: var(--color-feed-title-link);
+}
 .flex-row {
 	display: flex;
 	flex-direction: row;
@@ -70,16 +76,29 @@ a {
 	display: flex;
 	flex-direction: column;
 }
-a:visited { color: var(--color-visited-link); }
-a:hover { text-decoration: underline; }
-a.comments { color: var(--color-comments-link); }
+a:visited {
+	color: var(--color-visited-link);
+}
+a:hover {
+	text-decoration: underline;
+}
+a.comments {
+	color: var(--color-comments-link);
+}
 div.title {
 	font-size: 1.2em;
-	margin-bottom: 1em; padding-top: 1.5em;
+	margin-bottom: 1em;
+	padding-top: 1.5em;
 }
-div.title a { color: var(--color-title-link); }
-pre { white-space: pre-line; }
-.notes { margin-top: 2em; }
+div.title a {
+	color: var(--color-title-link);
+}
+pre {
+	white-space: pre-line;
+}
+.notes {
+	margin-top: 2em;
+}
 
 .feed-item:not(.title) {
 	/* background: var(--main-theme-background-color); */
@@ -88,20 +107,26 @@ pre { white-space: pre-line; }
 	padding: 1em;
 	background: var(--color-feed-item-bg);
 }
-.feed-item + .feed-item { margin-top: 0.25em; }
+.feed-item + .feed-item {
+	margin-top: 0.25em;
+}
 .feed-item .content {
 	font-size: 0.8em;
 	margin-top: 0.25em;
 	display: flex;
 	align-items: center;
 }
-.feed-item > a { color: var(--color-feed-item-link); }
-.content span:first-child {
-		color: var(--color-content-span);
+.feed-item > a {
+	color: var(--color-feed-item-link);
 }
-.feed-item .content span + span { margin-left: 0.5em; }
-.content > span+span:before {
-	content: " | ";
+.content span:first-child {
+	color: var(--color-content-span);
+}
+.feed-item .content span + span {
+	margin-left: 0.5em;
+}
+.content > span + span:before {
+	content: ' | ';
 	color: var(--color-content-span-before);
 }
 .categories {
@@ -163,14 +188,14 @@ pre { white-space: pre-line; }
 	white-space: pre;
 	overflow: scroll;
 }
-input[type=checkbox] {
+input[type='checkbox'] {
 	transition: all 0.3s;
 	box-sizing: border-box;
 	display: none;
 }
-input[type="checkbox"]:checked ~ .items {
+input[type='checkbox']:checked ~ .items {
 	display: block;
 }
-input[type="checkbox"]:checked ~ .menu {
+input[type='checkbox']:checked ~ .menu {
 	transform: rotateZ(180deg);
 }

@@ -105,16 +105,22 @@ pre {
 	padding: 0.1em;
 	margin-bottom: 0.5em;
 	padding: 1em;
+	padding-bottom: 0.75em;
 	background: var(--color-feed-item-bg);
+	/* display: flex;
+	flex-direction: row; */
 }
 .feed-item + .feed-item {
 	margin-top: 0.25em;
 }
 .feed-item .content {
 	font-size: 0.8em;
-	margin-top: 0.25em;
+	/* margin-top: 0.25em; */
 	display: flex;
 	align-items: center;
+	gap: 15px;
+	flex: 1;
+	justify-content: end;
 }
 .feed-item > a {
 	color: var(--color-feed-item-link);
@@ -125,10 +131,10 @@ pre {
 .feed-item .content span + span {
 	margin-left: 0.5em;
 }
-.content > span + span:before {
+/* .content > span + span:before {
 	content: ' | ';
 	color: var(--color-content-span-before);
-}
+} */
 .categories {
 	font-family: monospace;
 	color: var(--color-categories-text);

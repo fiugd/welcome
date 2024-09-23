@@ -16,19 +16,33 @@ const showError = (e) => {
 };
 
 const ShareSvg = () => `
-<svg fill="currentColor" width="24px" viewBox="0 0 16 16">
+<svg
+	fill="currentColor"
+	width="24px"
+	viewBox="0 0 16 16"
+	style="margin-bottom: -7px;"
+>
   <path d="M11 6a3 3 0 1 0-2.93-2.35l-3.2 2a3 3 0 1 0 0 4.7l3.2 2A3.01 3.01 0 0 0 11 16a3 3 0 1 0-1.87-5.35l-3.2-2a3.01 3.01 0 0 0 0-1.3l3.2-2c.51.4 1.16.65 1.87.65Z"/>
 </svg>
 `;
 
-const CommentsSvg = (number = '-') => `
-<svg fill="currentColor" width="24px" viewBox="0 0 512 512">
-	<path 
-		d="M480 0H32A31.98 31.98 0 0 0 0 32v352a31.98 31.98 0 0 0 32 32h64v96l144-96h240a31.98 31.98 0 0 0 32-32V32a31.98 31.98 0 0 0-32-32Zm-32 352H240l-80 48v-48H64V64h384Z"
-	/>
-	<text 
-		style="font-family: sans-serif; font-size: 140px; text-anchor: middle;"
-		x="69.72" y="203.227" transform="matrix(1.500266, 0, 0, 1.526954, 149.38916, -28.18882)"
+const CommentsSvg = (number = '') => `
+<svg
+	fill="currentColor"
+	width="24px"
+	viewBox="0 0 512 512"
+	style="margin-bottom: -7px;"
+>
+	<path
+		d="M 467.138 366.968 L 235.727 366.968 L 146.722 420.371 L 146.722 366.968 L 39.917 366.968 L 39.917 46.553 L 467.138 46.553 L 467.138 366.968 Z M 480 0 L 32 0 C 14.3223 -0.0111 -0.0111 14.3223 0 32 L 0 384 C -0.0111 401.6777 14.3223 416.0111 32 416 L 96 416 L 96 512 L 240 416 L 480 416 C 497.6777 416.0111 512.01 401.6777 512 384 L 512 32 C 512.0111 14.3223 497.678 -0.0111 480 0 Z"
+	></path>
+	<text
+		font-weight="900"
+		font-size="260"
+		font-family="sans-serif"
+		text-anchor="middle"
+		dominant-baseline="middle"
+		x="250" y="230"
 	>
 		${number}
 	</text>
@@ -102,14 +116,24 @@ const FeedItemTemplate = (args) => {
 
 	const shareWithApp = !isTitle
 		? `<span class="shareWithApp">
-				<a href="https://widgets.getpocket.com/v1/popup?url=${link}" target="popup">
-					${ShareSvg()}
+				<a 
+					data-share="true"
+					href="https://widgets.getpocket.com/v1/popup?url=${link}"
+					target="popup"
+				>
+					${'share' || ShareSvg()}
 				</a>
 		   </span>`
 		: '';
 	const commentsDiv = !isTitle
 		? `<span>
-				<a href="${commentsUrl}">${CommentsSvg(comments)}</a>
+				<a 
+					class="comments"
+					data-comments="true"
+					href="${commentsUrl}"
+				>
+					${`${comments} comments` || CommentsSvg(comments)}
+				</a>
 			</span>`
 		: '';
 
@@ -123,10 +147,10 @@ const FeedItemTemplate = (args) => {
 			</div>
 			<div class="content">
 				${content && false ? content.split('</span>')[0] + '</span>' : ''}
-				${shareWithApp}
+				${!isTitle ? `<span>${points}</span>` : ''}
 				${content && false ? content.split('</span>').slice(1).join('</span>') : ''}
-				${!isTitle && false ? `<span>${points}</span>` : ''}
 				${commentsDiv}
+				${shareWithApp}
 			</div>
 		</div>
 	`;
@@ -224,6 +248,35 @@ const reOrder = (feeds) => {
 	return [HNRSS, HN, Lobs];
 };
 
+const shareLink = (e) => {
+	if (e.target.dataset.share !== 'true') return;
+	e.preventDefault();
+	const params = Object.fromEntries(
+		new URLSearchParams(new URL(e.target.href).search)
+	);
+	const { url } = params;
+	const shareOpts = {
+		url
+		// title: 'foo'
+		// text: 'foo'
+	};
+	navigator
+		.share(shareOpts)
+		.then(() => {
+			console.log('shared');
+		})
+		.catch((e) => {
+			// console.error(e);
+		});
+};
+
+const attachClickHandlers = () => {
+	document.body.addEventListener('click', (e) => {
+		if (e.target.dataset.comments === 'true') return;
+		shareLink(e);
+	});
+};
+
 (async () => {
 	const feeds = [
 		{
@@ -268,6 +321,8 @@ const reOrder = (feeds) => {
 	document.body.innerHTML += Notes();
 
 	document.body.dispatchEvent(new CustomEvent('RSSdone', { bubbles: true }));
+
+	attachClickHandlers();
 
 	const errorsDiv = document.querySelector('.errors');
 	const resetButton = document.createElement('button');

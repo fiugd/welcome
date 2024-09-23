@@ -25,9 +25,9 @@
 
 :root {
 	--color-body-text: #98957a;
-	--color-link: var(--color-feed-item-link);
-	--color-feed-title-link: #ff9100;
-	--color-visited-link: #8b6b46;
+	--color-link: #ae875a;
+	--color-feed-title-link: #dbc19e;
+	--color-visited-link: #705535;
 	--color-hover-link: #d55;
 	--color-comments-link: var(--color-link);
 	--color-title-link: #d6c8a1;
@@ -36,7 +36,7 @@
 	--color-content-span: #b09070;
 	--color-content-span-before: #888;
 	--color-categories-text: #b0b0b0;
-	--color-categories-bg: #2b2b2b;
+	--color-categories-bg: #1d4347;
 	--color-categories-border: #b0b0b0;
 	--color-errors-menu-bg: #1e1e1e;
 	--color-errors-menu-text: #b09070;
@@ -54,6 +54,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	/* justify-content: space-between; */
+	pointer-events: none;
 }
 .hidden {
 	display: none;
@@ -65,8 +66,12 @@ a {
 	color: var(--color-link);
 	text-decoration: none;
 }
+.feed-title {
+	font-size: 1.08em;
+}
 .feed-title a {
 	color: var(--color-feed-title-link);
+	pointer-events: all;
 }
 .flex-row {
 	display: flex;
@@ -84,6 +89,10 @@ a:hover {
 }
 a.comments {
 	color: var(--color-comments-link);
+	pointer-events: all;
+}
+.shareWithApp a {
+	pointer-events: all;
 }
 div.title {
 	font-size: 1.2em;

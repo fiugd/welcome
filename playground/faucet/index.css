@@ -1,0 +1,27 @@
+body {
+	font-family: Arial, sans-serif;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.imageContainer {
+	width: 350px;
+}
+
+svg text {
+	font-family: 'Courier New', Courier, monospace;
+}
+
+#targetTemp {
+	pointer-events: none;
+}
+#targetTempButton {
+	fill: rgb(216, 216, 216);
+	stroke: rgb(0, 0, 0);
+	cursor: pointer;
+}
+#targetTempButton.pressed {
+	fill: yellow;
+}

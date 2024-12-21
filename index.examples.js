@@ -30,6 +30,7 @@ const experiments = [
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
 	['playground/.framework/#/overview', 'chisel framework', 'Create sites quickly using XML', 'https://github.com/fiugd/welcome/assets/93937172/6fbf05f9-2c6d-4741-8b13-a332d19bd1de'],
+	['playground/faucet/index', 'Faucet', 'A temp-controlled faucet model', 'https://github.com/user-attachments/assets/937a4e09-6531-45c0-a22e-53b6e5bbfe6c'],
 ];
 
 // prettier-ignore

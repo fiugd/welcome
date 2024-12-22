@@ -141,7 +141,14 @@ export const setupUI = ({ onFillStart, onFillStop } = {}) => {
 		elements.targetTempButton.classList.remove('pressed');
 		onFillStop && onFillStop();
 	});
+	elements.targetTempButton.addEventListener('pointercancel', () => {
+		elements.targetTempButton.classList.remove('pressed');
+		onFillStop && onFillStop();
+	});
 	const setWaterLevel = (level) => {
+		if (level >= 99) {
+			return;
+		}
 		const levelY = 433.901 * (level / 100);
 		elements.water.setAttribute('height', levelY);
 		elements.water.setAttribute('y', 500 + 433.901 - levelY);

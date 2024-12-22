@@ -121,6 +121,26 @@ export const setupUI = ({ onFillStart, onFillStop } = {}) => {
 
             <rect id="water" x="116.541" y="508.188" width="218.19" height="433.901" style="fill: rgba(216, 216, 216, 0.5); stroke: rgb(0, 0, 0);"></rect>
             <path d="M 108.579 501.187 L 118.244 501.187 L 118.244 933.721 L 330.611 933.721 L 330.611 501.187 L 341.422 501.187 L 341.422 953.682 L 108.579 953.682 L 108.579 501.187 Z" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"></path>
+
+            
+            <rect
+                x="180"
+                y="770"
+                width="94.627"
+                height="53.601"
+                style="/*stroke: rgb(0, 0, 0);*/ fill: rgba(236, 236, 236, 0.3);"
+            ></rect>
+            <text
+                id="glassTemp"
+                x="225"
+                y="800"
+                text-anchor="middle"
+                alignment-baseline="middle"
+                font-size="24"
+                fill="white"
+                style="font-size: 24px"
+            ></text>
+
         </svg>
     `;
 	const elements = {
@@ -128,6 +148,7 @@ export const setupUI = ({ onFillStart, onFillStop } = {}) => {
 		mixTemp: document.getElementById('mixTemp'),
 		hotTemp: document.getElementById('hotTemp'),
 		coldTemp: document.getElementById('coldTemp'),
+		glassTemp: document.getElementById('glassTemp'),
 		coldFlow: document.getElementById('coldFlow'),
 		hotFlow: document.getElementById('hotFlow'),
 		targetTemp: document.getElementById('targetTemp'),

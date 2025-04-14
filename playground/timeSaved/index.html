@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="color-scheme" content="light dark" />
+		<title>Is It Worth the Time?</title>
+		<style>
+			body {
+				font-family: sans-serif;
+				padding: 2rem;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+			img {
+				height: auto;
+				display: block;
+				margin-bottom: 2rem;
+			}
+			@media (prefers-color-scheme: dark) {
+				img {
+					filter: invert(1) hue-rotate(180deg);
+				}
+			}
+			label,
+			select,
+			input,
+			button {
+				margin: 0.5rem 0;
+				display: block;
+			}
+			input:not([type='checkbox']),
+			hr,
+			select {
+				width: 100%;
+				display: block;
+				box-sizing: border-box;
+			}
+			hr {
+				margin-block-start: 2rem;
+				margin-block-end: 1rem;
+			}
+
+			input,
+			select {
+				padding: 0.5rem;
+				font-size: 1rem;
+				border: 1px solid #888;
+				border-radius: 6px;
+				background-color: #fff;
+				color: #000;
+			}
+			@media (prefers-color-scheme: dark) {
+				input,
+				select {
+					background-color: #222;
+					color: #eee;
+					border-color: #444;
+				}
+			}
+			.container {
+				width: 100%;
+				max-width: 800px;
+			}
+			.container * {
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<a href="https://xkcd.com/1205/" target="_blank" rel="noopener">
+				<img src="is_it_worth_the_time_2x.png" alt="XKCD Chart" />
+			</a>
+
+			<div>
+				<h1>Is It Worth the Time?</h1>
+
+				<label>
+					Timeframe (in years)
+					<input type="number" id="years" value="5" min="1" />
+				</label>
+
+				<label>
+					Task Frequency
+					<select id="frequency">
+						<option value="50">50/day</option>
+						<option value="5">5/day</option>
+						<option value="1" selected>Daily</option>
+						<option value="1/7">Weekly</option>
+						<option value="1/30">Monthly</option>
+						<option value="1/365">Yearly</option>
+					</select>
+				</label>
+
+				<label>
+					Time Saved (per run)
+					<input
+						type="text"
+						id="saveTime"
+						placeholder="e.g. 5s, 1m, 2h"
+						value="1m"
+					/>
+				</label>
+
+				<label
+					style="
+						display: flex;
+						gap: 10px;
+						align-items: center;
+						display: none;
+					"
+				>
+					<input type="checkbox" id="weekdayOnly" />
+					Assume 5-day work week
+				</label>
+
+				<!-- <button onclick="calculate()">Calculate</button> -->
+				<hr />
+				<label>
+					Optimization Saves
+					<input id="output" readonly />
+				</label>
+			</div>
+		</div>
+
+		<script>
+			function parseFraction(val) {
+				if (val.includes('/')) {
+					const [numerator, denominator] = val.split('/').map(Number);
+					return numerator / denominator;
+				}
+				return parseFloat(val);
+			}
+			function parseTime(input) {
+				const units = { s: 1, m: 60, h: 3600, d: 86400 };
+				const match = input.trim().match(/^(\d+)([smhd])$/i);
+				if (!match) return null;
+				return parseInt(match[1]) * units[match[2].toLowerCase()];
+			}
+
+			function formatDuration(seconds) {
+				const units = {
+					year: 365 * 86400,
+					month: 30 * 86400,
+					week: 7 * 86400,
+					day: 86400,
+					hour: 3600,
+					minute: 60
+				};
+
+				const parts = [];
+				for (const [name, size] of Object.entries(units)) {
+					if (seconds >= size) {
+						let val = seconds / size;
+						if (name === 'minute') {
+							parts.push(val.toFixed(1) + ' minutes');
+						} else {
+							parts.push(
+								Math.floor(val) +
+									' ' +
+									name +
+									(Math.floor(val) !== 1 ? 's' : '')
+							);
+						}
+						seconds %= size;
+					}
+				}
+
+				if (parts.length === 0) return seconds + ' seconds';
+				return parts.join(', ');
+			}
+
+			function calculate() {
+				const years =
+					parseInt(document.getElementById('years').value) || 5;
+				const freq = parseFraction(
+					document.getElementById('frequency').value
+				);
+				const savePer = parseTime(
+					document.getElementById('saveTime').value
+				);
+				const use5DayWeek =
+					document.getElementById('weekdayOnly').checked;
+
+				if (!savePer) {
+					output.value = 'Invalid time format. Use s/m/h/d.';
+					return;
+				}
+
+				const secondsPerDay = 86400;
+				const totalPerDay = freq * savePer;
+
+				if (totalPerDay > secondsPerDay) {
+					output.value =
+						'More than 24 hours per day. Check your inputs.';
+					return;
+				}
+
+				if (savePer > 86400) {
+					output.value =
+						'Cannot save more than 24 hours per task. Check your input.';
+					return;
+				}
+
+				if (savePer >= 6 * 3600 && freq >= 1) {
+					output.value =
+						'Implausible task takes 6 hours or more a day.';
+					return;
+				}
+
+				if (freq * 7 * savePer > 7 * 86400) {
+					output.value =
+						'More than 168 hours/week. Unrealistic schedule.';
+					return;
+				}
+
+				const daysPerYear = use5DayWeek ? 260 : 365;
+				const runs = freq * daysPerYear * years;
+				const totalSaved = runs * savePer;
+				output.value = formatDuration(totalSaved);
+			}
+
+			window.addEventListener('DOMContentLoaded', () => {
+				document
+					.getElementById('years')
+					.addEventListener('input', calculate);
+				document
+					.getElementById('frequency')
+					.addEventListener('change', calculate);
+				document
+					.getElementById('saveTime')
+					.addEventListener('input', calculate);
+
+				document
+					.getElementById('weekdayOnly')
+					.addEventListener('change', calculate);
+				calculate(); // initial calc
+			});
+		</script>
+	</body>
+</html>

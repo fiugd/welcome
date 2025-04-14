@@ -1,15 +1,15 @@
 {
-  "name": "chisel",
-  "module": "server/index.ts",
-  "type": "module",
-  "scripts": {
-    "watch": "bunx http-server"
-  },
-  "devDependencies": {
-    "@babel/standalone": "^7.25.6",
-    "bun-types": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "chisel",
+	"module": "server/index.ts",
+	"type": "module",
+	"scripts": {
+		"watch": "npx http-server"
+	},
+	"devDependencies": {
+		"@babel/standalone": "^7.25.6",
+		"bun-types": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	}
 }

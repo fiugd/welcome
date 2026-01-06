@@ -1,0 +1,59 @@
+<x-page>
+	<x-navbar
+        titleText="Overview"
+    ></x-navbar>
+
+    <x-content class="fade-up">
+        <x-markdown>
+            <p class="dropCap">
+                This project began as an experiment to create a modern, component-based web application framework.
+                My first attempt was called **chisel**, which was an early exploration of ideas around reusable components,
+                declarative rendering, and lightweight state management.
+                While **chisel** introduced some of these concepts, it did not progress very far in development and remained a minimal, proof-of-concept framework.
+            </p>
+
+            Building on the lessons learned from **chisel**, I started a new framework called **html-next**.
+            This was a fresh take on the same core ideas, but with a different approach and a more robust architecture.
+            **html-next** has made it much further along in development, offering a richer set of features, better performance, and a more flexible component model.
+            The framework now serves as the foundation for this project, enabling rapid prototyping and a more maintainable codebase.
+
+
+            You can find the **html-next** codebase here:
+            <a href="https://github.com/crosshj/html-next" target="_blank" rel="noopener noreferrer">html-next on GitHub</a>
+
+            If you are browsing the codebase, you may still encounter remnants of **chisel** in various places.
+            These are kept intentionally for documentation purposes and to illustrate the evolution of the project.
+            The process is documented in the project README, and further details can be found in the code comments and commit history.
+            For developers interested in the technical details of the evolution, a comparison of key architectural decisions and code samples is available upon request.
+            You can also see the original state of chisel at this commit:
+            <a href="https://github.com/fiugd/welcome/tree/e0255a8acad9ffb5fb729b19bcbe3bc584d192df/playground/.framework" target="_blank" rel="noopener noreferrer">Old School Chisel</a>
+
+            While both frameworks were created to simplify web development, **chisel** was intentionally minimal and experimental,
+            offering only the core essentials for building UIs.
+            **html-next** is a more comprehensive evolution, supporting advanced features like server-side rendering, dynamic imports,
+            a rich plugin architecture, and better support for accessibility, internationalization, and theming.
+            The move to **html-next** allowed me to realize the original vision with a more complete and production-ready toolset.
+
+            The transition from **chisel** to **html-next** was a natural progression.
+            I reviewed the ideas and code from **chisel**, taking what worked and rethinking what could be improved.
+            Some concepts and utilities were carried over, while others were replaced or reimagined to fit the new architecture.
+            References to **chisel** remain in the codebase (such as in the modules folder and commented code in the main index.html script) as a record of the project's evolution.
+
+            <x-separator></x-separator>
+
+            Today, the project is fully powered by **html-next** within the `.framework` folder.
+            This has resulted in easier maintenance, faster development cycles, and access to a wider range of features.
+            **html-next** now serves as the foundation for all UI and component logic, enabling rapid prototyping and robust application architecture.
+            Looking ahead, I plan to further explore **html-next**'s advanced capabilities, such as custom directives, animation hooks, and integration with third-party libraries.
+            There are also plans to share custom components and utilities developed during this process.
+
+            Building and maintaining both **chisel** and **html-next** has been a valuable learning experience,
+            providing deep insights into the inner workings of modern web frameworks.
+            The evolution from **chisel** to **html-next** highlights the benefits of iterating on ideas and refining approaches over time.
+            This process not only accelerated development but also ensured that the project remains aligned with modern standards and best practices.
+
+            The journey from **chisel** to **html-next** is a personal story of learning, iteration, and growth as a developer.
+            By building on past attempts and refining ideas, this project is well-positioned to take advantage of the latest advancements in web technology while maintaining a clean, maintainable, and scalable codebasnte.
+        </x-markdown>
+    </x-content>
+</x-page>

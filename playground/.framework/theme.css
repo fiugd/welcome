@@ -1,0 +1,133 @@
+/* Override framework CSS variables for custom theme */
+html.light {
+	/* Primary Palette - Modern Blue Theme */
+	--palettePrimaryMain: #2563eb;
+	--palettePrimaryLight: #60a5fa;
+	--palettePrimaryDark: #1d4ed8;
+	--palettePrimaryContrast: #ffffff;
+	--palettePrimaryNavbar: #f0f8ff;
+
+	/* Secondary Palette - Light Blue */
+	--paletteSecondaryMain: #6ab0f0;
+	--paletteSecondaryDark: #4a9de8;
+	--paletteSecondaryLight: #8bc3f2;
+	--paletteSecondaryContrast: #ffffff;
+
+	/* Background Palette - Clean Whites and Grays */
+	--paletteBackgroundDefault: #f8fafc;
+	--paletteBackgroundPaper: #ffffff;
+	--paletteBackgroundContrast: #ffffff;
+
+	/* Text Palette - High Contrast */
+	--paletteTextPrimary: #1e293b;
+	--paletteTextSecondary: #475569;
+	--paletteTextTertiary: #64748b;
+	--paletteTextDisabled: #94a3b8;
+
+	/* Divider - Subtle */
+	--paletteDivider: #e2e8f0;
+}
+
+html.dark {
+	/* Primary Palette - Dark Mode Blue Theme */
+	--palettePrimaryMain: #3981ae;
+	--palettePrimaryLight: #60a5fa;
+	--palettePrimaryDark: #1d4ed8;
+	--palettePrimaryContrast: #00ddff;
+
+	/* Secondary Palette - Dark Mode Blue */
+	--paletteSecondaryMain: #67bdd4;
+	--paletteSecondaryDark: #0891b2;
+	--paletteSecondaryLight: #22d3ee;
+	--paletteSecondaryContrast: #7a92e1;
+
+	/* Background Palette - Dark Mode */
+	--paletteBackgroundDefault: #1b2636;
+	--paletteBackgroundPaper: #171717;
+	--paletteBackgroundContrast: #334155;
+	--palettePrimaryNavbar: #171717;
+
+	/* Text Palette - Dark Mode High Contrast */
+	--paletteTextPrimary: #c6c6c7;
+	--paletteTextSecondary: #cbd5e1;
+	--paletteTextTertiary: #94a3b8;
+	--paletteTextDisabled: #64748b;
+
+	/* Divider - Dark Mode */
+	--paletteDivider: #334155;
+}
+
+body {
+	/* Border Radius - More Rounded */
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+	--radius-xl: 1rem;
+
+	/* Spacing - More Generous */
+	--spacing-xs: 0.375rem;
+	--spacing-sm: 0.75rem;
+	--spacing-md: 1.25rem;
+	--spacing-lg: 2rem;
+	--spacing-xl: 3rem;
+	--spacing-2xl: 4rem;
+
+	/* Transitions - Smoother */
+	--transition-fast: 0.2s ease;
+	--transition-normal: 0.3s ease;
+	--transition-slow: 0.4s ease;
+}
+
+html.light {
+	--text-color: #666;
+	--text-color-hover: #000000;
+	--button-bg: transparent;
+	--button-primary-bg: #00d6f3;
+	--button-primary-bg-hover: #4deaff;
+	--button-bg-hover: #e0e7f399;
+	--button-bg-selected: #e2e8f6e6;
+	--menu-bg: #f5fcff;
+	--app-bar-bg: #00bcd4;
+	--app-bar-icon-color: #9cecf6;
+	--app-bar-text-color: white;
+	--main-bg: Canvas;
+}
+html.dark {
+	--text-color: #aaa;
+	--text-color-hover: #d7d7d7;
+	--button-bg: transparent;
+	--button-primary-bg: #383838;
+	--button-primary-bg-hover: #666;
+	--button-bg-hover: #eee2;
+	--button-bg-selected: #aaa2;
+	--menu-bg: #171717;
+	--app-bar-bg: #242424;
+	--app-bar-bg: #171717;
+	--app-bar-icon-color: #00bcd4;
+	--app-bar-text-color: #aaa;
+	--main-bg: #171717;
+}
+
+html.dark,
+html.light {
+	#sidebar > div {
+		& .is-selected {
+			.menuItem button,
+			.menuItem .menuItem-avatar {
+				--bg-color: var(--button-bg-selected);
+				border: 0px;
+				background: var(--bg-color);
+				border-color: var(--bg-color);
+				color: var(--paletteTextPrimary);
+			}
+			.menuItem button:hover,
+			.menuItem .menuItem-avatar:hover {
+				background-color: var(--button-primary-bg-hover);
+			}
+		}
+		.menuItem button:hover,
+		.menuItem .menuItem-avatar:hover {
+			background-color: var(--button-bg-hover);
+		}
+	}
+}

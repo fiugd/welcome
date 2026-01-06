@@ -1,23 +1,112 @@
 <html>
 	<head>
-		<title>framework</title>
+		<title>chisel v0.0.1</title>
 		<meta charset="utf-8" />
 		<meta name="description" content="" />
 		<meta name="author" content="" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="mobile-web-app-capable" content="yes" />
-		<link rel="stylesheet" href="index.css" />
 		<meta name="color-scheme" content="dark light" />
+
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/v4-shims.min.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@crosshj/html-next@latest/dist/htmlNext.css"
+		/>
+
+		<link rel="stylesheet" href="index.css" />
+		<link rel="stylesheet" href="theme.css" />
+		<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 	</head>
 
-	<body></body>
+	<template id="logoHTML">
+		<div
+			display="flex"
+			justify-content="space-between"
+			align-items="center"
+		>
+			<svg
+				viewBox="0 0 500 500"
+				height="32px"
+				style="color: var(--app-bar-icon-color)"
+			>
+				<path
+					d="M 415 0 L 500 500 L 0 500 L 90 0"
+					style="fill: currentColor"
+				></path>
+				<path
+					d="M 130 0 L 100 240 L 390 240 L 370 0"
+					style="fill: white; opacity: 0.4"
+				></path>
+				<path
+					d="M 100 240 L 0 500 L 500 500 L 390 240"
+					style="fill: #448; opacity: 0.5"
+				></path>
+			</svg>
+			<span>
+				<span class="logo-chisel">chisel</span>
+				<span>v0.0.1</span>
+			</span>
+		</div>
+	</template>
 
-	<script type="module">
+	<body>
+		<!-- fragment for main application content -->
+		<x-fragment
+			contents="global_appContent"
+			showLoading="true"
+		></x-fragment>
+	</body>
+
+	<!-- <script type="module">
 		import Fragments from './modules/fragments.js';
 		import Routing from './modules/routing.js';
 		import StateManager from './modules/state.js';
 
 		Routing.setup();
 		Fragments.update({ path: 'Site.xml', swap: 'body' });
+	</script> -->
+
+	<script type="module">
+		import './components/separator.js';
+		import helpers from 'https://cdn.jsdelivr.net/npm/@crosshj/html-next@latest/dist/htmlNext.helpers.js';
+		import * as framework from 'https://cdn.jsdelivr.net/npm/@crosshj/html-next@latest/dist/htmlNext.min.js';
+		import menuItems from './data/menuItems.js';
+
+		// your menu items
+		const getMenu = ({ user } = {}) => {
+			return menuItems;
+		};
+
+		// basic framework setup
+		const logoHTML = document.getElementById('logoHTML')?.innerHTML;
+		const getFragment = async (path) =>
+			await fetch(`./fragments/${path}.xml`);
+		const getData = async (path) => await fetch(`./data/${path}`);
+		const defaultHash = '/Overview';
+		const authSetup = () => {
+			return {
+				getSession: async () => {
+					return { data: { session: {} } };
+				}
+			};
+		};
+
+		await helpers.pages.enhanced({
+			framework,
+			logoHTML,
+			defaultHash,
+			authSetup,
+			getFragment,
+			getData,
+			getMenu
+		});
 	</script>
 </html>

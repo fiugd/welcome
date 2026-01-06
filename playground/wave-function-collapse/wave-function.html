@@ -1,16 +1,206 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Wave Function Collapse</title>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="stylesheet" href="wave-function.css">
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" href="wave-function.css" />
 	</head>
 
 	<body>
+		<div class="main-layout">
+			<div class="left-pane">
+				<div class="output-container" id="outputContainer">
+					<div
+						class="loading-placeholder"
+						id="loadingPlaceholder"
+						style="display: none"
+					>
+						<div class="spinner"></div>
+					</div>
+				</div>
+			</div>
+			<div class="right-pane">
+				<div class="controls">
+					<div class="container">
+						<h3>Wave Function Collapse</h3>
+						<p>
+							credit:
+							<a
+								href="https://github.com/mxgmn/WaveFunctionCollapse"
+							>
+								mxgmn/WaveFunctionCollapse
+							</a>
+						</p>
+					</div>
+
+					<label
+						>Input Image
+						<select id="exampleSelect">
+							<option value="3Bricks.png" selected>
+								3Bricks
+							</option>
+							<option value="Angular.png">Angular</option>
+							<option value="Cat.png">Cat</option>
+							<option value="Cats.png">Cats</option>
+							<option value="Cave.png">Cave</option>
+							<option value="Chess.png">Chess</option>
+							<option value="City.png">City</option>
+							<option value="ColoredCity.png">ColoredCity</option>
+							<option value="Dungeon.png">Dungeon</option>
+							<option value="Fabric.png">Fabric</option>
+							<option value="Flowers.png">Flowers</option>
+							<option value="Forest.png">Forest</option>
+							<option value="Hogs.png">Hogs</option>
+							<option value="Knot.png">Knot</option>
+							<option value="Lake.png">Lake</option>
+							<option value="LessRooms.png">LessRooms</option>
+							<option value="Lines.png">Lines</option>
+							<option value="Link.png">Link</option>
+							<option value="Link2.png">Link2</option>
+							<option value="MagicOffice.png">MagicOffice</option>
+							<option value="Maze.png">Maze</option>
+							<option value="Mazelike.png">Mazelike</option>
+							<option value="MoreFlowers.png">MoreFlowers</option>
+							<option value="Mountains.png">Mountains</option>
+							<option value="Nested.png">Nested</option>
+							<option value="NotKnot.png">NotKnot</option>
+							<option value="Office.png">Office</option>
+							<option value="Office2.png">Office2</option>
+							<option value="Paths.png">Paths</option>
+							<option value="Platformer.png">Platformer</option>
+							<option value="Qud.png">Qud</option>
+							<option value="RedDot.png">RedDot</option>
+							<option value="RedMaze.png">RedMaze</option>
+							<option value="Rooms.png">Rooms</option>
+							<option value="Rule126.png">Rule126</option>
+							<option value="Sand.png">Sand</option>
+							<option value="ScaledMaze.png">ScaledMaze</option>
+							<option value="Sewers.png">Sewers</option>
+							<option value="SimpleKnot.png">SimpleKnot</option>
+							<option value="SimpleMaze.png">SimpleMaze</option>
+							<option value="SimpleWall.png">SimpleWall</option>
+							<option value="Skew1.png">Skew1</option>
+							<option value="Skew2.png">Skew2</option>
+							<option value="Skyline.png">Skyline</option>
+							<option value="Skyline2.png">Skyline2</option>
+							<option value="SmileCity.png">SmileCity</option>
+							<option value="Spirals.png">Spirals</option>
+							<option value="Town.png">Town</option>
+							<option value="TrickKnot.png">TrickKnot</option>
+							<option value="Village.png">Village</option>
+							<option value="Wall.png">Wall</option>
+							<option value="WalledDot.png">WalledDot</option>
+							<option value="Water.png">Water</option>
+							<option value="Wrinkles.png">Wrinkles</option>
+						</select>
+					</label>
+					<div class="input-preview">
+						<div
+							class="input-loading-placeholder"
+							id="inputLoadingPlaceholder"
+						>
+							<div class="spinner"></div>
+						</div>
+						<img
+							id="inputImage"
+							src=""
+							alt="Input Preview"
+							style="
+								max-width: 128px;
+								max-height: 128px;
+								image-rendering: pixelated;
+								display: none;
+							"
+						/>
+					</div>
+					<div class="control-group">
+						<label
+							>Width
+							<input
+								id="destWidth"
+								type="number"
+								min="10"
+								max="300"
+								value="100"
+						/></label>
+						<label
+							>Height
+							<input
+								id="destHeight"
+								type="number"
+								min="10"
+								max="300"
+								value="70"
+						/></label>
+					</div>
+					<label
+						>Pattern Size
+						<input
+							id="patternSize"
+							type="number"
+							min="1"
+							max="10"
+							value="3"
+					/></label>
+					<div class="control-group">
+						<label
+							>Periodic Input
+							<input id="periodicInput" type="checkbox" checked
+						/></label>
+						<label
+							>Periodic Output
+							<input id="periodicOutput" type="checkbox" checked
+						/></label>
+					</div>
+					<label
+						>Symmetry
+						<input
+							id="symmetry"
+							type="number"
+							min="1"
+							max="8"
+							value="2"
+					/></label>
+					<label
+						>Seed
+						<div class="seed-input-wrapper">
+							<input
+								id="lcgSeed"
+								type="text"
+								value="testt one twov"
+							/>
+							<button
+								id="randomSeedBtn"
+								class="seed-refresh-btn"
+								type="button"
+								title="Generate random seed"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+									/>
+								</svg>
+							</button>
+						</div>
+					</label>
+					<button id="generateBtn">Generate</button>
+				</div>
+			</div>
+		</div>
 	</body>
 
 	<script type="module" src="wave-function.js"></script>

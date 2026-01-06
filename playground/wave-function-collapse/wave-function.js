@@ -1,67 +1,103 @@
 import wfc from 'https://cdn.skypack.dev/wavefunctioncollapse';
-const { OverlappingModel, SimpleTiledModel } = wfc;
+const { OverlappingModel } = wfc;
 
-const allExamples = [
-	'3Bricks.png',
-	'Angular.png',
-	'Cat.png',
-	'Cats.png',
-	'Cave.png',
-	'Chess.png',
-	'City.png',
-	'ColoredCity.png',
-	'Dungeon.png',
-	'Fabric.png',
-	'Flowers.png',
-	'Forest.png',
-	'Hogs.png',
-	'Knot.png',
-	'Lake.png',
-	'LessRooms.png',
-	'Lines.png',
-	'Link.png',
-	'Link2.png',
-	'MagicOffice.png',
-	'Maze.png',
-	'Mazelike.png',
-	'MoreFlowers.png',
-	'Mountains.png',
-	'Nested.png',
-	'NotKnot.png',
-	'Office.png',
-	'Office2.png',
-	'Paths.png',
-	'Platformer.png',
-	'Qud.png',
-	'RedDot.png',
-	'RedMaze.png',
-	'Rooms.png',
-	'Rule126.png',
-	'Sand.png',
-	'ScaledMaze.png',
-	'Sewers.png',
-	'SimpleKnot.png',
-	'SimpleMaze.png',
-	'SimpleWall.png',
-	'Skew1.png',
-	'Skew2.png',
-	'Skyline.png',
-	'Skyline2.png',
-	'SmileCity.png',
-	'Spirals.png',
-	'Town.png',
-	'TrickKnot.png',
-	'Village.png',
-	'Wall.png',
-	'WalledDot.png',
-	'Water.png',
-	'Wrinkles.png'
-];
-
-//const exampleImageUrl = '../../examples/image/abitmap.bmp';
 const samplesPrefix =
 	'https://raw.githubusercontent.com/mxgmn/WaveFunctionCollapse/master/samples/';
-const exampleImageUrl = samplesPrefix + allExamples[Math.floor(Math.random() * allExamples.length)];
+
+function updateInputImage() {
+	const select = document.getElementById('exampleSelect');
+	const img = document.getElementById('inputImage');
+	const placeholder = document.getElementById('inputLoadingPlaceholder');
+	const fileName = select.value;
+
+	placeholder.style.display = 'flex';
+	img.style.display = 'none';
+	img.src = samplesPrefix + fileName;
+	img.alt = fileName;
+
+	img.onload = () => {
+		placeholder.style.display = 'none';
+		img.style.display = 'block';
+	};
+
+	img.onerror = () => {
+		placeholder.style.display = 'none';
+	};
+}
+
+function clearOutput() {
+	const outputContainer = document.querySelector('.output-container');
+	if (outputContainer) {
+		// Remove only child elements except the loading placeholder
+		const children = Array.from(outputContainer.children);
+		children.forEach((child) => {
+			if (child.id !== 'loadingPlaceholder') {
+				child.remove();
+			}
+		});
+		const loadingPlaceholder =
+			document.getElementById('loadingPlaceholder');
+		if (loadingPlaceholder) {
+			loadingPlaceholder.innerHTML = '<div class="spinner"></div>';
+			loadingPlaceholder.style.display = 'flex';
+		}
+	}
+}
+
+function hideLoading() {
+	const loadingPlaceholder = document.getElementById('loadingPlaceholder');
+	if (loadingPlaceholder) {
+		loadingPlaceholder.style.display = 'none';
+	}
+}
+
+function showError(message) {
+	const loadingPlaceholder = document.getElementById('loadingPlaceholder');
+	if (loadingPlaceholder) {
+		loadingPlaceholder.innerHTML = `<p style="color: #ff6b6b; font-weight: 600;">${message}</p>`;
+		loadingPlaceholder.style.display = 'flex';
+	}
+}
+
+async function generateAndRender() {
+	clearOutput();
+	const fileName = document.getElementById('exampleSelect').value;
+	const patternSz = +document.getElementById('patternSize').value;
+	const width = +document.getElementById('destWidth').value;
+	const height = +document.getElementById('destHeight').value;
+	const periodicIn = document.getElementById('periodicInput').checked;
+	const periodicOut = document.getElementById('periodicOutput').checked;
+	const sym = +document.getElementById('symmetry').value;
+	const seed = document.getElementById('lcgSeed').value;
+
+	const exampleImageUrl = samplesPrefix + fileName;
+	const imgData = await imageDataFromUrl(exampleImageUrl);
+
+	const outputContainer = document.querySelector('.output-container');
+	if (!outputContainer) return;
+
+	const model = new OverlappingModel(
+		imgData.data,
+		imgData.width,
+		imgData.height,
+		patternSz,
+		width,
+		height,
+		periodicIn,
+		periodicOut,
+		sym
+	);
+	const finished = model.generate(lcg(seed));
+	hideLoading();
+	if (!finished) {
+		showError('The generation ended in a contradiction');
+		return;
+	}
+
+	var outputImgData = blankImageData(width, height);
+	model.graphics(outputImgData.data);
+	outputContainer.appendChild(imageDataToImage(outputImgData, 'output'));
+}
 
 const imageDataFromUrl = (imageUrl, startx, starty, width, height) =>
 	new Promise(async (resolve) => {
@@ -100,13 +136,12 @@ function imageDataToImage(imagedata, className) {
 	return image;
 }
 
-const Render = (content = 'Wave Function Collapse') => {
-	document.body.innerHTML += `
-		<div class="container">
-			${content}
-		</div>
-	`;
-};
+function renderElement(content = 'Wave Function Collapse') {
+	const div = document.createElement('div');
+	div.className = 'container';
+	div.innerHTML = content;
+	return div;
+}
 
 const lcg = (() => {
 	function normalizeSeed(seed) {
@@ -115,23 +150,18 @@ const lcg = (() => {
 		} else if (typeof seed === 'string') {
 			const string = seed;
 			seed = 0;
-
 			for (let i = 0; i < string.length; i++) {
 				seed =
 					(seed + (i + 1) * (string.charCodeAt(i) % 96)) % 2147483647;
 			}
 		}
-
 		if (seed === 0) {
 			seed = 311;
 		}
-
 		return seed;
 	}
-
 	return function lcgRandom(seed) {
 		let state = normalizeSeed(seed);
-
 		return function () {
 			const result = (state * 48271) % 2147483647;
 			state = result;
@@ -140,51 +170,35 @@ const lcg = (() => {
 	};
 })();
 
-(async () => {
-	// https://github.com/kchapelier/wavefunctioncollapse/tree/master/example
-	// https://github.com/mxgmn/WaveFunctionCollapse
+function generateRandomSeed() {
+	const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+	const words = [];
+	const wordCount = Math.floor(Math.random() * 3) + 2; // 2-4 words
 
-	// I want to be able to animate this
-	// http://www.kchapelier.com/wfc-example/simple-tiled-model-animated.html
+	for (let i = 0; i < wordCount; i++) {
+		const wordLength = Math.floor(Math.random() * 5) + 3; // 3-7 chars
+		let word = '';
+		for (let j = 0; j < wordLength; j++) {
+			word += chars[Math.floor(Math.random() * chars.length)];
+		}
+		words.push(word);
+	}
 
-	// ["OverlappingModel","SimpleTiledModel"]
+	return words.join(' ');
+}
 
-	const imgData = await imageDataFromUrl(
-		//exampleImageUrl, 59,17,15,23
-		exampleImageUrl
-	);
-	const image = imageDataToImage(imgData, 'input');
-	Render();
-	Render(`
-		<p>
-			from: <a href="https://github.com/mxgmn/WaveFunctionCollapse">
-				mxgmn/WaveFunctionCollapse
-			</a>
-		</p>
-	`);
-	document.body.append(image);
-	//return;
+window.addEventListener('DOMContentLoaded', () => {
+	updateInputImage();
+	generateAndRender();
 
-	const [destWidth, destHeight] = [100, 70];
-	const model = new OverlappingModel(
-		imgData.data,
-		imgData.width,
-		imgData.height,
-		3, // size of patterns
-		destWidth,
-		destHeight,
-		true, //source is periodic
-		true, //output periodic
-		2 //Allowed symmetries from 1 (no symmetry) to 8 (all mirrored / rotated variations)
-		//102
-	);
-	const finished = model.generate(lcg('testt one two'));
-	if (!finished) return Render('The generation ended in a contradiction');
-
-	var outputImgData = blankImageData(destWidth, destHeight);
-	model.graphics(outputImgData.data);
-
-	document.body.append(imageDataToImage(outputImgData, 'output'));
-
-	//Render(JSON.stringify(Object.keys(wfc)));
-})();
+	document.getElementById('exampleSelect').addEventListener('change', () => {
+		updateInputImage();
+	});
+	document.getElementById('generateBtn').addEventListener('click', () => {
+		generateAndRender();
+	});
+	document.getElementById('randomSeedBtn').addEventListener('click', () => {
+		document.getElementById('lcgSeed').value = generateRandomSeed();
+		generateAndRender();
+	});
+});

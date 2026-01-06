@@ -6,8 +6,8 @@ thumbnails: https://github.com/fiugd/welcome/issues/3
 const experiments = [
 	['playground/state-machine/index', 'State Machine', 'Explore state machine concepts', 'https://user-images.githubusercontent.com/1816471/219848753-09183123-bca1-4eb8-80a7-74f5d4272464.png'],
 	['playground/bookmarks/bookmarks', 'bookmarks', '', 'https://user-images.githubusercontent.com/1816471/219848051-dc4cc529-0737-471b-a481-3c53cddb158e.png'],
-	['playground/bookmarks/pocket', 'your-pocket', 'Your Pocket bookmarks (requires authorization)', 'https://user-images.githubusercontent.com/1816471/219935960-2601e624-a400-4f36-99ca-dcb6679a6210.png'],
 	['playground/rss-feed/index', 'News Feed', 'Hacker News ++', 'https://user-images.githubusercontent.com/1816471/219903457-e9edf131-3bc8-45cd-87c2-87400a38367b.png'],
+	['playground/.framework/', 'chisel framework (html-next)', 'Create and maintain sites quickly and easily using XML/HTML', 'https://github.com/user-attachments/assets/233d1a17-b0bd-4386-80a4-ade33412aefb'],
 	['playground/pokedex/pokedex', 'pokedex', 'My own basic dex tool','https://user-images.githubusercontent.com/1816471/219903392-2d0b5f02-ca50-4f47-ac06-3694b61233f2.png'],
 	['playground/css-3d', 'css-3d', 'How 3D can you go with CSS? I attempt to answer this.', 'https://user-images.githubusercontent.com/1816471/219848103-0b88b67a-cb25-4917-8b72-9cf71055b5c4.png'],
 	['playground/encrypt-web-worker', 'encrypt-web-worker', 'Explore encryption using browser web worker', 'https://user-images.githubusercontent.com/1816471/219848209-0d78f850-dc8a-41f3-b6f6-bf650a0a9c40.png'],
@@ -29,7 +29,6 @@ const experiments = [
 	['playground/webrtc/index', 'Web RTC', 'Chat host and client with WebRTC', 'https://user-images.githubusercontent.com/1816471/219903559-703a82db-155f-4e86-b74f-a7c1db0e10cb.png'],
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
-	['playground/.framework/', 'chisel framework (html-next)', 'Create sites quickly using XML', 'https://github.com/user-attachments/assets/4cf1de22-b41a-4289-a49e-028c0fcf3d16'],
 	['playground/faucet/index', 'Faucet', 'A temp-controlled faucet model', 'https://github.com/user-attachments/assets/937a4e09-6531-45c0-a22e-53b6e5bbfe6c'],
     ['playground/timeSaved/index', 'Time Saved', 'Per XKCD 1205, how much time is saved (by automating)', 'https://github.com/user-attachments/assets/139f2979-134c-4c22-884b-a736e426db4a'],
 ];
@@ -37,7 +36,8 @@ const experiments = [
 // prettier-ignore
 const others = [
 	['https://crosshj.com', 'crosshj.com', 'Personal / portfolio site. More experiments here', 'https://user-images.githubusercontent.com/1816471/219903201-1e02e486-e40f-442f-9153-400930d36f0a.png'],
-	['https://crosshj.com/grfx/', 'grfx', 'Yet another graphics manipulation app', 'https://user-images.githubusercontent.com/1816471/219903128-f93a1729-7fe2-4dce-93f0-68141c6dd73e.png'],
+	['https://assistant.crosshj.com/', 'Pocket Alternative', 'Bookmark your favorite websites', 'https://user-images.githubusercontent.com/1816471/219935960-2601e624-a400-4f36-99ca-dcb6679a6210.png'],
+    ['https://crosshj.com/grfx/', 'grfx', 'Yet another graphics manipulation app', 'https://user-images.githubusercontent.com/1816471/219903128-f93a1729-7fe2-4dce-93f0-68141c6dd73e.png'],
 	['https://crosshj.com/vermiculate/', 'Vermiculate', 'I port(ed) my favorite open source screensaver to the web', 'https://user-images.githubusercontent.com/93937172/224854477-aa3b9861-cb4f-4b92-982b-326f6847ec9a.png'],
 	['https://chimpjuice.com', 'chimpjuice.com', 'Random-ish tumblr blog', 'https://user-images.githubusercontent.com/1816471/219903174-450b51f4-7279-466f-83ad-c3811ed424b0.png'],
 	['https://crosshj.com/diffusion-uix/', 'Stable Diffusion UIX', 'An alternate user interface for Automatic1111\'s Stable Diffusion UI', 'https://user-images.githubusercontent.com/1816471/219922382-459c3178-6a4a-4c3b-9828-88e364de96d3.png'],

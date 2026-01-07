@@ -140,6 +140,12 @@ function renderElement(content = 'Wave Function Collapse') {
 	const div = document.createElement('div');
 	div.className = 'container';
 	div.innerHTML = content;
+	// Center content inside the output pane
+	div.style.textAlign = 'center';
+	div.style.display = 'flex';
+	div.style.alignItems = 'center';
+	div.style.justifyContent = 'center';
+	div.style.padding = '0.5rem 0';
 	return div;
 }
 
@@ -189,7 +195,21 @@ function generateRandomSeed() {
 
 window.addEventListener('DOMContentLoaded', () => {
 	updateInputImage();
-	generateAndRender();
+
+	// Show instructional message in output pane on first load
+	const outputContainer = document.querySelector('.output-container');
+	if (outputContainer) {
+		const nonPlaceholderChildren = Array.from(
+			outputContainer.children
+		).filter((c) => c.id !== 'loadingPlaceholder');
+		if (nonPlaceholderChildren.length === 0) {
+			const msg = renderElement(
+				'<p style="margin:0.5rem 0;color:#666">Click the <strong>Generate</strong> button to create an image.</p>'
+			);
+			outputContainer.appendChild(msg);
+		}
+	}
+	// generateAndRender();
 
 	document.getElementById('exampleSelect').addEventListener('change', () => {
 		updateInputImage();
@@ -200,5 +220,13 @@ window.addEventListener('DOMContentLoaded', () => {
 	document.getElementById('randomSeedBtn').addEventListener('click', () => {
 		document.getElementById('lcgSeed').value = generateRandomSeed();
 		generateAndRender();
+	});
+	document.querySelectorAll('input[type="number"]').forEach((el) => {
+		el.addEventListener('input', () => clampInputElement(el));
+		el.addEventListener('blur', () => clampInputElement(el));
+		// prevent accidental mouse wheel changes causing out-of-range values
+		el.addEventListener('wheel', (e) => e.preventDefault(), {
+			passive: false
+		});
 	});
 });

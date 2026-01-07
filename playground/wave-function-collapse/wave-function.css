@@ -202,9 +202,12 @@ a {
 	border-radius: 4px;
 }
 
+/* Ensure both <img class="output"> and <canvas class="output"> scale to container like before */
+.output,
 img.output {
 	width: 100%;
 	max-width: 800px;
+	height: auto;
 }
 
 .loading-placeholder {
@@ -296,6 +299,7 @@ img.output {
 		margin-bottom: 3em;
 	}
 
+	.output,
 	img.output {
 		max-width: 100%;
 	}

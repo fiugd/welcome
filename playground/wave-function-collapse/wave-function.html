@@ -30,12 +30,49 @@
 						<p>
 							credit:
 							<a
-								href="https://github.com/mxgmn/WaveFunctionCollapse"
+								href="https://github.com/kchapelier/wavefunctioncollapse"
+								target="_blank"
+								rel="noopener noreferrer"
+								title="kchapelier/wavefunctioncollapse (opens in a new tab)"
+								aria-label="Open kchapelier/wavefunctioncollapse in a new tab"
 							>
-								mxgmn/WaveFunctionCollapse
+								kchapelier/wavefunctioncollapse
 							</a>
 						</p>
 					</div>
+
+					<label
+						>Seed
+						<div class="seed-input-wrapper">
+							<input
+								id="lcgSeed"
+								type="text"
+								value="testt one twov"
+							/>
+							<button
+								id="randomSeedBtn"
+								class="seed-refresh-btn"
+								type="button"
+								title="Generate random seed"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+									/>
+								</svg>
+							</button>
+						</div>
+					</label>
 
 					<label
 						>Input Image
@@ -137,15 +174,26 @@
 								value="70"
 						/></label>
 					</div>
-					<label
-						>Pattern Size
-						<input
-							id="patternSize"
-							type="number"
-							min="1"
-							max="10"
-							value="3"
-					/></label>
+					<div class="control-group">
+						<label
+							>Pattern Size
+							<input
+								id="patternSize"
+								type="number"
+								min="1"
+								max="10"
+								value="3"
+						/></label>
+						<label
+							>Symmetry (1-8)
+							<input
+								id="symmetry"
+								type="number"
+								min="1"
+								max="8"
+								value="2"
+						/></label>
+					</div>
 					<div class="control-group">
 						<label
 							>Periodic Input
@@ -156,47 +204,7 @@
 							<input id="periodicOutput" type="checkbox" checked
 						/></label>
 					</div>
-					<label
-						>Symmetry
-						<input
-							id="symmetry"
-							type="number"
-							min="1"
-							max="8"
-							value="2"
-					/></label>
-					<label
-						>Seed
-						<div class="seed-input-wrapper">
-							<input
-								id="lcgSeed"
-								type="text"
-								value="testt one twov"
-							/>
-							<button
-								id="randomSeedBtn"
-								class="seed-refresh-btn"
-								type="button"
-								title="Generate random seed"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path
-										d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
-									/>
-								</svg>
-							</button>
-						</div>
-					</label>
+
 					<button id="generateBtn">Generate</button>
 				</div>
 			</div>

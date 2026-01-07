@@ -221,12 +221,4 @@ window.addEventListener('DOMContentLoaded', () => {
 		document.getElementById('lcgSeed').value = generateRandomSeed();
 		generateAndRender();
 	});
-	document.querySelectorAll('input[type="number"]').forEach((el) => {
-		el.addEventListener('input', () => clampInputElement(el));
-		el.addEventListener('blur', () => clampInputElement(el));
-		// prevent accidental mouse wheel changes causing out-of-range values
-		el.addEventListener('wheel', (e) => e.preventDefault(), {
-			passive: false
-		});
-	});
 });

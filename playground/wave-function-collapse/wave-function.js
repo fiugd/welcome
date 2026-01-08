@@ -1,8 +1,11 @@
-import wfc from 'https://cdn.skypack.dev/wavefunctioncollapse';
+// import wfc from 'https://cdn.skypack.dev/wavefunctioncollapse';
+import wfc from './vendor/wavefunctioncollapse.js';
 const { OverlappingModel } = wfc;
 
-const samplesPrefix =
-	'https://raw.githubusercontent.com/mxgmn/WaveFunctionCollapse/master/samples/';
+// const samplesPrefix =
+// 	'https://raw.githubusercontent.com/mxgmn/WaveFunctionCollapse/master/samples/';
+
+const samplesPrefix = './vendor/WaveFunctionCollapse/samples/';
 
 function updateInputImage() {
 	const select = document.getElementById('exampleSelect');
@@ -76,6 +79,8 @@ async function generateAndRender() {
 	const outputContainer = document.querySelector('.output-container');
 	if (!outputContainer) return;
 
+	const ground = window.ground || undefined;
+
 	const model = new OverlappingModel(
 		imgData.data,
 		imgData.width,
@@ -85,7 +90,8 @@ async function generateAndRender() {
 		height,
 		periodicIn,
 		periodicOut,
-		sym
+		sym,
+		ground
 	);
 	const finished = model.generate(lcg(seed));
 	hideLoading();

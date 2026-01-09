@@ -57,41 +57,71 @@
 						</p>
 					</div>
 
-					<label
-						>Seed
-						<div class="seed-input-wrapper">
-							<input
-								id="lcgSeed"
-								type="text"
-								value="testt one twov"
-							/>
-							<button
-								id="randomSeedBtn"
-								class="seed-refresh-btn"
-								type="button"
-								title="Generate random seed"
+					<label>Input Image</label>
+					<div class="input-preview-container">
+						<button
+							id="prevImageBtn"
+							class="image-nav-btn"
+							type="button"
+							title="Previous image"
+							aria-label="Previous image"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
 							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="16"
-									height="16"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path
-										d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
-									/>
-								</svg>
-							</button>
+								<polyline points="15 18 9 12 15 6"></polyline>
+							</svg>
+						</button>
+						<div class="input-preview">
+							<div
+								class="input-loading-placeholder"
+								id="inputLoadingPlaceholder"
+							>
+								<div class="spinner"></div>
+							</div>
+							<img
+								id="inputImage"
+								src=""
+								alt="Input Preview"
+								style="
+									max-width: 128px;
+									max-height: 128px;
+									image-rendering: pixelated;
+									display: none;
+								"
+							/>
 						</div>
-					</label>
-
-					<label
-						>Input Image
+						<button
+							id="nextImageBtn"
+							class="image-nav-btn"
+							type="button"
+							title="Next image"
+							aria-label="Next image"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<polyline points="9 18 15 12 9 6"></polyline>
+							</svg>
+						</button>
+					</div>
+					<label>
 						<select id="exampleSelect">
 							<option value="Angular.png">Angular</option>
 							<option value="BrownFox.png">BrownFox</option>
@@ -157,69 +187,40 @@
 							<option value="Wrinkles.png">Wrinkles</option>
 						</select>
 					</label>
-					<div class="input-preview-container">
-						<button
-							id="prevImageBtn"
-							class="image-nav-btn"
-							type="button"
-							title="Previous image"
-							aria-label="Previous image"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
-							>
-								<polyline points="15 18 9 12 15 6"></polyline>
-							</svg>
-						</button>
-						<div class="input-preview">
-							<div
-								class="input-loading-placeholder"
-								id="inputLoadingPlaceholder"
-							>
-								<div class="spinner"></div>
-							</div>
-							<img
-								id="inputImage"
-								src=""
-								alt="Input Preview"
-								style="
-									max-width: 128px;
-									max-height: 128px;
-									image-rendering: pixelated;
-									display: none;
-								"
+
+					<label
+						>Seed
+						<div class="seed-input-wrapper">
+							<input
+								id="lcgSeed"
+								type="text"
+								value="testt one twov"
 							/>
-						</div>
-						<button
-							id="nextImageBtn"
-							class="image-nav-btn"
-							type="button"
-							title="Next image"
-							aria-label="Next image"
-						>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="16"
-								height="16"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								stroke-width="2"
-								stroke-linecap="round"
-								stroke-linejoin="round"
+							<button
+								id="randomSeedBtn"
+								class="seed-refresh-btn"
+								type="button"
+								title="Generate random seed"
 							>
-								<polyline points="9 18 15 12 9 6"></polyline>
-							</svg>
-						</button>
-					</div>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									width="16"
+									height="16"
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+								>
+									<path
+										d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"
+									/>
+								</svg>
+							</button>
+						</div>
+					</label>
+
 					<div class="control-group">
 						<label
 							>Width

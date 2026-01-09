@@ -178,14 +178,17 @@ h6 {
 	align-items: center;
 	justify-content: center;
 	gap: 1em;
-	margin: 1em 0;
+	margin: 1em 0 0 0;
 }
 
 .input-preview {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex: 1;
+	flex: 0 0 128px;
+	width: 128px;
+	height: 128px;
+	aspect-ratio: 1;
 }
 
 .image-nav-btn {

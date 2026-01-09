@@ -64,7 +64,7 @@ function updatePlaceholderDimensions() {
 	}
 }
 
-function updateInputImage() {
+function updateInputImage(options = {}) {
 	const select = document.getElementById('exampleSelect');
 	const img = document.getElementById('inputImage');
 	const placeholder = document.getElementById('inputLoadingPlaceholder');
@@ -90,6 +90,11 @@ function updateInputImage() {
 				// Show generate message since canvas was resized
 				showOverlay('generate');
 			}
+		}
+
+		// Generate if requested
+		if (options.generateAfterLoad) {
+			generateAndRender();
 		}
 	};
 
@@ -130,7 +135,7 @@ function navigateImage(direction) {
 
 	if (newIndex !== currentIndex) {
 		select.selectedIndex = newIndex;
-		updateInputImage();
+		updateInputImage({ generateAfterLoad: true });
 	}
 }
 
@@ -500,7 +505,8 @@ function setupEventListeners() {
 	}
 
 	if (inputImage) {
-		inputImage.addEventListener('click', () => {
+		inputImage.addEventListener('click', (e) => {
+			e.stopPropagation();
 			downloadInputImageWithMetadata();
 		});
 	}
@@ -519,13 +525,15 @@ function setupEventListeners() {
 	}
 
 	if (prevImageBtn) {
-		prevImageBtn.addEventListener('click', () => {
+		prevImageBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
 			navigateImage('prev');
 		});
 	}
 
 	if (nextImageBtn) {
-		nextImageBtn.addEventListener('click', () => {
+		nextImageBtn.addEventListener('click', (e) => {
+			e.stopPropagation();
 			navigateImage('next');
 		});
 	}

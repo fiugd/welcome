@@ -96,6 +96,42 @@ function updateInputImage() {
 	img.onerror = () => {
 		placeholder.style.display = 'none';
 	};
+
+	updateImageNavButtons();
+}
+
+function updateImageNavButtons() {
+	const select = document.getElementById('exampleSelect');
+	const prevBtn = document.getElementById('prevImageBtn');
+	const nextBtn = document.getElementById('nextImageBtn');
+
+	if (!select || !prevBtn || !nextBtn) return;
+
+	const currentIndex = select.selectedIndex;
+	const optionCount = select.options.length;
+
+	prevBtn.disabled = currentIndex === 0;
+	nextBtn.disabled = currentIndex === optionCount - 1;
+}
+
+function navigateImage(direction) {
+	const select = document.getElementById('exampleSelect');
+	if (!select) return;
+
+	const currentIndex = select.selectedIndex;
+	const optionCount = select.options.length;
+	let newIndex = currentIndex;
+
+	if (direction === 'prev' && currentIndex > 0) {
+		newIndex = currentIndex - 1;
+	} else if (direction === 'next' && currentIndex < optionCount - 1) {
+		newIndex = currentIndex + 1;
+	}
+
+	if (newIndex !== currentIndex) {
+		select.selectedIndex = newIndex;
+		updateInputImage();
+	}
 }
 
 function clearOutput() {
@@ -454,6 +490,8 @@ function setupEventListeners() {
 	const generateBtn = document.getElementById('generateBtn');
 	const randomSeedBtn = document.getElementById('randomSeedBtn');
 	const lcgSeed = document.getElementById('lcgSeed');
+	const prevImageBtn = document.getElementById('prevImageBtn');
+	const nextImageBtn = document.getElementById('nextImageBtn');
 
 	if (exampleSelect) {
 		exampleSelect.addEventListener('change', () => {
@@ -477,6 +515,18 @@ function setupEventListeners() {
 		randomSeedBtn.addEventListener('click', () => {
 			lcgSeed.value = generateRandomSeed();
 			generateAndRender();
+		});
+	}
+
+	if (prevImageBtn) {
+		prevImageBtn.addEventListener('click', () => {
+			navigateImage('prev');
+		});
+	}
+
+	if (nextImageBtn) {
+		nextImageBtn.addEventListener('click', () => {
+			navigateImage('next');
 		});
 	}
 }

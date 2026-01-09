@@ -157,24 +157,68 @@
 							<option value="Wrinkles.png">Wrinkles</option>
 						</select>
 					</label>
-					<div class="input-preview">
-						<div
-							class="input-loading-placeholder"
-							id="inputLoadingPlaceholder"
+					<div class="input-preview-container">
+						<button
+							id="prevImageBtn"
+							class="image-nav-btn"
+							type="button"
+							title="Previous image"
+							aria-label="Previous image"
 						>
-							<div class="spinner"></div>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<polyline points="15 18 9 12 15 6"></polyline>
+							</svg>
+						</button>
+						<div class="input-preview">
+							<div
+								class="input-loading-placeholder"
+								id="inputLoadingPlaceholder"
+							>
+								<div class="spinner"></div>
+							</div>
+							<img
+								id="inputImage"
+								src=""
+								alt="Input Preview"
+								style="
+									max-width: 128px;
+									max-height: 128px;
+									image-rendering: pixelated;
+									display: none;
+								"
+							/>
 						</div>
-						<img
-							id="inputImage"
-							src=""
-							alt="Input Preview"
-							style="
-								max-width: 128px;
-								max-height: 128px;
-								image-rendering: pixelated;
-								display: none;
-							"
-						/>
+						<button
+							id="nextImageBtn"
+							class="image-nav-btn"
+							type="button"
+							title="Next image"
+							aria-label="Next image"
+						>
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								width="16"
+								height="16"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								<polyline points="9 18 15 12 9 6"></polyline>
+							</svg>
+						</button>
 					</div>
 					<div class="control-group">
 						<label

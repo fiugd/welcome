@@ -16,6 +16,53 @@ const samplesPrefix = './vendor/WaveFunctionCollapse/samples/';
 
 let currentModel = null;
 let currentInputImageData = null;
+let outputCanvas = null;
+
+function initializeCanvas() {
+	outputCanvas = document.getElementById('outputCanvas');
+	if (!outputCanvas) return;
+
+	const width = +document.getElementById('destWidth').value;
+	const height = +document.getElementById('destHeight').value;
+	outputCanvas.width = width;
+	outputCanvas.height = height;
+
+	// Clear canvas with transparent background
+	const ctx = outputCanvas.getContext('2d');
+	ctx.clearRect(0, 0, width, height);
+
+	// Show overlay
+	showOverlay('generate');
+}
+function showOverlay(type) {
+	const overlay = document.getElementById('canvasOverlay');
+	const content = document.getElementById('overlayContent');
+
+	if (type === 'hidden') {
+		overlay.classList.add('hidden');
+	} else if (type === 'generate') {
+		overlay.classList.remove('hidden');
+		content.innerHTML =
+			'<p style="margin:0.5rem 0;color:#666">Click the <strong>Generate</strong> button to create an image.</p>';
+	} else if (type === 'loading') {
+		overlay.classList.remove('hidden');
+		content.innerHTML = '<div class="spinner"></div>';
+	} else if (type === 'error') {
+		overlay.classList.remove('hidden');
+		// Content will be set by showError function
+	}
+}
+
+function updatePlaceholderDimensions() {
+	const width = +document.getElementById('destWidth').value;
+	const height = +document.getElementById('destHeight').value;
+	if (outputCanvas) {
+		outputCanvas.width = width;
+		outputCanvas.height = height;
+		const ctx = outputCanvas.getContext('2d');
+		ctx.clearRect(0, 0, width, height);
+	}
+}
 
 function updateInputImage() {
 	const select = document.getElementById('exampleSelect');
@@ -37,6 +84,12 @@ function updateInputImage() {
 		const metadata = await extractMetadataFromPng(samplesPrefix + fileName);
 		if (metadata) {
 			applyMetadataToForm(metadata);
+			// Update canvas dimensions based on metadata width/height
+			if (metadata.destWidth && metadata.destHeight) {
+				updatePlaceholderDimensions();
+				// Show generate message since canvas was resized
+				showOverlay('generate');
+			}
 		}
 	};
 
@@ -46,43 +99,26 @@ function updateInputImage() {
 }
 
 function clearOutput() {
-	const outputContainer = document.querySelector('.output-container');
-	if (outputContainer) {
-		// Remove only child elements except the loading placeholder
-		const children = Array.from(outputContainer.children);
-		children.forEach((child) => {
-			if (child.id !== 'loadingPlaceholder') {
-				child.remove();
-			}
-		});
-		const loadingPlaceholder =
-			document.getElementById('loadingPlaceholder');
-		if (loadingPlaceholder) {
-			loadingPlaceholder.innerHTML = '<div class="spinner"></div>';
-			loadingPlaceholder.style.display = 'flex';
-		}
-	}
+	showOverlay('loading');
 	// Hide info button when output is cleared
 	document.getElementById('infoBtn').style.display = 'none';
 }
 
 function hideLoading() {
-	const loadingPlaceholder = document.getElementById('loadingPlaceholder');
-	if (loadingPlaceholder) {
-		loadingPlaceholder.style.display = 'none';
-	}
+	// No longer needed - showOverlay handles this
 }
 
 function showError(message) {
-	const loadingPlaceholder = document.getElementById('loadingPlaceholder');
-	if (loadingPlaceholder) {
-		loadingPlaceholder.innerHTML = `<p style="color: #ff6b6b; font-weight: 600;">${message}</p>`;
-		loadingPlaceholder.style.display = 'flex';
-	}
+	const overlay = document.getElementById('canvasOverlay');
+	const content = document.getElementById('overlayContent');
+	overlay.classList.remove('hidden');
+	content.innerHTML = `<p style="color: #ff6b6b; font-weight: 600;">${message}</p>`;
 }
 
 async function generateAndRender() {
 	clearOutput();
+	// Update canvas size to match current width/height form values
+	updatePlaceholderDimensions();
 	const fileName = document.getElementById('exampleSelect').value;
 	const patternSz = +document.getElementById('patternSize').value;
 	const width = +document.getElementById('destWidth').value;
@@ -114,18 +150,32 @@ async function generateAndRender() {
 	);
 
 	const finished = model.generate(lcg(seed));
-	hideLoading();
 	if (!finished) {
+		// Clear canvas and show error
+		const ctx = outputCanvas.getContext('2d');
+		ctx.clearRect(0, 0, outputCanvas.width, outputCanvas.height);
 		showError('The generation ended in a contradiction');
+		// Still show info button to view patterns even though generation failed
+		currentModel = model;
+		currentInputImageData = imgData;
+		document.getElementById('infoBtn').style.display = 'flex';
 		return;
 	}
 
 	var outputImgData = blankImageData(width, height);
 	model.graphics(outputImgData.data);
-	outputContainer.appendChild(imageDataToImage(outputImgData, 'output'));
+
+	// Draw to canvas
+	const ctx = outputCanvas.getContext('2d');
+	ctx.putImageData(outputImgData, 0, 0);
+
 	// Store model and input image data for pattern display
 	currentModel = model;
 	currentInputImageData = imgData;
+
+	// Hide overlay to reveal canvas
+	showOverlay('hidden');
+
 	// Show info button when output image exists
 	document.getElementById('infoBtn').style.display = 'flex';
 }
@@ -246,27 +296,26 @@ function setupInfoModal() {
 
 window.addEventListener('DOMContentLoaded', () => {
 	// Restore selected input image from localStorage
+	const select = document.getElementById('exampleSelect');
 	const savedImage = localStorage.getItem('selectedInputImage');
 	if (savedImage) {
-		const select = document.getElementById('exampleSelect');
-		select.value = savedImage;
+		// Check if the saved image exists in the select options
+		const optionExists = Array.from(select.options).some(option => option.value === savedImage);
+		if (optionExists) {
+			select.value = savedImage;
+		} else {
+			// Default to first item if saved image no longer exists
+			select.value = select.options[0].value;
+		}
+	} else {
+		// No saved image, default to first item
+		select.value = select.options[0].value;
 	}
 
 	updateInputImage();
 
-	// Show instructional message in output pane on first load
-	const outputContainer = document.querySelector('.output-container');
-	if (outputContainer) {
-		const nonPlaceholderChildren = Array.from(
-			outputContainer.children
-		).filter((c) => c.id !== 'loadingPlaceholder');
-		if (nonPlaceholderChildren.length === 0) {
-			const msg = renderElement(
-				'<p style="margin:0.5rem 0;color:#666">Click the <strong>Generate</strong> button to create an image.</p>'
-			);
-			outputContainer.appendChild(msg);
-		}
-	}
+	// Initialize canvas
+	initializeCanvas();
 
 	setupInfoModal();
 
@@ -297,7 +346,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const patternsContainer = document.createElement('div');
 		patternsContainer.style.display = 'grid';
 		patternsContainer.style.gridTemplateColumns =
-			'repeat(auto-fill, minmax(80px, 1fr))';
+			'repeat(auto-fit, minmax(60px, 1fr))';
 		patternsContainer.style.gap = '10px';
 		patternsContainer.style.padding = '10px';
 
@@ -316,10 +365,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		const canvas = document.createElement('canvas');
 		const patternSize =
 			parseInt(document.getElementById('patternSize').value) || 3;
-		const zoomFactor = 20;
-		canvas.width = patternSize * zoomFactor;
-		canvas.height = patternSize * zoomFactor;
+		// Canvas is actual pattern size, CSS will scale it
+		canvas.width = patternSize;
+		canvas.height = patternSize;
+		canvas.style.width = '100%';
+		canvas.style.height = 'auto';
+		canvas.style.aspectRatio = '1';
 		canvas.style.border = '1px solid #ccc';
+		canvas.style.imageRendering = 'pixelated';
 		canvas.title = `Pattern ${index}`;
 
 		const ctx = canvas.getContext('2d');
@@ -327,7 +380,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		// Get color palette from input image
 		if (!currentInputImageData) {
 			ctx.fillStyle = '#999';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			ctx.fillRect(0, 0, patternSize, patternSize);
 			container.appendChild(canvas);
 			const indexLabel = document.createElement('div');
 			indexLabel.style.fontSize = '12px';
@@ -355,19 +408,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 		const colorArray = Array.from(colors.values());
 
-		// Draw pattern cells
+		// Draw pattern cells (1 pixel per cell)
 		for (let y = 0; y < patternSize; y++) {
 			for (let x = 0; x < patternSize; x++) {
 				const colorIndex =
 					pattern[y * patternSize + x] % colorArray.length;
 				const color = colorArray[colorIndex];
 				ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-				ctx.fillRect(
-					x * zoomFactor,
-					y * zoomFactor,
-					zoomFactor,
-					zoomFactor
-				);
+				ctx.fillRect(x, y, 1, 1);
 			}
 		}
 

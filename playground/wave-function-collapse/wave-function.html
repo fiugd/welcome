@@ -31,12 +31,11 @@
 		<div class="main-layout">
 			<div class="left-pane">
 				<div class="output-container" id="outputContainer">
-					<div
-						class="loading-placeholder"
-						id="loadingPlaceholder"
-						style="display: none"
-					>
-						<div class="spinner"></div>
+					<div class="canvas-wrapper">
+						<canvas id="outputCanvas"></canvas>
+						<div class="canvas-overlay" id="canvasOverlay">
+							<div id="overlayContent"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -96,6 +95,9 @@
 						<select id="exampleSelect">
 							<option value="Angular.png">Angular</option>
 							<option value="BrownFox.png">BrownFox</option>
+							<option value="BrownFoxFont.png">
+								BrownFoxFont
+							</option>
 							<option value="Cat.png">Cat</option>
 							<option value="Cats.png">Cats</option>
 							<option value="Cave.png">Cave</option>
@@ -109,7 +111,6 @@
 							<option value="Fabric.png">Fabric</option>
 							<option value="Flowers.png">Flowers</option>
 							<option value="FlowersMore.png">FlowersMore</option>
-							<option value="Font.png">Font</option>
 							<option value="Forest.png">Forest</option>
 							<option value="Hogs.png">Hogs</option>
 							<option value="Knot.png">Knot</option>

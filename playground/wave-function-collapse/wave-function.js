@@ -1,5 +1,12 @@
 // import wfc from 'https://cdn.skypack.dev/wavefunctioncollapse';
 import wfc from './vendor/wavefunctioncollapse.js';
+import {
+	savePngWithMetadata,
+	extractMetadataFromPng,
+	applyMetadataToForm,
+	getMetadataFromForm,
+	downloadInputImageWithMetadata
+} from './lib/png-metadata.js';
 const { OverlappingModel } = wfc;
 
 // const samplesPrefix =
@@ -18,9 +25,13 @@ function updateInputImage() {
 	img.src = samplesPrefix + fileName;
 	img.alt = fileName;
 
-	img.onload = () => {
+	img.onload = async () => {
 		placeholder.style.display = 'none';
 		img.style.display = 'block';
+		const metadata = await extractMetadataFromPng(samplesPrefix + fileName);
+		if (metadata) {
+			applyMetadataToForm(metadata);
+		}
 	};
 
 	img.onerror = () => {
@@ -219,6 +230,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	document.getElementById('exampleSelect').addEventListener('change', () => {
 		updateInputImage();
+	});
+	document.getElementById('inputImage').addEventListener('click', () => {
+		downloadInputImageWithMetadata();
 	});
 	document.getElementById('generateBtn').addEventListener('click', () => {
 		generateAndRender();

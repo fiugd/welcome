@@ -158,7 +158,11 @@ async function generateAndRender() {
 		// Still show info button to view patterns even though generation failed
 		currentModel = model;
 		currentInputImageData = imgData;
-		document.getElementById('infoBtn').style.display = 'flex';
+		const infoBtn = document.getElementById('infoBtn');
+		if (infoBtn) {
+			infoBtn.style.display = 'flex';
+			InfoModal.init();
+		}
 		return;
 	}
 
@@ -177,7 +181,11 @@ async function generateAndRender() {
 	showOverlay('hidden');
 
 	// Show info button when output image exists
-	document.getElementById('infoBtn').style.display = 'flex';
+	const infoBtn = document.getElementById('infoBtn');
+	if (infoBtn) {
+		infoBtn.style.display = 'flex';
+		InfoModal.init();
+	}
 }
 
 const imageDataFromUrl = (imageUrl, startx, starty, width, height) =>
@@ -274,33 +282,160 @@ function generateRandomSeed() {
 	return words.join(' ');
 }
 
-function setupInfoModal() {
-	const infoBtn = document.getElementById('infoBtn');
-	const infoModal = document.getElementById('infoModal');
-	const closeModal = document.getElementById('closeModal');
+const InfoModal = (() => {
+	let initialized = false;
 
-	infoBtn.addEventListener('click', () => {
-		infoModal.style.display = 'flex';
-	});
+	function init() {
+		if (initialized) return;
+		initialized = true;
 
-	closeModal.addEventListener('click', () => {
-		infoModal.style.display = 'none';
-	});
+		const infoBtn = document.getElementById('infoBtn');
+		const infoModal = document.getElementById('infoModal');
+		const closeModal = document.getElementById('closeModal');
 
-	infoModal.addEventListener('click', (e) => {
-		if (e.target === infoModal) {
+		if (!infoBtn || !infoModal || !closeModal) return;
+
+		infoBtn.addEventListener('click', () => {
+			displayPatternsInModal();
+			infoModal.style.display = 'flex';
+		});
+
+		closeModal.addEventListener('click', () => {
+			infoModal.style.display = 'none';
+		});
+
+		infoModal.addEventListener('click', (e) => {
+			if (e.target === infoModal) {
+				infoModal.style.display = 'none';
+			}
+		});
+	}
+
+	function show() {
+		init();
+		const infoModal = document.getElementById('infoModal');
+		if (infoModal) {
+			displayPatternsInModal();
+			infoModal.style.display = 'flex';
+		}
+	}
+
+	function hide() {
+		const infoModal = document.getElementById('infoModal');
+		if (infoModal) {
 			infoModal.style.display = 'none';
 		}
-	});
+	}
+
+	return { show, hide, init };
+})();
+
+function displayPatternsInModal() {
+	if (!currentModel) {
+		document.getElementById('modalBody').innerHTML =
+			'<p>No patterns available</p>';
+		return;
+	}
+
+	const modalBody = document.getElementById('modalBody');
+	modalBody.innerHTML = '';
+
+	const patternsContainer = document.createElement('div');
+	patternsContainer.style.display = 'grid';
+	patternsContainer.style.gridTemplateColumns =
+		'repeat(auto-fit, minmax(60px, 1fr))';
+	patternsContainer.style.gap = '10px';
+	patternsContainer.style.padding = '10px';
+
+	for (let i = 0; i < currentModel.patterns.length; i++) {
+		const tile = createPatternTile(currentModel.patterns[i], i);
+		patternsContainer.appendChild(tile);
+	}
+
+	modalBody.appendChild(patternsContainer);
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-	// Restore selected input image from localStorage
+function createPatternTile(pattern, index) {
+	const container = document.createElement('div');
+	container.style.textAlign = 'center';
+
+	const canvas = document.createElement('canvas');
+	const patternSize =
+		parseInt(document.getElementById('patternSize').value) || 3;
+	// Canvas is actual pattern size, CSS will scale it
+	canvas.width = patternSize;
+	canvas.height = patternSize;
+	canvas.style.width = '100%';
+	canvas.style.height = 'auto';
+	canvas.style.aspectRatio = '1';
+	canvas.style.border = '1px solid #ccc';
+	canvas.style.imageRendering = 'pixelated';
+	canvas.title = `Pattern ${index}`;
+
+	const ctx = canvas.getContext('2d');
+
+	// Get color palette from input image
+	if (!currentInputImageData) {
+		ctx.fillStyle = '#999';
+		ctx.fillRect(0, 0, patternSize, patternSize);
+		container.appendChild(canvas);
+		const indexLabel = document.createElement('div');
+		indexLabel.style.fontSize = '12px';
+		indexLabel.style.marginTop = '4px';
+		indexLabel.style.fontWeight = 'bold';
+		indexLabel.textContent = index;
+		container.appendChild(indexLabel);
+		return container;
+	}
+
+	const colors = new Map();
+	const imageData = currentInputImageData;
+	const data = imageData.data;
+
+	// Extract unique colors from input image
+	for (let i = 0; i < data.length; i += 4) {
+		const r = data[i];
+		const g = data[i + 1];
+		const b = data[i + 2];
+		const a = data[i + 3];
+		const colorKey = `${r},${g},${b},${a}`;
+		if (!colors.has(colorKey)) {
+			colors.set(colorKey, { r, g, b, a });
+		}
+	}
+	const colorArray = Array.from(colors.values());
+
+	// Draw pattern cells (1 pixel per cell)
+	for (let y = 0; y < patternSize; y++) {
+		for (let x = 0; x < patternSize; x++) {
+			const colorIndex = pattern[y * patternSize + x] % colorArray.length;
+			const color = colorArray[colorIndex];
+			ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+			ctx.fillRect(x, y, 1, 1);
+		}
+	}
+
+	container.appendChild(canvas);
+
+	// Add index label below the tile
+	const indexLabel = document.createElement('div');
+	indexLabel.style.fontSize = '12px';
+	indexLabel.style.marginTop = '4px';
+	indexLabel.style.fontWeight = 'bold';
+	indexLabel.textContent = index;
+	container.appendChild(indexLabel);
+
+	return container;
+}
+
+function restoreSelectedInputImage() {
 	const select = document.getElementById('exampleSelect');
 	const savedImage = localStorage.getItem('selectedInputImage');
 	if (savedImage) {
 		// Check if the saved image exists in the select options
-		const optionExists = Array.from(select.options).some(option => option.value === savedImage);
+		const optionExists = Array.from(select.options).some(
+			(option) => option.value === savedImage
+		);
 		if (optionExists) {
 			select.value = savedImage;
 		} else {
@@ -311,138 +446,44 @@ window.addEventListener('DOMContentLoaded', () => {
 		// No saved image, default to first item
 		select.value = select.options[0].value;
 	}
+}
 
+function setupEventListeners() {
+	const exampleSelect = document.getElementById('exampleSelect');
+	const inputImage = document.getElementById('inputImage');
+	const generateBtn = document.getElementById('generateBtn');
+	const randomSeedBtn = document.getElementById('randomSeedBtn');
+	const lcgSeed = document.getElementById('lcgSeed');
+
+	if (exampleSelect) {
+		exampleSelect.addEventListener('change', () => {
+			updateInputImage();
+		});
+	}
+
+	if (inputImage) {
+		inputImage.addEventListener('click', () => {
+			downloadInputImageWithMetadata();
+		});
+	}
+
+	if (generateBtn) {
+		generateBtn.addEventListener('click', () => {
+			generateAndRender();
+		});
+	}
+
+	if (randomSeedBtn && lcgSeed) {
+		randomSeedBtn.addEventListener('click', () => {
+			lcgSeed.value = generateRandomSeed();
+			generateAndRender();
+		});
+	}
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+	restoreSelectedInputImage();
 	updateInputImage();
-
-	// Initialize canvas
 	initializeCanvas();
-
-	setupInfoModal();
-
-	document.getElementById('exampleSelect').addEventListener('change', () => {
-		updateInputImage();
-	});
-	document.getElementById('inputImage').addEventListener('click', () => {
-		downloadInputImageWithMetadata();
-	});
-	document.getElementById('generateBtn').addEventListener('click', () => {
-		generateAndRender();
-	});
-	document.getElementById('randomSeedBtn').addEventListener('click', () => {
-		document.getElementById('lcgSeed').value = generateRandomSeed();
-		generateAndRender();
-	});
-
-	function displayPatternsInModal() {
-		if (!currentModel) {
-			document.getElementById('modalBody').innerHTML =
-				'<p>No patterns available</p>';
-			return;
-		}
-
-		const modalBody = document.getElementById('modalBody');
-		modalBody.innerHTML = '';
-
-		const patternsContainer = document.createElement('div');
-		patternsContainer.style.display = 'grid';
-		patternsContainer.style.gridTemplateColumns =
-			'repeat(auto-fit, minmax(60px, 1fr))';
-		patternsContainer.style.gap = '10px';
-		patternsContainer.style.padding = '10px';
-
-		for (let i = 0; i < currentModel.patterns.length; i++) {
-			const tile = createPatternTile(currentModel.patterns[i], i);
-			patternsContainer.appendChild(tile);
-		}
-
-		modalBody.appendChild(patternsContainer);
-	}
-
-	function createPatternTile(pattern, index) {
-		const container = document.createElement('div');
-		container.style.textAlign = 'center';
-
-		const canvas = document.createElement('canvas');
-		const patternSize =
-			parseInt(document.getElementById('patternSize').value) || 3;
-		// Canvas is actual pattern size, CSS will scale it
-		canvas.width = patternSize;
-		canvas.height = patternSize;
-		canvas.style.width = '100%';
-		canvas.style.height = 'auto';
-		canvas.style.aspectRatio = '1';
-		canvas.style.border = '1px solid #ccc';
-		canvas.style.imageRendering = 'pixelated';
-		canvas.title = `Pattern ${index}`;
-
-		const ctx = canvas.getContext('2d');
-
-		// Get color palette from input image
-		if (!currentInputImageData) {
-			ctx.fillStyle = '#999';
-			ctx.fillRect(0, 0, patternSize, patternSize);
-			container.appendChild(canvas);
-			const indexLabel = document.createElement('div');
-			indexLabel.style.fontSize = '12px';
-			indexLabel.style.marginTop = '4px';
-			indexLabel.style.fontWeight = 'bold';
-			indexLabel.textContent = index;
-			container.appendChild(indexLabel);
-			return container;
-		}
-
-		const colors = new Map();
-		const imageData = currentInputImageData;
-		const data = imageData.data;
-
-		// Extract unique colors from input image
-		for (let i = 0; i < data.length; i += 4) {
-			const r = data[i];
-			const g = data[i + 1];
-			const b = data[i + 2];
-			const a = data[i + 3];
-			const colorKey = `${r},${g},${b},${a}`;
-			if (!colors.has(colorKey)) {
-				colors.set(colorKey, { r, g, b, a });
-			}
-		}
-		const colorArray = Array.from(colors.values());
-
-		// Draw pattern cells (1 pixel per cell)
-		for (let y = 0; y < patternSize; y++) {
-			for (let x = 0; x < patternSize; x++) {
-				const colorIndex =
-					pattern[y * patternSize + x] % colorArray.length;
-				const color = colorArray[colorIndex];
-				ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
-				ctx.fillRect(x, y, 1, 1);
-			}
-		}
-
-		container.appendChild(canvas);
-
-		// Add index label below the tile
-		const indexLabel = document.createElement('div');
-		indexLabel.style.fontSize = '12px';
-		indexLabel.style.marginTop = '4px';
-		indexLabel.style.fontWeight = 'bold';
-		indexLabel.textContent = index;
-		container.appendChild(indexLabel);
-
-		return container;
-	}
-
-	// Update setupInfoModal to call displayPatternsInModal when showing
-	const originalSetupInfoModal = setupInfoModal;
-	setupInfoModal = function () {
-		originalSetupInfoModal();
-		const infoBtn = document.getElementById('infoBtn');
-		if (infoBtn) {
-			infoBtn.addEventListener('click', () => {
-				displayPatternsInModal();
-				document.getElementById('modal').style.display = 'flex';
-			});
-		}
-	};
-	setupInfoModal();
+	setupEventListeners();
 });

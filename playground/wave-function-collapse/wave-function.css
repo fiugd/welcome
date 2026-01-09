@@ -308,3 +308,85 @@ img.output {
 		max-width: 100%;
 	}
 }
+
+/* Info button and modal */
+.info-btn {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: #333;
+	color: #ccc;
+	border: 1px solid #555;
+	font-size: 18px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 100;
+	transition: background 0.2s, color 0.2s;
+}
+
+.info-btn:hover {
+	background: #444;
+	color: #fff;
+}
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal-content {
+	background: #1a1a1a;
+	border: 1px solid #333;
+	border-radius: 8px;
+	padding: 2em;
+	width: 80%;
+	height: 80%;
+	max-width: 1000px;
+	max-height: 800px;
+	overflow-y: auto;
+	position: relative;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+	.modal-content {
+		width: 90%;
+		height: 90%;
+		max-width: none;
+		max-height: none;
+		padding: 1.5em;
+	}
+}
+
+.close {
+	position: absolute;
+	top: 12px;
+	right: 16px;
+	font-size: 28px;
+	font-weight: bold;
+	color: #888;
+	cursor: pointer;
+	transition: color 0.2s;
+}
+
+.close:hover {
+	color: #ccc;
+}
+
+#modalBody {
+	color: #ccc;
+	line-height: 1.6;
+}

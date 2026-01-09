@@ -20,6 +20,9 @@ function updateInputImage() {
 	const placeholder = document.getElementById('inputLoadingPlaceholder');
 	const fileName = select.value;
 
+	// Save to localStorage
+	localStorage.setItem('selectedInputImage', fileName);
+
 	placeholder.style.display = 'flex';
 	img.style.display = 'none';
 	img.src = samplesPrefix + fileName;
@@ -56,6 +59,8 @@ function clearOutput() {
 			loadingPlaceholder.style.display = 'flex';
 		}
 	}
+	// Hide info button when output is cleared
+	document.getElementById('infoBtn').style.display = 'none';
 }
 
 function hideLoading() {
@@ -104,6 +109,10 @@ async function generateAndRender() {
 		sym,
 		ground
 	);
+
+	console.log('Number of patterns: ' + model.patterns.length);
+	console.log({ pattern: model.patterns[100] });
+
 	const finished = model.generate(lcg(seed));
 	hideLoading();
 	if (!finished) {
@@ -114,6 +123,8 @@ async function generateAndRender() {
 	var outputImgData = blankImageData(width, height);
 	model.graphics(outputImgData.data);
 	outputContainer.appendChild(imageDataToImage(outputImgData, 'output'));
+	// Show info button when output image exists
+	document.getElementById('infoBtn').style.display = 'flex';
 }
 
 const imageDataFromUrl = (imageUrl, startx, starty, width, height) =>
@@ -210,7 +221,34 @@ function generateRandomSeed() {
 	return words.join(' ');
 }
 
+function setupInfoModal() {
+	const infoBtn = document.getElementById('infoBtn');
+	const infoModal = document.getElementById('infoModal');
+	const closeModal = document.getElementById('closeModal');
+
+	infoBtn.addEventListener('click', () => {
+		infoModal.style.display = 'flex';
+	});
+
+	closeModal.addEventListener('click', () => {
+		infoModal.style.display = 'none';
+	});
+
+	infoModal.addEventListener('click', (e) => {
+		if (e.target === infoModal) {
+			infoModal.style.display = 'none';
+		}
+	});
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+	// Restore selected input image from localStorage
+	const savedImage = localStorage.getItem('selectedInputImage');
+	if (savedImage) {
+		const select = document.getElementById('exampleSelect');
+		select.value = savedImage;
+	}
+
 	updateInputImage();
 
 	// Show instructional message in output pane on first load
@@ -227,6 +265,14 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 	// generateAndRender();
+	window.groundSearch = () => {
+		window.ground = window.ground || 0;
+		ground += 1;
+		generateAndRender();
+		return ground;
+	};
+
+	setupInfoModal();
 
 	document.getElementById('exampleSelect').addEventListener('change', () => {
 		updateInputImage();

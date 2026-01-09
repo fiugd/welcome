@@ -12,6 +12,22 @@
 	</head>
 
 	<body>
+		<button
+			id="infoBtn"
+			class="info-btn"
+			title="Info"
+			style="display: none"
+		>
+			ℹ
+		</button>
+
+		<div id="infoModal" class="modal" style="display: none">
+			<div class="modal-content">
+				<span id="closeModal" class="close">&times;</span>
+				<div id="modalBody"></div>
+			</div>
+		</div>
+
 		<div class="main-layout">
 			<div class="left-pane">
 				<div class="output-container" id="outputContainer">

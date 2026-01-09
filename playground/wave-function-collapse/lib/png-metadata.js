@@ -79,7 +79,11 @@ export function applyMetadataToForm(metadata) {
 	if (metadata.symmetry)
 		document.getElementById('symmetry').value = metadata.symmetry;
 	if (metadata.seed) document.getElementById('lcgSeed').value = metadata.seed;
-	if (metadata.ground !== undefined) window.ground = metadata.ground;
+	if (metadata.ground !== undefined) {
+		window.ground = metadata.ground;
+	} else {
+		window.ground = undefined;
+	}
 }
 
 export function getMetadataFromForm() {

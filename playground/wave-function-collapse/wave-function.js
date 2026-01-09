@@ -14,6 +14,9 @@ const { OverlappingModel } = wfc;
 
 const samplesPrefix = './vendor/WaveFunctionCollapse/samples/';
 
+let currentModel = null;
+let currentInputImageData = null;
+
 function updateInputImage() {
 	const select = document.getElementById('exampleSelect');
 	const img = document.getElementById('inputImage');
@@ -110,9 +113,6 @@ async function generateAndRender() {
 		ground
 	);
 
-	console.log('Number of patterns: ' + model.patterns.length);
-	console.log({ pattern: model.patterns[100] });
-
 	const finished = model.generate(lcg(seed));
 	hideLoading();
 	if (!finished) {
@@ -123,6 +123,9 @@ async function generateAndRender() {
 	var outputImgData = blankImageData(width, height);
 	model.graphics(outputImgData.data);
 	outputContainer.appendChild(imageDataToImage(outputImgData, 'output'));
+	// Store model and input image data for pattern display
+	currentModel = model;
+	currentInputImageData = imgData;
 	// Show info button when output image exists
 	document.getElementById('infoBtn').style.display = 'flex';
 }
@@ -264,13 +267,6 @@ window.addEventListener('DOMContentLoaded', () => {
 			outputContainer.appendChild(msg);
 		}
 	}
-	// generateAndRender();
-	window.groundSearch = () => {
-		window.ground = window.ground || 0;
-		ground += 1;
-		generateAndRender();
-		return ground;
-	};
 
 	setupInfoModal();
 
@@ -287,4 +283,118 @@ window.addEventListener('DOMContentLoaded', () => {
 		document.getElementById('lcgSeed').value = generateRandomSeed();
 		generateAndRender();
 	});
+
+	function displayPatternsInModal() {
+		if (!currentModel) {
+			document.getElementById('modalBody').innerHTML =
+				'<p>No patterns available</p>';
+			return;
+		}
+
+		const modalBody = document.getElementById('modalBody');
+		modalBody.innerHTML = '';
+
+		const patternsContainer = document.createElement('div');
+		patternsContainer.style.display = 'grid';
+		patternsContainer.style.gridTemplateColumns =
+			'repeat(auto-fill, minmax(80px, 1fr))';
+		patternsContainer.style.gap = '10px';
+		patternsContainer.style.padding = '10px';
+
+		for (let i = 0; i < currentModel.patterns.length; i++) {
+			const tile = createPatternTile(currentModel.patterns[i], i);
+			patternsContainer.appendChild(tile);
+		}
+
+		modalBody.appendChild(patternsContainer);
+	}
+
+	function createPatternTile(pattern, index) {
+		const container = document.createElement('div');
+		container.style.textAlign = 'center';
+
+		const canvas = document.createElement('canvas');
+		const patternSize =
+			parseInt(document.getElementById('patternSize').value) || 3;
+		const zoomFactor = 20;
+		canvas.width = patternSize * zoomFactor;
+		canvas.height = patternSize * zoomFactor;
+		canvas.style.border = '1px solid #ccc';
+		canvas.title = `Pattern ${index}`;
+
+		const ctx = canvas.getContext('2d');
+
+		// Get color palette from input image
+		if (!currentInputImageData) {
+			ctx.fillStyle = '#999';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			container.appendChild(canvas);
+			const indexLabel = document.createElement('div');
+			indexLabel.style.fontSize = '12px';
+			indexLabel.style.marginTop = '4px';
+			indexLabel.style.fontWeight = 'bold';
+			indexLabel.textContent = index;
+			container.appendChild(indexLabel);
+			return container;
+		}
+
+		const colors = new Map();
+		const imageData = currentInputImageData;
+		const data = imageData.data;
+
+		// Extract unique colors from input image
+		for (let i = 0; i < data.length; i += 4) {
+			const r = data[i];
+			const g = data[i + 1];
+			const b = data[i + 2];
+			const a = data[i + 3];
+			const colorKey = `${r},${g},${b},${a}`;
+			if (!colors.has(colorKey)) {
+				colors.set(colorKey, { r, g, b, a });
+			}
+		}
+		const colorArray = Array.from(colors.values());
+
+		// Draw pattern cells
+		for (let y = 0; y < patternSize; y++) {
+			for (let x = 0; x < patternSize; x++) {
+				const colorIndex =
+					pattern[y * patternSize + x] % colorArray.length;
+				const color = colorArray[colorIndex];
+				ctx.fillStyle = `rgba(${color.r}, ${color.g}, ${color.b}, ${color.a})`;
+				ctx.fillRect(
+					x * zoomFactor,
+					y * zoomFactor,
+					zoomFactor,
+					zoomFactor
+				);
+			}
+		}
+
+		container.appendChild(canvas);
+
+		// Add index label below the tile
+		const indexLabel = document.createElement('div');
+		indexLabel.style.fontSize = '12px';
+		indexLabel.style.marginTop = '4px';
+		indexLabel.style.fontWeight = 'bold';
+		indexLabel.textContent = index;
+		container.appendChild(indexLabel);
+
+		return container;
+	}
+
+	// Update setupInfoModal to call displayPatternsInModal when showing
+	const originalSetupInfoModal = setupInfoModal;
+	setupInfoModal = function () {
+		originalSetupInfoModal();
+		const infoBtn = document.getElementById('infoBtn');
+		if (infoBtn) {
+			infoBtn.addEventListener('click', () => {
+				displayPatternsInModal();
+				document.getElementById('modal').style.display = 'flex';
+			});
+		}
+	};
+	setupInfoModal();
 });

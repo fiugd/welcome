@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>Micro Chess — demo</title>
+		<style>
+			/* minimal fallback styles to ensure the board grid displays
+		   even if external CSS fails to load */
+			body {
+				background: #071029;
+				color: #fff;
+				margin: 0;
+				font-family: system-ui, Arial;
+			}
+			.wrap {
+				display: flex;
+				gap: 16px;
+				padding: 16px;
+			}
+			.board {
+				display: grid;
+				grid-template-columns: repeat(8, 1fr);
+				grid-template-rows: repeat(8, 1fr);
+				width: 560px;
+				height: 560px;
+			}
+			.square {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 36px;
+			}
+		</style>
+		<link rel="stylesheet" href="./micro-chess.css" />
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="panel">
+				<div id="board" class="board" aria-label="Chess board"></div>
+			</div>
+			<div class="panel" style="width: 320px">
+				<div class="controls">
+					<div>
+						<div class="title">Micro Chess</div>
+						<div class="status">
+							<div id="statusText">White to move</div>
+						</div>
+					</div>
+					<div style="display: flex; gap: 8px">
+						<button id="newBtn" class="btn">New Game</button>
+						<button
+							id="undoBtn"
+							class="btn"
+							style="background: #475569"
+						>
+							Undo
+						</button>
+					</div>
+					<div style="margin-top: 10px">
+						<div style="font-weight: 600; margin-bottom: 6px">
+							Move list
+						</div>
+						<div id="movelist" class="moves"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="module">
+			import { MicroChess, pieceToUnicode } from './micro-chess.js';
+			const engine = new MicroChess();
+			const boardEl = document.getElementById('board');
+			const movelist = document.getElementById('movelist');
+			const statusEl = document.getElementById('statusText');
+			let selected = -1;
+			const history = [];
+
+			function render() {
+				boardEl.innerHTML = '';
+				const allMoves = engine.generateMoves();
+				const validTargets = new Set();
+				if (selected !== -1) {
+					allMoves
+						.filter((m) => m.from === selected)
+						.forEach((m) => validTargets.add(m.to));
+				}
+				for (let r = 0; r < 8; r++) {
+					for (let f = 0; f < 8; f++) {
+						const sq = r * 8 + f;
+						const div = document.createElement('div');
+						div.className =
+							'square ' + ((r + f) & 1 ? 'dark' : 'light');
+						const p = engine.board[sq];
+						div.textContent = pieceToUnicode(p) || '';
+						if (p > 0) div.classList.add('piece-white');
+						else if (p < 0) div.classList.add('piece-black');
+						if (sq === selected) div.classList.add('selected');
+						if (validTargets.has(sq)) {
+							// if target square currently has an enemy piece it's a capture
+							if (
+								engine.board[sq] &&
+								Math.sign(engine.board[sq]) !== engine.side
+							)
+								div.classList.add('move-capture');
+							else div.classList.add('move-target');
+						}
+						div.dataset.sq = sq;
+						div.addEventListener('click', onClickSquare);
+						boardEl.appendChild(div);
+					}
+				}
+				renderMoves();
+				updateStatus();
+			}
+
+			function updateStatus() {
+				if (typeof thinking !== 'undefined' && thinking) {
+					statusEl.textContent = 'Thinking...';
+					return;
+				}
+				statusEl.textContent =
+					engine.side === 1 ? 'White to move' : 'Black to move';
+			}
+
+			function renderMoves() {
+				movelist.innerHTML = '';
+				history.forEach((m, i) => {
+					const el = document.createElement('div');
+					el.textContent = `${i + 1}. ${m.from}->${m.to}`;
+					movelist.appendChild(el);
+				});
+			}
+
+			function onClickSquare(e) {
+				const sq = Number(e.currentTarget.dataset.sq);
+				const p = engine.board[sq];
+				if (selected === -1) {
+					if (p !== 0 && Math.sign(p) === engine.side) {
+						selected = sq;
+						render();
+					}
+				} else {
+					if (selected === sq) {
+						selected = -1;
+						render();
+						return;
+					}
+					const move = { from: selected, to: sq };
+					const valid = engine
+						.generateMoves()
+						.some((m) => m.from === move.from && m.to === move.to);
+					if (valid) {
+						const cap = engine.makeMove(move);
+						// record captured piece so undo can restore it
+						move.cap = cap;
+						history.push(move);
+						render();
+						// let DOM update show thinking status before heavy calc
+						window.setTimeout(engineMove, 120);
+					}
+					selected = -1;
+					render();
+				}
+			}
+
+			let thinking = false;
+			function engineMove() {
+				thinking = true;
+				updateStatus();
+				// give browser a chance to render the updated status
+				setTimeout(() => {
+					const best = engine.findBestMove(3);
+					if (best) {
+						const cap = engine.makeMove(best);
+						best.cap = cap;
+						history.push(best);
+					}
+					thinking = false;
+					render();
+				}, 40);
+			}
+
+			document.getElementById('newBtn').addEventListener('click', () => {
+				engine.reset();
+				history.length = 0;
+				render();
+			});
+			document.getElementById('undoBtn').addEventListener('click', () => {
+				const last = history.pop();
+				if (!last) return;
+				// use the recorded captured piece when unmaking
+				engine.unmakeMove(last, last.cap || 0);
+				render();
+			});
+
+			render();
+		</script>
+	</body>
+</html>

@@ -1,0 +1,241 @@
+:root {
+	--bg: #0f1724;
+	--panel: #0b1220;
+	--accent: #7c3aed;
+	--muted: #94a3b8;
+	/* Exact palette requested */
+	--light-square: #9aa6b2;
+	--dark-square: #6f7c85;
+	--white-piece: #ffffff;
+	--black-piece: #000000;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto,
+		-apple-system, 'Helvetica Neue', Arial;
+}
+.square {
+	position: relative;
+}
+.square.move-target::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(124, 58, 237, 0.14);
+	pointer-events: none;
+}
+.square.move-capture::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: rgba(124, 58, 237, 0.12);
+	box-shadow: inset 0 0 0 2px rgba(124, 58, 237, 0.28);
+	pointer-events: none;
+}
+body {
+	margin: 0;
+	min-height: 100vh;
+	background: linear-gradient(180deg, #071029 0%, #07101a 100%);
+	color: var(--white-piece);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.wrap {
+	width: min(1100px, 95%);
+	margin: 0 auto;
+	display: grid;
+	/* make left column fit its content (the board) so it doesn't leave a large empty gap */
+	grid-template-columns: max-content 320px;
+	gap: 24px;
+	padding: 28px 28px;
+	align-items: start;
+}
+.panel {
+	background: rgba(255, 255, 255, 0.03);
+	border-radius: 12px;
+	padding: 18px;
+	box-shadow: 0 6px 30px rgba(2, 6, 23, 0.6);
+}
+.board {
+	width: 100%;
+	max-width: 560px;
+	aspect-ratio: 1 / 1;
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
+	border-radius: 8px;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+.square {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: clamp(22px, 6vw, 56px);
+	cursor: pointer;
+	user-select: none;
+	padding: 0;
+	line-height: 1;
+	overflow: hidden;
+	min-width: 0;
+	min-height: 0;
+}
+
+.square > .piece {
+	display: block;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.square.dark {
+	background: var(--dark-square);
+}
+.square.light {
+	background: var(--light-square);
+}
+.square.selected {
+	outline: 3px solid var(--accent);
+	outline-offset: -3px;
+}
+
+/* Piece color classes */
+.piece-white {
+	color: var(--white-piece);
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.45);
+}
+.piece-black {
+	color: var(--black-piece);
+	-webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.06);
+}
+
+.controls {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+.btn {
+	background: var(--accent);
+	color: white;
+	padding: 10px 12px;
+	border-radius: 8px;
+	border: 0;
+	cursor: pointer;
+}
+.moves {
+	background: rgba(255, 255, 255, 0.02);
+	padding: 6px;
+	border-radius: 8px;
+	height: 300px;
+	overflow: auto;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono',
+		'Courier New', monospace;
+	font-size: 12px;
+	line-height: 1.4;
+}
+.title {
+	font-weight: 700;
+	margin-bottom: 6px;
+}
+.status {
+	color: var(--muted);
+	font-size: 14px;
+}
+
+@media (min-width: 800px) {
+	.square {
+		font-size: 64px;
+	}
+}
+
+/* Mobile / small screens: stack panels, shrink board and pieces */
+@media (max-width: 720px) {
+	.wrap {
+		grid-template-columns: 1fr;
+		gap: 6px;
+		padding: 6px 8px;
+		justify-items: center;
+	}
+	/* center grid content horizontally and limit panel width so board centers */
+	.wrap {
+		justify-content: center;
+	}
+	/* reduce panel padding so the board sits closer to the edge */
+	.panel {
+		width: 100%;
+		max-width: 560px;
+		padding: 6px;
+		align-self: start;
+	}
+	/* Use container-relative sizing so padding doesn't cause overflow */
+	/* Limit board size so it never exceeds available viewport height; smaller subtraction to allow larger board */
+	.wrap {
+		--board-available-height: calc(100vh - 160px);
+	}
+	.wrap {
+		--board-width: min(100%, var(--board-available-height));
+	}
+	.board {
+		width: var(--board-width);
+		max-width: 560px;
+		border-radius: 8px;
+		margin: 0 auto;
+		height: auto; /* aspect-ratio will keep it square */
+		max-height: var(--board-available-height);
+	}
+	/* make panel match the board width so move list lines up */
+	.panel {
+		width: var(--board-width);
+		max-width: 560px;
+	}
+	/* enforce equal rows to keep squares square */
+	.board {
+		grid-template-rows: repeat(8, 1fr);
+	}
+	/* make panel match the board outer width so move list lines up exactly */
+	.panel {
+		width: var(--board-width);
+		max-width: 560px;
+		margin: 0 auto;
+		padding: 8px;
+		box-sizing: border-box;
+	}
+	/* override any inline width (eg. style="width:320px") on the second panel */
+	.wrap > .panel:nth-of-type(2) {
+		width: var(--board-width) !important;
+		max-width: 560px !important;
+		margin: 0 auto !important;
+	}
+
+	/* smaller pieces so they don't overflow cells */
+	.square {
+		font-size: clamp(12px, 8vw, 28px);
+	}
+	.moves {
+		height: 220px;
+		font-size: 11px;
+		padding: 6px;
+	}
+	.title {
+		font-size: 16px;
+	}
+	.status {
+		font-size: 12px;
+	}
+	.moves {
+		height: 220px;
+		font-size: 11px;
+		padding: 6px;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	.btn {
+		padding: 8px 10px;
+	}
+	/* keep board toward top of viewport on mobile and reduce edge gap */
+	body {
+		align-items: flex-start;
+		padding-top: 12px;
+	}
+}

@@ -576,7 +576,7 @@ body {
 
 @media (max-width: 768px) {
 	.poem-actions {
-		bottom: calc(5rem + env(safe-area-inset-bottom));
+		bottom: 2.5rem;
 		right: 1.5rem;
 		position: fixed;
 		z-index: 10;

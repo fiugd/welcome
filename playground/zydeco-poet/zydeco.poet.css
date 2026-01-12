@@ -576,7 +576,7 @@ body {
 
 @media (max-width: 768px) {
 	.poem-actions {
-		bottom: 2.5rem;
+		bottom: calc(2rem + env(safe-area-inset-bottom));
 		right: 1.5rem;
 		position: fixed;
 		z-index: 10;
@@ -899,7 +899,7 @@ body {
 @media (max-width: 768px) {
 	.poem-card {
 		padding: 2rem 1.5rem;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	.poem-content p {
@@ -911,7 +911,7 @@ body {
 @media (max-width: 600px) {
 	.poem-card {
 		padding: 1rem 0.5rem;
-		min-height: 100vh;
+		min-height: 100dvh;
 	}
 
 	.poem-content {

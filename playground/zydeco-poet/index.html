@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="color-scheme" content="light dark" />
+		<title>::: zyd3co :::</title>
+		<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+		<link rel="stylesheet" href="zydeco.poet.css" />
+	</head>
+	<body>
+		<!-- Header -->
+		<header class="header">
+			<nav class="navbar">
+				<svg class="logo" width="200" height="40" viewBox="0 0 200 40">
+					<text x="2" y="30" class="logo-text">zyd3co</text>
+				</svg>
+				<ul class="nav-links"></ul>
+				<button
+					class="about-btn"
+					title="About"
+					aria-label="About this project"
+				>
+					info
+				</button>
+			</nav>
+		</header>
+
+		<!-- Poetry Feed -->
+		<section class="poetry-feed" id="poemFeed">
+			<!-- Poems will be appended here -->
+		</section>
+
+		<!-- Loading Indicator -->
+		<div class="loading" id="loadingIndicator">
+			<span>Generating poems...</span>
+		</div>
+
+		<!-- About Modal Template -->
+		<template id="aboutModalTemplate">
+			<div class="about-modal-overlay"></div>
+			<div class="about-modal">
+				<div class="about-header">
+					<h3>info</h3>
+					<button class="about-modal-close" aria-label="Close about">
+						×
+					</button>
+				</div>
+				<div class="about-body">
+					<div class="about-section">
+						<p class="about-sources-label">Notes</p>
+						<p class="about-notes"></p>
+					</div>
+					<div class="about-section">
+						<p class="about-sources-label">Credits</p>
+						<ul class="sources-list"></ul>
+					</div>
+				</div>
+			</div>
+		</template>
+
+		<script type="module" src="zydeco.poet.js"></script>
+	</body>
+</html>

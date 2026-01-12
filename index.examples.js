@@ -25,6 +25,7 @@ const experiments = [
 	['playground/board/index', 'Game Board', 'Gneralizing on the idea of making an n x n game board', 'https://user-images.githubusercontent.com/1816471/219902885-62e0c1e8-5d0a-4182-84f8-426375f8c318.png'],
 	['playground/sky-gradient/index', 'Sky Sim', 'Simulate the sky at different times of the day', 'https://user-images.githubusercontent.com/1816471/219902928-c0b246d7-0af6-46fb-abf3-3150a334e370.png'],
 	['playground/stack-css/index', 'Stack Game', '', 'https://user-images.githubusercontent.com/1816471/219849230-35442d68-dc83-4c3f-8038-301258570bc6.png'],
+	['playground/zydeco-poet/index', 'Zydeco Poet', 'Infinite scroll poetry generator with procedurally generated verses', 'https://github.com/user-attachments/assets/c1c2a5a4-38bb-4b5c-9109-23ab6a3cd6e1'],
 	['playground/uxn/rom', 'Web UXN', 'A VM of sorts by those 100 rabbits folks', 'https://user-images.githubusercontent.com/1816471/219901115-ece749d7-e3c5-478b-ad57-5547ab93ed40.png'],
 	['playground/webrtc/index', 'Web RTC', 'Chat host and client with WebRTC', 'https://user-images.githubusercontent.com/1816471/219903559-703a82db-155f-4e86-b74f-a7c1db0e10cb.png'],
 	['playground/cityBottle/index', 'City In a Bottle', 'Playing around with JS from @KilledByAPixel', 'https://user-images.githubusercontent.com/1816471/219900997-f281bcd1-61ea-4b15-ba00-7104db560b98.png'],

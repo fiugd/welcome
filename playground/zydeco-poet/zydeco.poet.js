@@ -1,128 +1,285 @@
-import { importCSS, prism, consoleHelper, htmlToElement } from '../../.tools/misc.mjs';
-import '../../shared.styl';
-
-consoleHelper();
-
-const configUrl = 'zydeco.config.json';
-
-/*
-https://gitlab.com/-/ide/project/crosshj/dropbox-migrate/tree/master/-/CODE/%5B%5D_utk/UTK_backup/cgi-bin/poetry/poem.c/
-*/
+import config from './zydeco.config.js';
 
 const range = (from, to) => {
-	if(!to) return new Array(from).fill().map((x,i) => i);
-	return new Array(1+to-from).fill().map((x,i) => i+from)
+	if (!to) return new Array(from).fill().map((x, i) => i);
+	return new Array(1 + to - from).fill().map((x, i) => i + from);
 };
 
-function parseConfig(configText){
-	const config = {};
-	const lines = configText.split('\n')
-	
-	let currentList;
-	lines.forEach(line => {
-		if(!line) return;
-		if(line.trim().indexOf('/*') === 0) return;
-		if(line.trim().indexOf('//') === 0) return;
-		
-		if(line.includes('###')){
-			currentList = line.split('###')[1].trim()
-			return;
-		}
-		if(!currentList) {
-			return;
-		}
-		if(line.includes('=')){
-			config[currentList] = config[currentList] || {};
-			const [prop, value] = line.split('=');
-			if(['bg_colors', 'speech_parts', 'sources'].includes(prop)){
-				config[currentList][prop] = value.split(',')
-				return;
-			}
-			if(prop.indexOf('template') === 0){
-				config[currentList].templates = config[currentList].templates || [];
-				config[currentList].templates.push(value);
-				return;
-			}
-			config[currentList][prop] = value
-			return;
-		} else {
-			config[currentList] = config[currentList] || [];
-			config[currentList].push(line);
-			return;
-		}
-	})
-	return config;
+function randItem(items) {
+	return items[Math.floor(Math.random() * items.length)];
 }
 
-function randItem(items){
-	var item = items[Math.floor(Math.random() * items.length)];
-	return item;
+// About modal functionality
+function setupAboutModal() {
+	const aboutBtn = document.querySelector('.about-btn');
+	const cfg = config.zydeco_bones_v1;
+	const template = document.getElementById('aboutModalTemplate');
+
+	aboutBtn.addEventListener('click', () => {
+		// Clone template
+		const clone = template.content.cloneNode(true);
+
+		// Populate data
+		clone.querySelector('.about-notes').textContent = cfg.notes;
+		const sourcesList = clone.querySelector('.sources-list');
+		cfg.sources.forEach((source) => {
+			const li = document.createElement('li');
+			li.textContent = source;
+			sourcesList.appendChild(li);
+		});
+
+		// Get elements from clone before appending
+		const overlay = clone.querySelector('.about-modal-overlay');
+		const modal = clone.querySelector('.about-modal');
+		const closeBtn = modal.querySelector('.about-modal-close');
+
+		// Append to body
+		document.body.appendChild(clone);
+
+		// Trigger animation
+		setTimeout(() => {
+			overlay.classList.add('show');
+			modal.classList.add('show');
+		}, 10);
+
+		// Close handlers
+		const closeModal = () => {
+			overlay.classList.remove('show');
+			modal.classList.remove('show');
+			setTimeout(() => {
+				overlay.remove();
+				modal.remove();
+			}, 300);
+		};
+
+		closeBtn.addEventListener('click', closeModal);
+		overlay.addEventListener('click', closeModal);
+	});
 }
 
-function getPoem(config){
+function getPoem(config) {
 	let thepoem = '';
 	let { templates } = config['zydeco_bones_v1'];
-	const template = templates[0];
-	template.split(' ').forEach(part => {
-		if(part === 'comma'){
+	const template = randItem(templates);
+	template.split(' ').forEach((part) => {
+		if (part === 'comma') {
 			thepoem = thepoem.trim();
 			thepoem += ',\n';
 			return;
 		}
-		if(part === 'period'){
+		if (part === 'period') {
 			thepoem = thepoem.trim();
 			thepoem += '.  ';
 			return;
 		}
 		thepoem += randItem(config[part]) + ' ';
-	})
-	return thepoem;
+	});
+	return thepoem.trim();
 }
 
-(async () => {
-	const proxy = 'http://localhost:3333/proxy/';
-	const fontstyle = htmlToElement(`
-		<style>
-			@import url('${proxy}https://fonts.googleapis.com/css2?family=Amatic+SC&display=swap');
-			@import url('${proxy}https://fonts.googleapis.com/css2?family=Lobster+Two:ital@1&display=swap');
-			@import url('${proxy}https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+// Infinite scroll implementation
+let isLoading = false;
+let poemCount = 0;
+const poemFeed = document.getElementById('poemFeed');
+const loadingIndicator = document.getElementById('loadingIndicator');
+const colors = config.zydeco_bones_v1.bg_colors;
 
-			@font-face {
-				font-family: 'Amatic SC';
-				font-style: normal;
-				font-weight: 400;
-				font-display: swap;
-				src: url(${proxy}https://fonts.gstatic.com/s/amaticsc/v15/TUZyzwprpvBS1izr_vO0DQ.ttf) format('truetype');
+function createPoemElement(poem) {
+	const article = document.createElement('article');
+	article.className = 'poem-card';
+
+	// Hide previous arrow on first poem
+	if (poemCount === 0) {
+		article.classList.add('first-poem');
+	}
+
+	// Add alternating background class
+	if (poemCount % 2 === 1) {
+		article.classList.add('tinted-bg');
+	}
+
+	// Get color based on poem count
+	const colorIndex = poemCount % colors.length;
+	const accentColor = colors[colorIndex];
+
+	article.style.setProperty('--accent-color', accentColor);
+
+	// Split poem into lines and create paragraph for each
+	const poemLines = poem.split('\n').filter((line) => line.trim());
+	const paragraphs = poemLines.map((line) => `<p>${line}</p>`).join('');
+
+	article.innerHTML = `
+        <div class="poem-content">
+            ${paragraphs}
+        </div>
+        <div class="poem-actions">
+            <button class="action-btn heart-btn" title="Like" aria-label="Like poem">♡</button>
+            <button class="action-btn share-btn" title="Share" aria-label="Share poem">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <circle cx="18" cy="5" r="2"/>
+                    <circle cx="6" cy="13" r="2"/>
+                    <circle cx="18" cy="21" r="2"/>
+                    <path d="M16.3 6.6 L7.7 12.4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M16.3 19.4 L7.7 13.6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+	`;
+
+	// Heart button listener
+	const heartBtn = article.querySelector('.heart-btn');
+	heartBtn.addEventListener('click', () => {
+		// Create and show modal
+		const modal = document.createElement('div');
+		modal.className = 'copy-modal';
+		modal.textContent = '❤️ Liking poems is coming soon!';
+		document.body.appendChild(modal);
+
+		// Trigger animation
+		setTimeout(() => {
+			modal.classList.add('show');
+		}, 10);
+
+		// Remove modal after 2 seconds
+		setTimeout(() => {
+			modal.classList.remove('show');
+			setTimeout(() => {
+				modal.remove();
+			}, 300);
+		}, 2000);
+	});
+
+	// Share button listener
+	const shareBtn = article.querySelector('.share-btn');
+	shareBtn.addEventListener('click', () => {
+		const poemText = poemLines.join('\n');
+		navigator.clipboard.writeText(poemText);
+
+		// Create and show modal
+		const modal = document.createElement('div');
+		modal.className = 'copy-modal';
+		modal.textContent = '📋 Copied to clipboard';
+		document.body.appendChild(modal);
+
+		// Trigger animation
+		setTimeout(() => {
+			modal.classList.add('show');
+		}, 10);
+
+		// Remove modal after 2 seconds
+		setTimeout(() => {
+			modal.classList.remove('show');
+			setTimeout(() => {
+				modal.remove();
+			}, 300);
+		}, 2000);
+	});
+
+	poemCount++;
+	return article;
+}
+
+function addPoems(count = 3) {
+	if (isLoading) return;
+	isLoading = true;
+	loadingIndicator.classList.add('active');
+
+	setTimeout(() => {
+		for (let i = 0; i < count; i++) {
+			const poem = getPoem(config);
+			const poemElement = createPoemElement(poem);
+			poemFeed.appendChild(poemElement);
+		}
+		isLoading = false;
+		loadingIndicator.classList.remove('active');
+	}, 500);
+}
+
+// Load initial poems
+addPoems(10);
+
+// Intersection Observer to show arrows after 5 seconds in view
+const observer = new IntersectionObserver(
+	(entries) => {
+		entries.forEach((entry) => {
+			if (entry.isIntersecting) {
+				// Wait 5 seconds then show arrows
+				setTimeout(() => {
+					entry.target.classList.add('show-arrows');
+				}, 5000);
+				// Mark as fully in view
+				entry.target.classList.add('in-view');
+				entry.target.classList.remove('leaving-view');
+			} else {
+				// Hide arrows when card leaves view
+				entry.target.classList.remove('show-arrows');
+				// Mark as leaving view for fade effect
+				entry.target.classList.add('leaving-view');
+				entry.target.classList.remove('in-view');
 			}
-			@font-face {
-				font-family: 'Lobster Two';
-				font-style: italic;
-				font-weight: 400;
-				font-display: swap;
-				src: url(${proxy}https://fonts.gstatic.com/s/lobstertwo/v13/BngOUXZGTXPUvIoyV6yN5-fI5qA.ttf) format('truetype');
-			}
-			@font-face {
-				font-family: 'Special Elite';
-				font-style: normal;
-				font-weight: 400;
-				font-display: swap;
-				src: url(${proxy}https://fonts.gstatic.com/s/specialelite/v11/XLYgIZbkc4JPUL5CVArUVL0nhnc.ttf) format('truetype');
-			}
+		});
+	},
+	{ threshold: 0.5 }
+);
 
-			.info {
-				font-family: 'Lobster Two', cursive;
-				font-family: 'Amatic SC', cursive;
-				font-family: 'Special Elite', cursive;
-				font-size: 2em;
-			}
-		</style>
-	`);
-	document.body.append(fontstyle)
+// Observe all poem cards
+const observeNewCards = () => {
+	document.querySelectorAll('.poem-card').forEach((card) => {
+		if (!card.dataset.observed) {
+			observer.observe(card);
+			card.dataset.observed = 'true';
+		}
+	});
+};
 
-	const config = parseConfig(await(await fetch(configUrl)).text());
+observeNewCards();
 
-	range(3).forEach(x => console.info(getPoem(config)));
+// Reobserve when new poems are added
+const originalAppendChild = poemFeed.appendChild;
+poemFeed.appendChild = function (child) {
+	const result = originalAppendChild.call(this, child);
+	observeNewCards();
+	return result;
+};
 
-	//await prism('json', JSON.stringify(config, null, 2));
+// Infinite scroll listener
+let scrollTimeout;
+let isScrollListenerActive = false;
 
-})();
+// Delay scroll listener activation to prevent initial page load flashing
+setTimeout(() => {
+	isScrollListenerActive = true;
+	// Show all buttons once listener is ready
+	document.querySelectorAll('.poem-actions').forEach((actions) => {
+		actions.classList.add('visible');
+	});
+}, 100);
+
+window.addEventListener('scroll', () => {
+	if (!isScrollListenerActive) return;
+
+	// Hide all action buttons
+	document.querySelectorAll('.poem-actions').forEach((actions) => {
+		actions.classList.remove('visible');
+	});
+
+	// Clear previous timeout
+	clearTimeout(scrollTimeout);
+
+	// Show buttons after scrolling stops (300ms of no scroll)
+	scrollTimeout = setTimeout(() => {
+		document.querySelectorAll('.poem-actions').forEach((actions) => {
+			actions.classList.add('visible');
+		});
+	}, 300);
+
+	const scrollPosition = window.innerHeight + window.scrollY;
+	const threshold = document.documentElement.scrollHeight - 500;
+
+	if (scrollPosition >= threshold && !isLoading) {
+		addPoems(3);
+	}
+});
+
+// Initialize about modal
+setupAboutModal();

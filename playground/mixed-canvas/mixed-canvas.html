@@ -1,12 +1,12 @@
 <html>
 	<head>
 		<title>Mixed Canvas 2D/3D</title>
-		<meta charset="utf-8">
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="mobile-web-app-capable" content="yes">
-		<link rel="stylesheet" href="mixed-canvas.css">
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" href="mixed-canvas.css" />
 	</head>
 
 	<script id="vertexShader" type="x-shader/x-vertex">
@@ -51,116 +51,5 @@
 		<canvas width="400" height="400"></canvas>
 	</body>
 
-	<script type="module">
-		import * as THREE from 'https://cdn.skypack.dev/three';
-		import MixedCanvas from './mixed-canvas.js';
-
-		// see https://webglfundamentals.org/webgl/lessons/webgl-load-obj.html
-		const ObjParser  = async (url) => {
-			let objText = await (await fetch(url)).text();
-			objText = objText.replace(/ +/g, ' ');
-
-			const linesToArray = str => str
-				.split('\n').filter(x=>!!x).map(x =>
-					x.trim().split(' ').map(Number)
-				);
-			let vertices = linesToArray(
-				objText.split('\n')
-					.filter(line => line.slice(0,2) === 'v ')
-					.map(line => line.slice(2))
-					.join('\n')
-			);
-			const maxVert = vertices.reduce((all, one) => {
-				return Math.max(...[all, ...one.map(Math.abs)])
-			}, 0);
-			vertices = vertices.map(x => x.map(y=>y/maxVert))
-			console.log(maxVert)
-			const faces = linesToArray(
-				objText.split('\n')
-					.filter(line => line.slice(0,2) === 'f ')
-					.map(line => line.slice(2))
-					.join('\n')
-			).flat();
-			return { vertices, faces };
-		}
-		
-		(async () => {
-			const obj = await ObjParser('./teapot.obj');
-			// const obj = await ObjParser('./icosohedron.obj');
-			const canvas = new MixedCanvas('canvas');
-			const { loop, width, height } = canvas;
-
-			const geometry = new THREE.BufferGeometry();
-			const vertexCount = 5 * 3;
-
-			const positions = [];
-			const colors = [];
-
-			const { vertices, faces } = obj;
-
-			const shape = faces.map(x => vertices[x-1]);
-			const vColors = vertices.map(x => ([
-				Math.random() * 255,
-				Math.random() * 255,
-				Math.random() * 255,
-				235
-			]));
-			const shapeColors = faces.map(x => vColors[x-1])
-
-			for (let vt in shape){
-				positions.push(...shape[vt].map(x=>x*0.2));
-				colors.push( ...shapeColors[vt] );
-			}
-
-			const positionAttribute = new THREE.Float32BufferAttribute(positions, 3);
-			const colorAttribute = new THREE.Uint8BufferAttribute(colors, 4);
-			colorAttribute.normalized = true;
-			geometry.setAttribute('position', positionAttribute);
-			geometry.setAttribute('color', colorAttribute);
-
-			const material = new THREE.RawShaderMaterial({
-				uniforms: {
-					time: { value: 1.0 }
-				},
-				vertexShader: document.getElementById('vertexShader').textContent,
-				fragmentShader: document.getElementById('fragmentShader').textContent,
-				side: THREE.DoubleSide,
-				transparent: true
-			});
-
-			// wireframe
-			const geometry2 = new THREE.EdgesGeometry(geometry);
-			const material2 = new THREE.LineBasicMaterial({
-				color: 0x00bbff, transparent: true, linewidth: 0.5
-			});
-			const wireframe = new THREE.LineSegments( geometry2, material2 );
-
-			const mesh = new THREE.Mesh( geometry, material );
-			mesh.add(wireframe)
-			canvas.add3d( mesh );
-
-			const textOffset = 70;
-
-			canvas.fillStyle = '#777c';
-			canvas.font = "40px Arial";
-			canvas.textAlign = "center";
-			canvas.textBaseline = "middle";
-
-			const render = () => {
-				canvas.clear();
-				canvas.draw3d();
-				canvas.fillText("Mixed: a 2D canvas", width/2, textOffset);
-				canvas.fillText("...with 3D content!", width/2, height-textOffset);
-			};
-
-			const tick = (time) => {
-				mesh.rotation.x = time / 16000;
-				mesh.rotation.y = time / 8000;
-				mesh.material.uniforms.time.value = time * 0.0005;
-			};
-
-			loop(tick, render);
-		})();
-	</script>
-
+	<script type="module" src="./mixed-canvas.js"></script>
 </html>

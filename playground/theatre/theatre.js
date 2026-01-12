@@ -1,6 +1,6 @@
 // this will not work in a worker
 
-import state from './state.json' assert { type: "json" };
+import state from './state.json' with { type: "json" };
 
 import Theatre from 'https://cdn.skypack.dev/@theatre/core/dist';
 //import Theatre from 'https://cdn.skypack.dev/theatre';

@@ -32,6 +32,7 @@ const experiments = [
 	['playground/css-doodle/index', 'css-doodle', 'Make doodles with (mostly) CSS', 'https://user-images.githubusercontent.com/1816471/219900510-0ff963f5-261d-49af-9489-d6f4a7f27aba.png'],
 	['playground/faucet/index', 'Faucet', 'A temp-controlled faucet model', 'https://github.com/user-attachments/assets/937a4e09-6531-45c0-a22e-53b6e5bbfe6c'],
     ['playground/timeSaved/index', 'Time Saved', 'Per XKCD 1205, how much time is saved (by automating)', 'https://github.com/user-attachments/assets/139f2979-134c-4c22-884b-a736e426db4a'],
+	['playground/micro-chess/micro-chess', 'Micro Chess', 'Compact JS chess demo (play vs engine), adapted to web from H.G. Muller', 'https://github.com/user-attachments/assets/eadabc4e-b2a4-4b5d-9e90-1cb9e1412ff9'],
 ];
 
 // prettier-ignore
@@ -41,7 +42,7 @@ const others = [
     ['https://crosshj.com/grfx/', 'grfx', 'Yet another graphics manipulation app', 'https://user-images.githubusercontent.com/1816471/219903128-f93a1729-7fe2-4dce-93f0-68141c6dd73e.png'],
 	['https://crosshj.com/vermiculate/', 'Vermiculate', 'I port(ed) my favorite open source screensaver to the web', 'https://user-images.githubusercontent.com/93937172/224854477-aa3b9861-cb4f-4b92-982b-326f6847ec9a.png'],
 	['https://chimpjuice.com', 'chimpjuice.com', 'Random-ish tumblr blog', 'https://user-images.githubusercontent.com/1816471/219903174-450b51f4-7279-466f-83ad-c3811ed424b0.png'],
-	['https://crosshj.com/diffusion-uix/', 'Stable Diffusion UIX', 'An alternate user interface for Automatic1111\'s Stable Diffusion UI', 'https://user-images.githubusercontent.com/1816471/219922382-459c3178-6a4a-4c3b-9828-88e364de96d3.png'],
+	// ['https://crosshj.com/diffusion-uix/', 'Stable Diffusion UIX', 'An alternate user interface for Automatic1111\'s Stable Diffusion UI', 'https://user-images.githubusercontent.com/1816471/219922382-459c3178-6a4a-4c3b-9828-88e364de96d3.png'],
 ];
 
 const EnhancedStorage = ({ api }) => ({

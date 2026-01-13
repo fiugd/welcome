@@ -16,13 +16,22 @@
 					<text x="2" y="30" class="logo-text">zyd3co</text>
 				</svg>
 				<ul class="nav-links"></ul>
-				<button
-					class="about-btn"
-					title="About"
-					aria-label="About this project"
-				>
-					info
-				</button>
+				<div class="actions">
+					<button
+						class="hearts-btn nav-btn"
+						title="Hearts"
+						aria-label="Poems you heart"
+					>
+						hearts
+					</button>
+					<button
+						class="about-btn nav-btn"
+						title="About"
+						aria-label="About this project"
+					>
+						info
+					</button>
+				</div>
 			</nav>
 		</header>
 
@@ -47,8 +56,16 @@
 						title="AI rewrite"
 						aria-label="Rewrite/toggle poem with AI"
 					>
-						<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-							<path class="icon-path" d="M12 2 L15.5 8.5 L22 12 L15.5 15.5 L12 22 L8.5 15.5 L2 12 L8.5 8.5 Z" />
+						<svg
+							viewBox="0 0 24 24"
+							width="20"
+							height="20"
+							fill="currentColor"
+						>
+							<path
+								class="icon-path"
+								d="M12 2 L15.5 8.5 L22 12 L15.5 15.5 L12 22 L8.5 15.5 L2 12 L8.5 8.5 Z"
+							/>
 						</svg>
 					</button>
 					<button
@@ -108,6 +125,23 @@
 					</button>
 				</div>
 			</article>
+		</template>
+
+		<!-- Hearts Modal Template -->
+		<template id="heartsModalTemplate">
+			<div class="about-modal-overlay"></div>
+			<div class="about-modal hearts-modal">
+				<div class="about-header">
+					<h3>hearts</h3>
+					<button class="about-modal-close" aria-label="Close hearts">
+						×
+					</button>
+				</div>
+				<div class="about-body">
+					<!-- scrollable list container; populated by JS -->
+					<div class="hearts-list"></div>
+				</div>
+			</div>
 		</template>
 
 		<!-- About Modal Template -->

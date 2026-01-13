@@ -1,5 +1,6 @@
 import config from './zydeco.config.js';
 import { wireTestKeyButton, rewritePoemWithOpenAI } from './llm.js';
+import { getSavedPoems, savePoems, openHeartsModal } from './hearts.js';
 
 const range = (from, to) => {
 	if (!to) return new Array(from).fill().map((x, i) => i);
@@ -23,6 +24,7 @@ function setupAboutModal() {
 	const aboutBtn = document.querySelector('.about-btn');
 	const cfg = config.zydeco_bones_v1;
 	const template = document.getElementById('aboutModalTemplate');
+	if (!aboutBtn || !template) return;
 
 	aboutBtn.addEventListener('click', () => {
 		const clone = template.content.cloneNode(true);
@@ -57,11 +59,17 @@ function setupAboutModal() {
 		setTimeout(() => {
 			overlay.classList.add('show');
 			modal.classList.add('show');
+			// prevent background scrolling while modal is open
+			document.documentElement.classList.add('modal-open');
+			document.body.classList.add('modal-open');
 		}, 10);
 
 		const closeModal = () => {
 			overlay.classList.remove('show');
 			modal.classList.remove('show');
+			// restore page scrolling
+			document.documentElement.classList.remove('modal-open');
+			document.body.classList.remove('modal-open');
 			setTimeout(() => {
 				overlay.remove();
 				modal.remove();
@@ -131,27 +139,59 @@ function createPoemElement(poem) {
 	const poemContent = article.querySelector('.poem-content');
 	poemContent.innerHTML = paragraphs;
 
-	// Heart button listener
+	// Store original text on the article and mark as showing original
+	article.dataset.original = poem;
+	article.dataset.showing = 'original';
+
+	// Heart button listener: toggle save/remove from localStorage
 	const heartBtn = article.querySelector('.heart-btn');
-	heartBtn.addEventListener('click', () => {
-		// Create and show modal
-		const modal = document.createElement('div');
-		modal.className = 'copy-modal';
-		modal.textContent = '❤️ Liking poems is coming soon!';
-		document.body.appendChild(modal);
+	const updateHeartUI = (saved) => {
+		if (saved) {
+			heartBtn.classList.add('liked');
+			heartBtn.textContent = '♥';
+		} else {
+			heartBtn.classList.remove('liked');
+			heartBtn.textContent = '♡';
+		}
+	};
 
-		// Trigger animation
-		setTimeout(() => {
-			modal.classList.add('show');
-		}, 10);
+	// initialize heart state if poem exists in storage
+	const storedList = getSavedPoems();
+	const isSaved = !!storedList.find(
+		(s) => s.original === poem || s.enhanced === poem
+	);
+	updateHeartUI(isSaved);
 
-		// Remove modal after 2 seconds
-		setTimeout(() => {
-			modal.classList.remove('show');
-			setTimeout(() => {
-				modal.remove();
-			}, 300);
-		}, 2000);
+	heartBtn.addEventListener('click', async () => {
+		const currentList = getSavedPoems();
+		const existingIndex = currentList.findIndex(
+			(s) =>
+				s.original === article.dataset.original ||
+				s.enhanced === article.dataset.original
+		);
+		if (existingIndex >= 0) {
+			// remove from storage
+			currentList.splice(existingIndex, 1);
+			savePoems(currentList);
+			updateHeartUI(false);
+			// feedback
+			showTempModal('Removed from hearts');
+		} else {
+			// add to storage with original and enhanced if present
+			const newItem = {
+				id:
+					String(Date.now()) +
+					'-' +
+					Math.floor(Math.random() * 10000),
+				original: article.dataset.original || poem,
+				enhanced: article.dataset.rewritten || null,
+				createdAt: new Date().toISOString()
+			};
+			currentList.push(newItem);
+			savePoems(currentList);
+			updateHeartUI(true);
+			showTempModal('Added to hearts');
+		}
 	});
 
 	// Share button listener
@@ -277,6 +317,30 @@ function createPoemElement(poem) {
 						article.dataset.rewritten = newText;
 						article.dataset.showing = 'rewritten';
 
+						// If this poem is saved in hearts, update the stored item with the enhanced text
+						try {
+							const saved = getSavedPoems();
+							const idx = saved.findIndex(
+								(s) =>
+									s.original === article.dataset.original ||
+									s.original === originalText
+							);
+							if (idx >= 0) {
+								saved[idx].enhanced = newText;
+								saved[idx].updatedAt = new Date().toISOString();
+								savePoems(saved);
+								// reflect update in any feed cards
+								updateFeedCardsForItem(saved[idx]);
+								// notify user that saved item was updated
+								showTempModal('Saved updated');
+							}
+						} catch (e) {
+							console.error(
+								'Failed to update saved poem with enhancement',
+								e
+							);
+						}
+
 						// show toggled (filled) state
 						aiBtn.title = 'Show original';
 						aiBtn.classList.add('toggled');
@@ -351,6 +415,51 @@ function createPoemElement(poem) {
 	return article;
 }
 
+function showTempModal(text, timeout = 1800) {
+	const modal = document.createElement('div');
+	modal.className = 'copy-modal';
+	modal.textContent = text;
+	document.body.appendChild(modal);
+	setTimeout(() => modal.classList.add('show'), 10);
+	setTimeout(() => {
+		modal.classList.remove('show');
+		setTimeout(() => modal.remove(), 300);
+	}, timeout);
+}
+
+function updateFeedCardsForItem(item) {
+	// Update any poem cards in the feed whose original matches
+	const container = poemFeed || document.getElementById('poemFeed');
+	if (!container) return;
+	container.querySelectorAll('.poem-card').forEach((card) => {
+		const orig = card.dataset.original;
+		if (!orig) return;
+		if (orig === item.original) {
+			if (item.enhanced) {
+				card.dataset.rewritten = item.enhanced;
+				// if card currently showing rewritten, update content
+				if (
+					card.dataset.showing === 'rewritten' ||
+					card.querySelector('.ai-btn')?.classList.contains('toggled')
+				) {
+					card.querySelector('.poem-content').innerHTML =
+						item.enhanced
+							.split(/\r?\n/)
+							.map((l) => `<p>${l}</p>`)
+							.join('');
+					card.dataset.showing = 'rewritten';
+				}
+			}
+			// update heart icon state if necessary
+			const hb = card.querySelector('.heart-btn');
+			if (hb) {
+				hb.classList.add('liked');
+				hb.textContent = '♥';
+			}
+		}
+	});
+}
+
 function addPoems(count = 3) {
 	if (isLoading) return;
 	isLoading = true;
@@ -398,7 +507,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Observe all poem cards
 	const observeNewCards = () => {
-		document.querySelectorAll('.poem-card').forEach((card) => {
+		const container = poemFeed || document.getElementById('poemFeed');
+		if (!container) return;
+		container.querySelectorAll('.poem-card').forEach((card) => {
 			if (!card.dataset.observed) {
 				observer.observe(card);
 				card.dataset.observed = 'true';
@@ -457,6 +568,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	// Initialize about modal
 	setupAboutModal();
+
+	// Wire hearts navbar button to open saved poems modal
+	const heartsNavBtn = document.querySelector('.hearts-btn');
+	if (heartsNavBtn) {
+		heartsNavBtn.addEventListener('click', (e) => {
+			e.preventDefault();
+			openHeartsModal({
+				rewritePoemWithOpenAI,
+				showTempModal,
+				updateFeedCardsForItem
+			});
+		});
+	}
 
 	// finally load initial poems
 	addPoems(10);

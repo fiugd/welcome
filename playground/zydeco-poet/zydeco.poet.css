@@ -85,6 +85,23 @@ body {
 	opacity: 1;
 }
 
+/* Generic navbar button shared by header controls */
+.nav-btn {
+	background: transparent;
+	border: none;
+	color: var(--text-dark);
+	cursor: pointer;
+	font-size: 0.9rem;
+	font-weight: 500;
+	padding: 0.5rem 1rem;
+	transition: opacity 0.2s ease;
+	opacity: 0.25;
+}
+
+.nav-btn:hover {
+	opacity: 1;
+}
+
 .logo-text {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
 		Ubuntu, Cantarell, sans-serif;
@@ -569,6 +586,15 @@ body {
 	transform: scale(1.1);
 }
 
+/* Filled heart styling for liked poems */
+.heart-btn.liked {
+	/* Filled heart glyph but keep neutral theme colors (no red border) */
+	color: var(--text-dark);
+	border-color: var(--text-light);
+	background: transparent;
+	transform: scale(1.05);
+}
+
 .action-btn:active {
 	transform: scale(0.95);
 }
@@ -599,7 +625,8 @@ body {
 	padding: 1rem 1.5rem;
 	border-radius: 8px;
 	font-size: 0.95rem;
-	z-index: 11;
+	/* place toasts above modals/overlays */
+	z-index: 2100;
 	opacity: 0;
 	transition: all 0.3s ease;
 	pointer-events: none;
@@ -947,12 +974,135 @@ body {
 	}
 }
 
+/* Hearts modal specific styles for a polished saved-poems view */
+.about-modal.hearts-modal {
+	max-width: 1100px;
+	width: calc(100vw - 4rem);
+	border-radius: 12px;
+	padding: 0;
+	/* Position below the page header and extend to the bottom of the viewport */
+	left: 50%;
+	top: calc(var(--header-height, 72px) + 12px);
+	transform: translateX(-50%);
+	/* leave a small gap to the bottom of the viewport */
+	bottom: 1rem;
+	/* allow the container to size between top and bottom */
+	height: auto;
+	max-height: none;
+	position: fixed;
+	/* allow the modal to extend to the bottom of the viewport; the body/list handles scrolling */
+}
+
+.about-modal.hearts-modal .about-header {
+	padding: 1.25rem 1.5rem;
+}
+
+.about-modal.hearts-modal .about-body {
+	padding: 1rem 1.5rem 1.5rem 1.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	/* keep the body itself from scrolling; let the inner list expand and scroll */
+	overflow: hidden;
+	min-height: 0;
+}
+
+.about-modal.hearts-modal .poem-card {
+	min-height: auto;
+	padding: 1rem 1rem;
+	background: transparent;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.about-modal.hearts-modal .poem-content {
+	max-width: 100%;
+	padding: 0;
+	margin-top: 0;
+}
+
+.about-modal.hearts-modal .poem-content::before {
+	display: none;
+}
+
+.about-modal.hearts-modal .poem-content p {
+	text-align: left;
+	font-size: 1rem;
+	line-height: 1.6;
+	margin: 0 0 0.75rem 0;
+	padding-left: 0;
+	text-indent: 0;
+	font-family: var(--poem-font);
+	color: var(--text-light);
+}
+
+.about-modal.hearts-modal .poem-actions {
+	position: static;
+	opacity: 1;
+	display: flex;
+	flex-direction: row;
+	gap: 0.5rem;
+	align-items: center;
+	justify-content: flex-end; /* align buttons to the right */
+	width: 100%; /* occupy full width so justify-content takes effect */
+	margin-top: 0.25rem;
+}
+
+/* Make action buttons compact text buttons inside the hearts modal */
+.about-modal.hearts-modal .action-btn {
+	width: auto;
+	height: auto;
+	min-width: 64px;
+	padding: 0.45rem 0.75rem;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 255, 255, 0.06);
+	background: transparent;
+	color: var(--text-light);
+	font-size: 0.95rem;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.about-modal.hearts-modal .action-btn:hover {
+	background: color-mix(in srgb, var(--primary) 6%, transparent);
+	border-color: var(--primary);
+	color: var(--text-dark);
+	transform: none;
+}
+
+/* Ensure the modal list is scrollable and expands to fill the modal */
+.about-modal.hearts-modal .about-body > div {
+	flex: 1 1 auto;
+	min-height: 0; /* allow flex child to shrink/expand correctly */
+	overflow: auto;
+	padding-right: 0.25rem;
+}
+
+@media (max-width: 600px) {
+	.about-modal.hearts-modal {
+		width: calc(100vw - 1.5rem);
+		max-width: none;
+		/* on small screens let the modal extend almost to the bottom with a small inset */
+		bottom: 0.75rem;
+		top: calc(var(--header-height, 56px) + 8px);
+	}
+}
+
 @media (max-width: 600px) {
 	.about-modal {
 		/* Take up most of the viewport width on small screens */
 		width: calc(100vw - 2rem);
 		max-width: none;
-		max-height: 70vh;
+		/* stretch between header and bottom inset so content can expand */
+		top: calc(var(--header-height, 56px) + 8px);
+		bottom: 0.75rem;
+		left: 50%;
+		transform: translateX(-50%);
+		max-height: none;
+		height: auto;
 	}
 
 	.about-header {
@@ -984,6 +1134,17 @@ body {
 	}
 }
 
+/* Prevent page scroll when a modal is open */
+/* Prevent page scroll when a modal is open */
+html.modal-open,
+body.modal-open {
+	overflow: hidden;
+	height: 100%;
+	touch-action: none;
+	/* prevent scroll chaining on supported browsers */
+	overscroll-behavior: none;
+}
+
 .about-modal-overlay {
 	position: fixed;
 	top: 0;
@@ -995,6 +1156,18 @@ body {
 	opacity: 0;
 	transition: opacity 0.3s ease;
 	pointer-events: none;
+}
+
+/* Ensure scrolling inside the modal does not propagate to the page */
+.about-modal {
+	/* keep existing centering behavior but prevent scroll chaining */
+	-webkit-overflow-scrolling: touch;
+	overscroll-behavior: contain;
+}
+
+.about-modal .about-body {
+	/* the modal's scrollable region should handle overscroll locally */
+	overscroll-behavior: contain;
 }
 
 .about-modal-overlay.show {

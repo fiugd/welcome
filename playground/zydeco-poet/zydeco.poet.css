@@ -1082,16 +1082,6 @@ body {
 }
 
 @media (max-width: 600px) {
-	.about-modal.hearts-modal {
-		width: calc(100vw - 1.5rem);
-		max-width: none;
-		/* on small screens let the modal extend almost to the bottom with a small inset */
-		bottom: 0.75rem;
-		top: calc(var(--header-height, 56px) + 8px);
-	}
-}
-
-@media (max-width: 600px) {
 	.about-modal {
 		/* Take up most of the viewport width on small screens */
 		width: calc(100vw - 2rem);
@@ -1103,6 +1093,13 @@ body {
 		transform: translateX(-50%);
 		max-height: none;
 		height: auto; */
+	}
+
+	.about-modal.hearts-modal {
+		width: calc(100vw - 1.5rem);
+		max-width: none;
+		bottom: 3rem;
+		top: 5rem;
 	}
 
 	.about-header {

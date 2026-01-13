@@ -36,6 +36,52 @@
 			<span>Generating poems...</span>
 		</div>
 
+		<!-- Poem card template used by this page -->
+		<template id="poemCardTemplate">
+			<article class="poem-card">
+				<div class="poem-content"></div>
+				<div class="poem-actions">
+					<button
+						class="action-btn heart-btn"
+						title="Like"
+						aria-label="Like poem"
+					>
+						♡
+					</button>
+					<button
+						class="action-btn share-btn"
+						title="Share"
+						aria-label="Share poem"
+					>
+						<svg
+							viewBox="0 0 24 24"
+							width="20"
+							height="20"
+							fill="currentColor"
+						>
+							<circle cx="18" cy="5" r="2" />
+							<circle cx="6" cy="13" r="2" />
+							<circle cx="18" cy="21" r="2" />
+							<path
+								d="M16.3 6.6 L7.7 12.4"
+								stroke="currentColor"
+								stroke-width="2"
+								fill="none"
+								stroke-linecap="round"
+							/>
+							<path
+								d="M16.3 19.4 L7.7 13.6"
+								stroke="currentColor"
+								stroke-width="2"
+								fill="none"
+								stroke-linecap="round"
+							/>
+						</svg>
+					</button>
+				</div>
+			</article>
+		</template>
+
 		<!-- About Modal Template -->
 		<template id="aboutModalTemplate">
 			<div class="about-modal-overlay"></div>

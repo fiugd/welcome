@@ -746,7 +746,9 @@ body {
 
 @media (max-width: 600px) {
 	.about-modal {
-		max-width: calc(100vw - 2rem);
+		/* Take up most of the viewport width on small screens */
+		width: calc(100vw - 2rem);
+		max-width: none;
 		max-height: 70vh;
 	}
 

@@ -5,6 +5,14 @@ const range = (from, to) => {
 	return new Array(1 + to - from).fill().map((x, i) => i + from);
 };
 
+// Lazily resolve the HTML template in the document (index.html)
+let poemCardTemplate = null;
+function getPoemCardTemplate() {
+	if (poemCardTemplate) return poemCardTemplate;
+	poemCardTemplate = document.getElementById('poemCardTemplate');
+	return poemCardTemplate;
+}
+
 function randItem(items) {
 	return items[Math.floor(Math.random() * items.length)];
 }
@@ -80,13 +88,17 @@ function getPoem(config) {
 // Infinite scroll implementation
 let isLoading = false;
 let poemCount = 0;
-const poemFeed = document.getElementById('poemFeed');
-const loadingIndicator = document.getElementById('loadingIndicator');
+let poemFeed;
+let loadingIndicator;
 const colors = config.zydeco_bones_v1.bg_colors;
 
 function createPoemElement(poem) {
-	const article = document.createElement('article');
-	article.className = 'poem-card';
+	// Clone the card template and populate content (assume template present)
+	const tpl = getPoemCardTemplate();
+	if (!tpl || !tpl.content)
+		throw new Error('poemCardTemplate not found in document');
+	const clone = tpl.content.cloneNode(true);
+	const article = clone.querySelector('article') || clone.firstElementChild;
 
 	// Hide previous arrow on first poem
 	if (poemCount === 0) {
@@ -108,23 +120,7 @@ function createPoemElement(poem) {
 	const poemLines = poem.split('\n').filter((line) => line.trim());
 	const paragraphs = poemLines.map((line) => `<p>${line}</p>`).join('');
 
-	article.innerHTML = `
-        <div class="poem-content">
-            ${paragraphs}
-        </div>
-        <div class="poem-actions">
-            <button class="action-btn heart-btn" title="Like" aria-label="Like poem">♡</button>
-            <button class="action-btn share-btn" title="Share" aria-label="Share poem">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                    <circle cx="18" cy="5" r="2"/>
-                    <circle cx="6" cy="13" r="2"/>
-                    <circle cx="18" cy="21" r="2"/>
-                    <path d="M16.3 6.6 L7.7 12.4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                    <path d="M16.3 19.4 L7.7 13.6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
-	`;
+	article.querySelector('.poem-content').innerHTML = paragraphs;
 
 	// Heart button listener
 	const heartBtn = article.querySelector('.heart-btn');
@@ -194,92 +190,98 @@ function addPoems(count = 3) {
 		loadingIndicator.classList.remove('active');
 	}, 500);
 }
+// DOM-dependent initialization: ensure DOM is ready before querying templates/elements
+document.addEventListener('DOMContentLoaded', () => {
+	// Load initial poems
+	poemFeed = document.getElementById('poemFeed');
+	loadingIndicator = document.getElementById('loadingIndicator');
 
-// Load initial poems
-addPoems(10);
+	// Intersection Observer to show arrows after 5 seconds in view
+	const observer = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					// Wait 5 seconds then show arrows
+					setTimeout(() => {
+						entry.target.classList.add('show-arrows');
+					}, 5000);
+					// Mark as fully in view
+					entry.target.classList.add('in-view');
+					entry.target.classList.remove('leaving-view');
+				} else {
+					// Hide arrows when card leaves view
+					entry.target.classList.remove('show-arrows');
+					// Mark as leaving view for fade effect
+					entry.target.classList.add('leaving-view');
+					entry.target.classList.remove('in-view');
+				}
+			});
+		},
+		{ threshold: 0.5 }
+	);
 
-// Intersection Observer to show arrows after 5 seconds in view
-const observer = new IntersectionObserver(
-	(entries) => {
-		entries.forEach((entry) => {
-			if (entry.isIntersecting) {
-				// Wait 5 seconds then show arrows
-				setTimeout(() => {
-					entry.target.classList.add('show-arrows');
-				}, 5000);
-				// Mark as fully in view
-				entry.target.classList.add('in-view');
-				entry.target.classList.remove('leaving-view');
-			} else {
-				// Hide arrows when card leaves view
-				entry.target.classList.remove('show-arrows');
-				// Mark as leaving view for fade effect
-				entry.target.classList.add('leaving-view');
-				entry.target.classList.remove('in-view');
+	// Observe all poem cards
+	const observeNewCards = () => {
+		document.querySelectorAll('.poem-card').forEach((card) => {
+			if (!card.dataset.observed) {
+				observer.observe(card);
+				card.dataset.observed = 'true';
 			}
 		});
-	},
-	{ threshold: 0.5 }
-);
+	};
 
-// Observe all poem cards
-const observeNewCards = () => {
-	document.querySelectorAll('.poem-card').forEach((card) => {
-		if (!card.dataset.observed) {
-			observer.observe(card);
-			card.dataset.observed = 'true';
-		}
-	});
-};
-
-observeNewCards();
-
-// Reobserve when new poems are added
-const originalAppendChild = poemFeed.appendChild;
-poemFeed.appendChild = function (child) {
-	const result = originalAppendChild.call(this, child);
 	observeNewCards();
-	return result;
-};
 
-// Infinite scroll listener
-let scrollTimeout;
-let isScrollListenerActive = false;
+	// Reobserve when new poems are added
+	const originalAppendChild = poemFeed.appendChild;
+	poemFeed.appendChild = function (child) {
+		const result = originalAppendChild.call(this, child);
+		observeNewCards();
+		return result;
+	};
 
-// Delay scroll listener activation to prevent initial page load flashing
-setTimeout(() => {
-	isScrollListenerActive = true;
-	// Show all buttons once listener is ready
-	document.querySelectorAll('.poem-actions').forEach((actions) => {
-		actions.classList.add('visible');
-	});
-}, 100);
+	// Infinite scroll listener
+	let scrollTimeout;
+	let isScrollListenerActive = false;
 
-window.addEventListener('scroll', () => {
-	if (!isScrollListenerActive) return;
-
-	// Hide all action buttons
-	document.querySelectorAll('.poem-actions').forEach((actions) => {
-		actions.classList.remove('visible');
-	});
-
-	// Clear previous timeout
-	clearTimeout(scrollTimeout);
-
-	// Show buttons after scrolling stops (300ms of no scroll)
-	scrollTimeout = setTimeout(() => {
+	// Delay scroll listener activation to prevent initial page load flashing
+	setTimeout(() => {
+		isScrollListenerActive = true;
+		// Show all buttons once listener is ready
 		document.querySelectorAll('.poem-actions').forEach((actions) => {
 			actions.classList.add('visible');
 		});
-	}, 300);
+	}, 100);
 
-	const scrollPosition = window.innerHeight + window.scrollY;
-	const threshold = document.documentElement.scrollHeight - 500;
+	window.addEventListener('scroll', () => {
+		if (!isScrollListenerActive) return;
 
-	if (scrollPosition >= threshold && !isLoading) {
-		addPoems(3);
-	}
+		// Hide all action buttons
+		document.querySelectorAll('.poem-actions').forEach((actions) => {
+			actions.classList.remove('visible');
+		});
+
+		// Clear previous timeout
+		clearTimeout(scrollTimeout);
+
+		// Show buttons after scrolling stops (300ms of no scroll)
+		scrollTimeout = setTimeout(() => {
+			document.querySelectorAll('.poem-actions').forEach((actions) => {
+				actions.classList.add('visible');
+			});
+		}, 300);
+
+		const scrollPosition = window.innerHeight + window.scrollY;
+		const threshold = document.documentElement.scrollHeight - 500;
+
+		if (scrollPosition >= threshold && !isLoading) {
+			addPoems(3);
+		}
+	});
+
+	// Initialize about modal
+	setupAboutModal();
+
+	// finally load initial poems
+	addPoems(10);
 });
-
-// Initialize about modal
-setupAboutModal();

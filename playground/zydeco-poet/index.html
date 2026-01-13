@@ -41,6 +41,16 @@
 			<article class="poem-card">
 				<div class="poem-content"></div>
 				<div class="poem-actions">
+					<!-- AI rewrite button (present in template; visibility toggled by JS) -->
+					<button
+						class="action-btn ai-btn ai-hidden"
+						title="AI rewrite"
+						aria-label="Rewrite/toggle poem with AI"
+					>
+						<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+							<path class="icon-path" d="M12 2 L15.5 8.5 L22 12 L15.5 15.5 L12 22 L8.5 15.5 L2 12 L8.5 8.5 Z" />
+						</svg>
+					</button>
 					<button
 						class="action-btn heart-btn"
 						title="Like"
@@ -78,6 +88,24 @@
 							/>
 						</svg>
 					</button>
+					<!-- AI rewrite button (present in template; visibility toggled by JS) -->
+					<button
+						class="action-btn ai-btn ai-hidden"
+						title="AI rewrite"
+						aria-label="Rewrite/toggle poem with AI"
+					>
+						<svg
+							viewBox="0 0 24 24"
+							width="20"
+							height="20"
+							fill="currentColor"
+						>
+							<path
+								class="icon-path"
+								d="M12 2 L15.5 8.5 L22 12 L15.5 15.5 L12 22 L8.5 15.5 L2 12 L8.5 8.5 Z"
+							/>
+						</svg>
+					</button>
 				</div>
 			</article>
 		</template>
@@ -97,9 +125,41 @@
 						<p class="about-sources-label">Notes</p>
 						<p class="about-notes"></p>
 					</div>
+
+					<hr />
+
 					<div class="about-section">
 						<p class="about-sources-label">Credits</p>
 						<ul class="sources-list"></ul>
+					</div>
+
+					<hr />
+
+					<div class="about-section">
+						<p class="about-sources-label">OpenAI API Key</p>
+						<input
+							id="openaiKeyInput"
+							class="openai-key-input"
+							type="password"
+							placeholder="sk-..."
+							aria-label="OpenAI API Key"
+						/>
+						<p class="about-note-small">
+							Your key is stored locally and never shared.
+						</p>
+						<!-- Test key button -->
+						<button
+							id="testOpenAIKeyBtn"
+							class="primary-button test-key-btn"
+							type="button"
+						>
+							Test
+						</button>
+						<span
+							id="testKeyStatus"
+							class="test-key-status"
+							aria-live="polite"
+						></span>
 					</div>
 				</div>
 			</div>

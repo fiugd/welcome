@@ -486,9 +486,10 @@ body {
 .poem-content {
 	position: relative;
 	z-index: 1;
-	max-width: 550px;
+	max-width: 720px;
 	width: 100%;
 	padding: 0 2rem;
+	margin-top: -3rem;
 }
 
 .poem-content::before {
@@ -498,12 +499,14 @@ body {
 	color: var(--accent-color, var(--primary));
 	font-family: var(--display-font);
 	line-height: 1;
-	margin-bottom: -1.5rem;
+	width: 2rem;
+	height: 3rem;
+	margin-left: -1rem;
 }
 
 .poem-content p {
 	font-family: var(--poem-font);
-	font-size: 0.95rem;
+	font-size: 1.1rem;
 	line-height: 1.8;
 	color: var(--text-dark);
 	margin: 0 0 1rem 0;
@@ -514,10 +517,6 @@ body {
 	z-index: 1;
 	padding-left: 1.5rem;
 	text-indent: -1.5rem;
-}
-
-.poem-card:hover .poem-content {
-	/* hover removed */
 }
 
 .poem-actions {
@@ -672,6 +671,210 @@ body {
 
 .about-section {
 	margin-bottom: 2rem;
+}
+
+.about-note-small {
+	font-size: 0.85rem;
+	color: var(--text-light);
+	margin-top: 0.5rem;
+}
+
+.test-key-btn {
+	margin-top: 0.6rem;
+	display: inline-block;
+	padding: 0.5rem 0.75rem;
+	font-size: 0.95rem;
+	border-radius: 8px;
+	border: 1px solid var(--border);
+	background: transparent;
+	color: var(--text-dark);
+	cursor: pointer;
+	box-shadow: none;
+	transition: background-color 120ms ease, transform 80ms ease,
+		border-color 120ms ease;
+}
+
+.test-key-btn:hover {
+	background-color: color-mix(in srgb, var(--primary) 6%, transparent);
+	border-color: var(--primary);
+}
+
+.test-key-btn:active {
+	transform: translateY(1px);
+}
+
+.test-key-status {
+	display: inline-block;
+	margin-left: 0.8rem;
+	font-size: 0.95rem;
+	color: var(--text-light);
+	opacity: 0.95;
+	transition: color 120ms ease, opacity 120ms ease, transform 120ms ease;
+}
+.test-key-status.testing {
+	color: var(--text-dark);
+}
+.test-key-status.success {
+	color: var(--primary);
+	font-weight: 600;
+}
+.test-key-status.error {
+	color: #e05a4b;
+	font-weight: 600;
+}
+
+/* AI button styling */
+.ai-btn {
+	/* match other circular action buttons and sit visually above them */
+	width: 50px;
+	height: 50px;
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	border: 2px solid var(--text-light);
+	background: transparent;
+	color: var(--text-light);
+	margin-bottom: 0.5rem;
+}
+.ai-btn svg {
+	width: 18px;
+	height: 18px;
+	transform: translateY(-1px);
+}
+.ai-btn:hover {
+	color: var(--text-dark);
+	border-color: var(--text-dark);
+	transform: scale(1.1);
+}
+
+/* Icon path: outlined by default, filled when .toggled is present */
+.ai-btn .icon-path {
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.5px;
+	stroke-linejoin: round;
+}
+.ai-btn.toggled .icon-path {
+	fill: currentColor;
+	stroke: none;
+}
+
+/* loading spinner border for AI button */
+.ai-btn {
+	position: relative;
+	z-index: 3;
+	overflow: visible;
+}
+.ai-btn.ai-loading {
+	/* hide the static border while the spinner arc is visible */
+	border-color: transparent;
+	transform: none;
+}
+
+/* helper: hide AI button when no key is available */
+.ai-hidden {
+	display: none !important;
+}
+
+/* Simple 2px border arc placed outside the button so it matches border width
+   and doesn't overlay/occlude the icon or cause layout shifts */
+.ai-btn.ai-loading::after {
+	content: '';
+	position: absolute;
+	top: -2px;
+	left: -2px;
+	right: -2px;
+	bottom: -2px;
+	border-radius: 50%;
+	box-sizing: border-box;
+	border: 2px solid transparent;
+	border-top-color: var(--primary);
+	transform-origin: center;
+	animation: ai-spin 0.9s linear infinite;
+	z-index: 1;
+	pointer-events: none;
+}
+.ai-btn svg {
+	position: relative;
+	z-index: 3;
+}
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+		filter: brightness(1);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1.02);
+		filter: brightness(0.9);
+		opacity: 0.64;
+	}
+	100% {
+		transform: scale(1);
+		filter: brightness(1);
+		opacity: 1;
+	}
+}
+
+@keyframes ai-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* wiggle animation for the decorative opening quote while AI is loading */
+@keyframes wiggle-quote {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(-32deg);
+	}
+}
+
+/* apply slow back-and-forth rotate around a top-center pivot while loading */
+.poem-card.ai-loading .poem-content::before {
+	animation: wiggle-quote 0.5s ease-in-out infinite alternate;
+	will-change: transform;
+}
+
+/* also pulse the poem-content when the parent article is in the loading state */
+.poem-card.ai-loading .poem-content {
+	animation: pulse 1s ease-in-out infinite;
+}
+
+.openai-key-input {
+	width: 100%;
+	padding: 0.75rem 1rem;
+	border-radius: 10px;
+	border: 1px solid var(--border);
+	background: transparent;
+	color: var(--text-dark);
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono',
+		monospace;
+	font-size: 0.95rem;
+	transition: box-shadow 0.15s ease, border-color 0.15s ease,
+		transform 0.08s ease;
+}
+
+.openai-key-input:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 6px 18px rgba(102, 126, 234, 0.12);
+	transform: translateY(-1px);
+}
+
+@media (prefers-color-scheme: dark) {
+	.openai-key-input {
+		color: var(--text-light);
+		border-color: rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.02);
+	}
+	.about-note-small {
+		color: var(--text-light);
+	}
 }
 
 .about-section:last-child {
@@ -917,7 +1120,7 @@ body {
 	}
 
 	.poem-content {
-		max-width: 100%;
+		max-width: 95%;
 		padding: 0 1rem;
 	}
 
@@ -929,4 +1132,16 @@ body {
 	.logo {
 		font-size: 1rem;
 	}
+}
+
+/* Subtle horizontal rule styling matching app theme */
+hr {
+	border: none;
+	height: 1px;
+	width: 100%;
+	background-color: var(--border);
+	opacity: 0.65;
+	margin: 1.25rem 0;
+	border-radius: 2px;
+	transition: opacity 150ms ease, transform 150ms ease;
 }
